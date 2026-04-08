@@ -1,0 +1,124 @@
+<Window x:Class="Alistar.App.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d"
+        Title="Alistar | Login"
+        Height="720"
+        Width="1220"
+        MinHeight="700"
+        MinWidth="1120">
+    <Grid Background="#F6F8F7">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="1.1*" />
+            <ColumnDefinition Width="0.9*" />
+        </Grid.ColumnDefinitions>
+
+        <Border Grid.Column="0" Background="White" Padding="50">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+
+                <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
+                    <Border Background="#F6F8F7"
+                            BorderBrush="#E1E8E4"
+                            BorderThickness="1"
+                            CornerRadius="28"
+                            Padding="36">
+                        <Image Source="Assets/a1.jpeg"
+                               Width="430"
+                               Stretch="Uniform" />
+                    </Border>
+
+                    <TextBlock Margin="0,28,0,0"
+                               FontSize="30"
+                               FontWeight="Bold"
+                               Foreground="#0F291D"
+                               HorizontalAlignment="Center"
+                               Text="ALISTAR" />
+
+                    <TextBlock Margin="0,10,0,0"
+                               FontSize="18"
+                               Foreground="{StaticResource SoftTextBrush}"
+                               TextAlignment="Center"
+                               TextWrapping="Wrap"
+                               Width="520"
+                               Text="Sistema de gestao de alistamento com acesso rapido, seguro e organizado." />
+                </StackPanel>
+
+                <TextBlock Grid.Row="1"
+                           HorizontalAlignment="Center"
+                           Margin="0,26,0,0"
+                           Foreground="#7A8681"
+                           FontSize="14"
+                           Text="Plataforma Alistar" />
+            </Grid>
+        </Border>
+
+        <Border Grid.Column="1"
+                Background="#0F291D"
+                CornerRadius="36,0,0,36"
+                Padding="56">
+            <Grid>
+                <StackPanel VerticalAlignment="Center" MaxWidth="390">
+                    <TextBlock Foreground="#8FD1B0"
+                               FontSize="18"
+                               FontWeight="SemiBold"
+                               Text="Sistema Login" />
+
+                    <TextBlock Margin="0,10,0,8"
+                               FontSize="34"
+                               FontWeight="Bold"
+                               Foreground="White"
+                               Text="Acesse sua conta" />
+
+                    <TextBlock Margin="0,0,0,28"
+                               FontSize="15"
+                               Foreground="#C9D7D0"
+                               TextWrapping="Wrap"
+                               Text="Entre com seu e-mail e senha para abrir a tela inicial do sistema Alistar." />
+
+                    <TextBlock Margin="0,0,0,6" Foreground="#D9E3DE" Text="E-mail" />
+                    <TextBox x:Name="EmailTextBox" Style="{StaticResource InputTextBoxStyle}" />
+
+                    <TextBlock Margin="0,0,0,6" Foreground="#D9E3DE" Text="Senha" />
+                    <PasswordBox x:Name="PasswordTextBox" Style="{StaticResource InputPasswordBoxStyle}" />
+
+                    <Button Style="{StaticResource PrimaryButtonStyle}"
+                            Click="LoginButton_Click"
+                            Content="Entrar" />
+
+                    <TextBlock x:Name="FeedbackTextBlock"
+                               Margin="0,16,0,0"
+                               Foreground="#FFB2B2"
+                               TextWrapping="Wrap" />
+
+                    <Border Margin="0,28,0,0"
+                            Padding="18"
+                            CornerRadius="18"
+                            Background="#163626">
+                        <StackPanel>
+                            <TextBlock Foreground="#DCE6E1" FontWeight="SemiBold" Text="Acesso de teste" />
+                            <TextBlock Margin="0,8,0,0" Foreground="#BFD0C8" Text="E-mail: admin@alistar.com" />
+                            <TextBlock Margin="0,4,0,0" Foreground="#BFD0C8" Text="Senha: 123456" />
+                        </StackPanel>
+                    </Border>
+
+                    <StackPanel Margin="0,28,0,0">
+                        <TextBlock HorizontalAlignment="Center" Foreground="#D9E3DE">
+                            <Hyperlink Foreground="#8FD1B0" Click="ForgotPasswordHyperlink_Click">Esqueceu a senha?</Hyperlink>
+                        </TextBlock>
+
+                        <TextBlock Margin="0,14,0,0" HorizontalAlignment="Center" Foreground="#D9E3DE">
+                            <Run Text="Nao tem conta? " />
+                            <Hyperlink Foreground="#8FD1B0" Click="CreateAccountHyperlink_Click">Cadastrar conta</Hyperlink>
+                        </TextBlock>
+                    </StackPanel>
+                </StackPanel>
+            </Grid>
+        </Border>
+    </Grid>
+</Window>

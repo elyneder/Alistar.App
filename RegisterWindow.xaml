@@ -5,15 +5,16 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d"
         Title="Alistar | Cadastro"
-        Height="500"
-        Width="520"
+        Height="567"
+        Width="653"
+        WindowStartupLocation="CenterScreen"
         ResizeMode="NoResize">
     <Grid Background="#F6F8F7" Margin="28">
         <Border Background="White"
                 BorderBrush="#DFE7E2"
                 BorderThickness="1"
                 CornerRadius="24"
-                Padding="28">
+                Padding="28" Height="495" VerticalAlignment="Center">
             <StackPanel>
                 <TextBlock FontSize="28" FontWeight="Bold" Foreground="#123322" Text="Cadastrar conta" />
                 <TextBlock Margin="0,8,0,24" Foreground="#667771" Text="Crie um novo acesso para o sistema Alistar." />

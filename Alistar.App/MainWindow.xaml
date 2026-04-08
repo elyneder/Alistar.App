@@ -1,0 +1,113 @@
+<Window x:Class="Alistar.App.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d"
+        Title="Alistar | Login"
+        Height="720"
+        Width="1220"
+        WindowStartupLocation="CenterScreen"
+        WindowState="Maximized">
+
+    <Grid Background="#0F291D">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="1*" />
+            <ColumnDefinition Width="1*" />
+        </Grid.ColumnDefinitions>
+
+        <Border Grid.Column="0" Padding="50">
+            <Border.Background>
+                <LinearGradientBrush EndPoint="1,0" StartPoint="0,0">
+                    <GradientStop Color="#FF0F291D" Offset="1"/>
+                    <GradientStop Color="#FF196743" Offset="0"/>
+                </LinearGradientBrush>
+            </Border.Background>
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+
+                <StackPanel VerticalAlignment="Center"
+                            HorizontalAlignment="Center"
+                            Margin="-24,0,0,0">
+                    <Border Background="White"
+                            BorderBrush="#F6F8F7"
+                            BorderThickness="1"
+                            CornerRadius="28"
+                            Padding="36"
+                            Height="414"
+                            Width="406">
+                        <Image Source="Assets/a1.jpeg"
+                               Width="430"
+                               Stretch="Uniform"
+                               HorizontalAlignment="Center"
+                               VerticalAlignment="Center">
+                            <Image.OpacityMask>
+                                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                                    <GradientStop Color="Black"/>
+                                    <GradientStop Color="#FFDA1818" Offset="1"/>
+                                </LinearGradientBrush>
+                            </Image.OpacityMask>
+                        </Image>
+                    </Border>
+                </StackPanel>
+            </Grid>
+        </Border>
+
+        <Border Grid.Column="1"
+                Padding="76,56,88,56"
+                Background="#FF0F291D">
+            <Grid>
+                <StackPanel VerticalAlignment="Center"
+                            MaxWidth="520"
+                            HorizontalAlignment="Left"
+                            Margin="24,0,0,0">
+
+                    <TextBlock Margin="0,10,0,8"
+                               FontSize="42"
+                               FontWeight="Bold"
+                               Foreground="White"
+                               Text="Acesse sua conta" TextAlignment="Center" />
+
+                    <TextBlock Margin="0,0,0,28"
+                               FontSize="18"
+                               Foreground="#C9D7D0"
+                               TextWrapping="Wrap"
+                               TextAlignment="Center" ><Run Language="pt-br" Text="Entre com seu E-mail e Senha"/></TextBlock>
+
+                    <TextBlock Margin="0,0,0,8" Foreground="#D9E3DE" FontSize="18" Text="E-mail" />
+                    <TextBox x:Name="EmailTextBox" Style="{StaticResource InputTextBoxStyle}" />
+
+                    <TextBlock Margin="0,4,0,8" Foreground="#D9E3DE" FontSize="18" Text="Senha" />
+                    <PasswordBox x:Name="PasswordTextBox" Style="{StaticResource InputPasswordBoxStyle}" />
+
+                    <Button Style="{StaticResource PrimaryButtonStyle}"
+                            Click="LoginButton_Click"
+                            Content="Entrar"
+                            Background="#FF196743"
+                            Margin="0,20,0,0"
+                            Height="54"
+                            FontSize="18" />
+
+                    <TextBlock x:Name="FeedbackTextBlock"
+                               Margin="0,16,0,0"
+                               Foreground="#FFB2B2"
+                               TextWrapping="Wrap" />
+
+                    <StackPanel Margin="0,34,0,0">
+                        <TextBlock HorizontalAlignment="Center" Foreground="#D9E3DE">
+                            <Hyperlink Foreground="#8FD1B0" Click="ForgotPasswordHyperlink_Click">Esqueceu a senha?</Hyperlink>
+                        </TextBlock>
+
+                        <TextBlock Margin="0,14,0,0" HorizontalAlignment="Center" Foreground="#D9E3DE">
+                            <Run Text="Nao tem conta? " />
+                            <Hyperlink Foreground="#8FD1B0" Click="CreateAccountHyperlink_Click">Cadastrar conta</Hyperlink>
+                        </TextBlock>
+                    </StackPanel>
+                </StackPanel>
+            </Grid>
+        </Border>
+    </Grid>
+</Window>

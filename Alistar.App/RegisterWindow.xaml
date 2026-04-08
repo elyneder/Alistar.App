@@ -1,0 +1,41 @@
+<Window x:Class="Alistar.App.RegisterWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d"
+        Title="Alistar | Cadastro"
+        Height="567"
+        Width="653"
+        WindowStartupLocation="CenterScreen"
+        ResizeMode="NoResize">
+    <Grid Background="#F6F8F7" Margin="28">
+        <Border Background="White"
+                BorderBrush="#DFE7E2"
+                BorderThickness="1"
+                CornerRadius="24"
+                Padding="28" Height="495" VerticalAlignment="Center">
+            <StackPanel>
+                <TextBlock FontSize="28" FontWeight="Bold" Foreground="#123322" Text="Cadastrar conta" />
+                <TextBlock Margin="0,8,0,24" Foreground="#667771" Text="Crie um novo acesso para o sistema Alistar." />
+
+                <TextBlock Margin="0,0,0,6" Text="Nome" />
+                <TextBox x:Name="NameTextBox" Style="{StaticResource InputTextBoxStyle}" />
+
+                <TextBlock Margin="0,0,0,6" Text="E-mail" />
+                <TextBox x:Name="RegisterEmailTextBox" Style="{StaticResource InputTextBoxStyle}" />
+
+                <TextBlock Margin="0,0,0,6" Text="Senha" />
+                <PasswordBox x:Name="RegisterPasswordTextBox" Style="{StaticResource InputPasswordBoxStyle}" />
+
+                <TextBlock x:Name="FeedbackTextBlock"
+                           Margin="0,4,0,10"
+                           Foreground="#C43D3D"
+                           TextWrapping="Wrap" />
+
+                <Button Style="{StaticResource PrimaryButtonStyle}" Click="RegisterButton_Click" Content="Salvar cadastro" />
+                <Button Style="{StaticResource SecondaryButtonStyle}" Click="CancelButton_Click" Content="Cancelar" />
+            </StackPanel>
+        </Border>
+    </Grid>
+</Window>

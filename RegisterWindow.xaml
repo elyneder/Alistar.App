@@ -5,37 +5,143 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d"
         Title="Alistar | Cadastro"
-        Height="567"
-        Width="653"
+        Height="720"
+        Width="1220"
+        WindowState="Maximized"
         WindowStartupLocation="CenterScreen"
-        ResizeMode="NoResize">
-    <Grid Background="#F6F8F7" Margin="28">
-        <Border Background="White"
-                BorderBrush="#DFE7E2"
-                BorderThickness="1"
-                CornerRadius="24"
-                Padding="28" Height="495" VerticalAlignment="Center">
-            <StackPanel>
-                <TextBlock FontSize="28" FontWeight="Bold" Foreground="#123322" Text="Cadastrar conta" />
-                <TextBlock Margin="0,8,0,24" Foreground="#667771" Text="Crie um novo acesso para o sistema Alistar." />
+        ResizeMode="NoResize"
+        d:DesignHeight="720"
+        d:DesignWidth="1220">
+    <Window.Resources>
+        <Style x:Key="LocalInputTextBoxStyle" TargetType="TextBox">
+            <Setter Property="Padding" Value="14,10" />
+            <Setter Property="Margin" Value="0,0,0,16" />
+            <Setter Property="BorderBrush" Value="#D5DDD8" />
+            <Setter Property="BorderThickness" Value="1" />
+            <Setter Property="Background" Value="White" />
+            <Setter Property="Foreground" Value="#1C241F" />
+            <Setter Property="FontSize" Value="16" />
+        </Style>
 
-                <TextBlock Margin="0,0,0,6" Text="Nome" />
-                <TextBox x:Name="NameTextBox" Style="{StaticResource InputTextBoxStyle}" />
+        <Style x:Key="LocalInputPasswordBoxStyle" TargetType="PasswordBox">
+            <Setter Property="Padding" Value="14,10" />
+            <Setter Property="Margin" Value="0,0,0,16" />
+            <Setter Property="BorderBrush" Value="#D5DDD8" />
+            <Setter Property="BorderThickness" Value="1" />
+            <Setter Property="Background" Value="White" />
+            <Setter Property="Foreground" Value="#1C241F" />
+            <Setter Property="FontSize" Value="16" />
+        </Style>
 
-                <TextBlock Margin="0,0,0,6" Text="E-mail" />
-                <TextBox x:Name="RegisterEmailTextBox" Style="{StaticResource InputTextBoxStyle}" />
+        <Style x:Key="LocalPrimaryButtonStyle" TargetType="Button">
+            <Setter Property="Height" Value="50" />
+            <Setter Property="Padding" Value="18,10" />
+            <Setter Property="Margin" Value="0,10,0,0" />
+            <Setter Property="Background" Value="#145C3B" />
+            <Setter Property="Foreground" Value="White" />
+            <Setter Property="BorderThickness" Value="0" />
+            <Setter Property="Cursor" Value="Hand" />
+            <Setter Property="FontWeight" Value="SemiBold" />
+            <Setter Property="FontSize" Value="16" />
+        </Style>
 
-                <TextBlock Margin="0,0,0,6" Text="Senha" />
-                <PasswordBox x:Name="RegisterPasswordTextBox" Style="{StaticResource InputPasswordBoxStyle}" />
+        <Style x:Key="LocalSecondaryButtonStyle" TargetType="Button" BasedOn="{StaticResource LocalPrimaryButtonStyle}">
+            <Setter Property="Background" Value="#EAF1ED" />
+            <Setter Property="Foreground" Value="#145C3B" />
+        </Style>
+    </Window.Resources>
 
-                <TextBlock x:Name="FeedbackTextBlock"
-                           Margin="0,4,0,10"
-                           Foreground="#C43D3D"
-                           TextWrapping="Wrap" />
+    <Grid Background="#0F291D">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="1*" />
+            <ColumnDefinition Width="1*" />
+        </Grid.ColumnDefinitions>
 
-                <Button Style="{StaticResource PrimaryButtonStyle}" Click="RegisterButton_Click" Content="Salvar cadastro" />
-                <Button Style="{StaticResource SecondaryButtonStyle}" Click="CancelButton_Click" Content="Cancelar" />
-            </StackPanel>
+        <Border Grid.Column="0" Padding="50">
+            <Border.Background>
+                <LinearGradientBrush StartPoint="0,0" EndPoint="1,0">
+                    <GradientStop Color="#196743" Offset="0" />
+                    <GradientStop Color="#0F291D" Offset="1" />
+                </LinearGradientBrush>
+            </Border.Background>
+
+            <Grid>
+                <StackPanel VerticalAlignment="Center"
+                            HorizontalAlignment="Center"
+                            Margin="-24,0,0,0">
+                    <Border Background="White"
+                            BorderBrush="#F6F8F7"
+                            BorderThickness="1"
+                            CornerRadius="28"
+                            Padding="36"
+                            Width="430"
+                            Height="430">
+                        <Image Source="Assets/a1.jpeg"
+                               Width="430"
+                               Stretch="Uniform"
+                               HorizontalAlignment="Center"
+                               VerticalAlignment="Center">
+                            <Image.OpacityMask>
+                                <LinearGradientBrush StartPoint="0.5,0" EndPoint="0.5,1">
+                                    <GradientStop Color="Black" Offset="0" />
+                                    <GradientStop Color="#DA1818" Offset="1" />
+                                </LinearGradientBrush>
+                            </Image.OpacityMask>
+                        </Image>
+                    </Border>
+                </StackPanel>
+            </Grid>
+        </Border>
+
+        <Border Grid.Column="1"
+                Background="#0F291D"
+                Padding="76,56,88,56">
+            <Grid>
+                <StackPanel VerticalAlignment="Center"
+                            MaxWidth="520"
+                            HorizontalAlignment="Left"
+                            Margin="24,0,0,0">
+
+                    <TextBlock Margin="0,10,0,8"
+                               FontSize="42"
+                               FontWeight="Bold"
+                               Foreground="White"
+                               Text="Cadastrar conta" />
+
+
+                    <TextBlock Margin="0,0,0,8"
+                               FontSize="18"
+                               Foreground="#D9E3DE"
+                               Text="Nome" />
+                    <TextBox x:Name="NameTextBox" Style="{StaticResource LocalInputTextBoxStyle}" />
+
+                    <TextBlock Margin="0,0,0,8"
+                               FontSize="18"
+                               Foreground="#D9E3DE"
+                               Text="E-mail" />
+                    <TextBox x:Name="RegisterEmailTextBox" Style="{StaticResource LocalInputTextBoxStyle}" />
+
+                    <TextBlock Margin="0,0,0,8"
+                               FontSize="18"
+                               Foreground="#D9E3DE"
+                               Text="Senha" />
+                    <PasswordBox x:Name="RegisterPasswordTextBox" Style="{StaticResource LocalInputPasswordBoxStyle}" />
+
+                    <TextBlock x:Name="FeedbackTextBlock"
+                               Margin="0,6,0,12"
+                               Foreground="#FFB2B2"
+                               TextWrapping="Wrap" />
+
+                    <Button Style="{StaticResource LocalPrimaryButtonStyle}"
+                            Click="RegisterButton_Click"
+                            Content="Salvar cadastro"
+                            Background="#196743" />
+
+                    <Button Style="{StaticResource LocalSecondaryButtonStyle}"
+                            Click="CancelButton_Click"
+                            Content="Cancelar" />
+                </StackPanel>
+            </Grid>
         </Border>
     </Grid>
 </Window>

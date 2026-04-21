@@ -5,6 +5,8 @@ namespace Alistar.App;
 
 public partial class MainWindow : Window
 {
+    private bool _isPasswordVisible = false;
+
     public MainWindow()
     {
         InitializeComponent();
@@ -13,7 +15,13 @@ public partial class MainWindow : Window
     private void LoginButton_Click(object sender, RoutedEventArgs e)
     {
         var email = EmailTextBox.Text.Trim();
-        var password = PasswordTextBox.Password.Trim();
+
+        string password;
+
+        if (_isPasswordVisible)
+            password = PasswordVisible.Text.Trim();
+        else
+            password = PasswordBox.Password.Trim();
 
         if (string.IsNullOrWhiteSpace(email) || string.IsNullOrWhiteSpace(password))
         {
@@ -23,13 +31,31 @@ public partial class MainWindow : Window
 
         if (!AuthService.ValidateLogin(email, password))
         {
-            FeedbackTextBlock.Text = "E-mail ou senha invalidos.";
+            FeedbackTextBlock.Text = "E-mail ou senha inválidos.";
             return;
         }
 
         var dashboardWindow = new DashboardWindow();
         dashboardWindow.Show();
         Close();
+    }
+
+    private void TogglePassword_Click(object sender, RoutedEventArgs e)
+    {
+        if (_isPasswordVisible)
+        {
+            PasswordBox.Password = PasswordVisible.Text;
+            PasswordBox.Visibility = Visibility.Visible;
+            PasswordVisibleBorder.Visibility = Visibility.Collapsed;
+        }
+        else
+        {
+            PasswordVisible.Text = PasswordBox.Password;
+            PasswordBox.Visibility = Visibility.Collapsed;
+            PasswordVisibleBorder.Visibility = Visibility.Visible;
+        }
+
+        _isPasswordVisible = !_isPasswordVisible;
     }
 
     private void ForgotPasswordHyperlink_Click(object sender, RoutedEventArgs e)

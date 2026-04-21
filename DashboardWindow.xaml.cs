@@ -14,6 +14,33 @@ public partial class DashboardWindow : Window
         ShowHomeView();
     }
 
+    private void Step1_Click(object sender, RoutedEventArgs e)
+    {
+        ShowRegisterView();
+    }
+
+    private void FutureStep_Click(object sender, RoutedEventArgs e)
+    {
+        MessageBox.Show("Esta etapa ainda será desenvolvida. Por enquanto, utilize a Primeira Etapa para cadastros.", "Em desenvolvimento", MessageBoxButton.OK, MessageBoxImage.Information);
+    }
+
+    private void ShowHomeViewButton_Click(object sender, RoutedEventArgs e)
+    {
+        ShowHomeView();
+    }
+
+    private void ShowListViewButton_Click(object sender, RoutedEventArgs e)
+    {
+        ShowListView();
+    }
+
+    private void LogoutButton_Click(object sender, RoutedEventArgs e)
+    {
+        var loginWindow = new MainWindow();
+        loginWindow.Show();
+        this.Close();
+    }
+
     private void SaveConscriptButton_Click(object sender, RoutedEventArgs e)
     {
         var name = NameTextBox.Text.Trim();
@@ -24,12 +51,9 @@ public partial class DashboardWindow : Window
         var city = CityTextBox.Text.Trim();
         var education = (EducationComboBox.SelectedItem as ComboBoxItem)?.Content?.ToString()?.Trim() ?? string.Empty;
 
-        if (string.IsNullOrWhiteSpace(name) ||
-            string.IsNullOrWhiteSpace(motherName) ||
-            string.IsNullOrWhiteSpace(fatherName) ||
-            string.IsNullOrWhiteSpace(birthDate) ||
-            string.IsNullOrWhiteSpace(address) ||
-            string.IsNullOrWhiteSpace(city) ||
+        if (string.IsNullOrWhiteSpace(name) || string.IsNullOrWhiteSpace(motherName) ||
+            string.IsNullOrWhiteSpace(fatherName) || string.IsNullOrWhiteSpace(birthDate) ||
+            string.IsNullOrWhiteSpace(address) || string.IsNullOrWhiteSpace(city) ||
             string.IsNullOrWhiteSpace(education))
         {
             RegisterFeedbackTextBlock.Text = "Preencha todos os campos da ficha do candidato.";
@@ -54,32 +78,10 @@ public partial class DashboardWindow : Window
         ShowListView();
     }
 
-    private void ShowRegisterViewButton_Click(object sender, RoutedEventArgs e)
-    {
-        ShowRegisterView();
-    }
-
-    private void ShowHomeViewButton_Click(object sender, RoutedEventArgs e)
-    {
-        ShowHomeView();
-    }
-
-    private void ShowListViewButton_Click(object sender, RoutedEventArgs e)
-    {
-        ShowListView();
-    }
-
     private void ClearFormButton_Click(object sender, RoutedEventArgs e)
     {
         ClearFormFields();
         RegisterFeedbackTextBlock.Text = string.Empty;
-    }
-
-    private void LogoutButton_Click(object sender, RoutedEventArgs e)
-    {
-        var loginWindow = new MainWindow();
-        loginWindow.Show();
-        Close();
     }
 
     private void LoadConscripts()
@@ -87,7 +89,6 @@ public partial class DashboardWindow : Window
         var conscripts = ConscriptStorageService.GetAll();
         ConscriptsDataGrid.ItemsSource = conscripts;
         ConscriptsCountTextBlock.Text = conscripts.Count.ToString();
-        HomeConscriptsCountTextBlock.Text = conscripts.Count.ToString();
     }
 
     private void ShowHomeView()
@@ -102,6 +103,7 @@ public partial class DashboardWindow : Window
         HomeViewBorder.Visibility = Visibility.Collapsed;
         RegisterViewBorder.Visibility = Visibility.Visible;
         ListViewBorder.Visibility = Visibility.Collapsed;
+        RegisterFeedbackTextBlock.Text = string.Empty;
     }
 
     private void ShowListView()
@@ -109,6 +111,7 @@ public partial class DashboardWindow : Window
         HomeViewBorder.Visibility = Visibility.Collapsed;
         RegisterViewBorder.Visibility = Visibility.Collapsed;
         ListViewBorder.Visibility = Visibility.Visible;
+        LoadConscripts();
     }
 
     private void ClearFormFields()

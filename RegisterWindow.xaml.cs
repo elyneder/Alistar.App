@@ -22,7 +22,7 @@ public partial class RegisterWindow : Window
             return;
         }
 
-        if (!AuthService.Register(name, email, password))
+        if (!ServicoDeAutenticacao.Register(name, email, password))
         {
             FeedbackTextBlock.Text = "Ja existe uma conta com este e-mail.";
             return;

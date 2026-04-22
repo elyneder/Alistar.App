@@ -20,7 +20,7 @@ public partial class ForgotPasswordWindow : Window
             return;
         }
 
-        FeedbackTextBlock.Text = AuthService.UserExists(email)
+        FeedbackTextBlock.Text = ServicoDeAutenticacao.UserExists(email)
             ? "E-mail encontrado. Aqui podemos conectar a redefinicao de senha na proxima etapa."
             : "Nenhuma conta foi localizada com esse e-mail.";
     }

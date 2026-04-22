@@ -1,16 +1,16 @@
 <Application x:Class="Alistar.App.App"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             StartupUri="MainWindow.xaml">
+             StartupUri="TelaLogin.xaml">
     <Application.Resources>
-        <Color x:Key="PrimaryGreenColor">#145C3B</Color>
-        <Color x:Key="PrimaryDarkColor">#0B1511</Color>
-        <Color x:Key="PanelBorderColor">#DDE7E2</Color>
-        <Color x:Key="SoftTextColor">#687770</Color>
+        <Color x:Key="CorVerdePrimaria">#145C3B</Color>
+        <Color x:Key="CorVerdeEscura">#0B1511</Color>
+        <Color x:Key="CorBordaPainel">#DDE7E2</Color>
+        <Color x:Key="CorTextoSuave">#687770</Color>
 
-        <SolidColorBrush x:Key="PrimaryGreenBrush" Color="{StaticResource PrimaryGreenColor}" />
-        <SolidColorBrush x:Key="PrimaryDarkBrush" Color="{StaticResource PrimaryDarkColor}" />
-        <SolidColorBrush x:Key="SoftTextBrush" Color="{StaticResource SoftTextColor}" />
+        <SolidColorBrush x:Key="PincelVerdePrimario" Color="{StaticResource CorVerdePrimaria}" />
+        <SolidColorBrush x:Key="PincelVerdeEscuro" Color="{StaticResource CorVerdeEscura}" />
+        <SolidColorBrush x:Key="PincelTextoSuave" Color="{StaticResource CorTextoSuave}" />
 
         <Style TargetType="Window">
             <Setter Property="FontFamily" Value="Segoe UI" />
@@ -18,7 +18,7 @@
             <Setter Property="Background" Value="White" />
         </Style>
 
-        <Style x:Key="InputTextBoxStyle" TargetType="TextBox">
+        <Style x:Key="CaixaTextoEntradaStyle" TargetType="TextBox">
             <Setter Property="Padding" Value="14,10" />
             <Setter Property="Margin" Value="0,0,0,14" />
             <Setter Property="BorderBrush" Value="#D5DDD8" />
@@ -27,7 +27,7 @@
             <Setter Property="Foreground" Value="#1C241F" />
         </Style>
 
-        <Style x:Key="InputPasswordBoxStyle" TargetType="PasswordBox">
+        <Style x:Key="CaixaSenhaEntradaStyle" TargetType="PasswordBox">
             <Setter Property="Padding" Value="14,10" />
             <Setter Property="Margin" Value="0,0,0,14" />
             <Setter Property="BorderBrush" Value="#D5DDD8" />
@@ -36,20 +36,127 @@
             <Setter Property="Foreground" Value="#1C241F" />
         </Style>
 
-        <Style x:Key="PrimaryButtonStyle" TargetType="Button">
+        <Style x:Key="BotaoBaseArredondadoStyle" TargetType="Button">
             <Setter Property="Height" Value="46" />
             <Setter Property="Padding" Value="18,10" />
             <Setter Property="Margin" Value="0,8,0,0" />
-            <Setter Property="Background" Value="{StaticResource PrimaryGreenBrush}" />
-            <Setter Property="Foreground" Value="White" />
             <Setter Property="BorderThickness" Value="0" />
             <Setter Property="Cursor" Value="Hand" />
             <Setter Property="FontWeight" Value="SemiBold" />
+            <Setter Property="FontSize" Value="14" />
+            <Setter Property="HorizontalContentAlignment" Value="Center" />
+            <Setter Property="VerticalContentAlignment" Value="Center" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="10">
+                            <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                              VerticalAlignment="{TemplateBinding VerticalContentAlignment}" />
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
         </Style>
 
-        <Style x:Key="SecondaryButtonStyle" TargetType="Button" BasedOn="{StaticResource PrimaryButtonStyle}">
+        <Style x:Key="BotaoPrimarioStyle" TargetType="Button" BasedOn="{StaticResource BotaoBaseArredondadoStyle}">
+            <Setter Property="Background" Value="{StaticResource PincelVerdePrimario}" />
+            <Setter Property="Foreground" Value="White" />
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="#196743" />
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <Style x:Key="BotaoSecundarioStyle" TargetType="Button" BasedOn="{StaticResource BotaoBaseArredondadoStyle}">
             <Setter Property="Background" Value="#EAF1ED" />
-            <Setter Property="Foreground" Value="{StaticResource PrimaryGreenBrush}" />
+            <Setter Property="Foreground" Value="{StaticResource PincelVerdePrimario}" />
+            <Setter Property="BorderThickness" Value="1" />
+            <Setter Property="BorderBrush" Value="#D5DDD8" />
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="#DCE7E1" />
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <Style x:Key="BotaoBarraLateralStyle" TargetType="Button" BasedOn="{StaticResource BotaoBaseArredondadoStyle}">
+            <Setter Property="Height" Value="44" />
+            <Setter Property="Margin" Value="0,4,0,0" />
+            <Setter Property="Padding" Value="15,12" />
+            <Setter Property="Background" Value="Transparent" />
+            <Setter Property="Foreground" Value="#A0B0A8" />
+            <Setter Property="HorizontalContentAlignment" Value="Left" />
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="#196743" />
+                    <Setter Property="Foreground" Value="White" />
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <Style x:Key="BotaoPerigoTextoStyle" TargetType="Button" BasedOn="{StaticResource BotaoBaseArredondadoStyle}">
+            <Setter Property="Height" Value="40" />
+            <Setter Property="Margin" Value="0" />
+            <Setter Property="Padding" Value="12,8" />
+            <Setter Property="Background" Value="Transparent" />
+            <Setter Property="Foreground" Value="#E74C3C" />
+            <Setter Property="HorizontalContentAlignment" Value="Left" />
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="#1A3127" />
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <Style x:Key="BotaoIconeStyle" TargetType="Button" BasedOn="{StaticResource BotaoBaseArredondadoStyle}">
+            <Setter Property="Width" Value="32" />
+            <Setter Property="Height" Value="32" />
+            <Setter Property="Padding" Value="0" />
+            <Setter Property="Margin" Value="0" />
+            <Setter Property="Background" Value="Transparent" />
+            <Setter Property="Foreground" Value="{StaticResource PincelVerdePrimario}" />
+            <Setter Property="FontSize" Value="15" />
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="#EDF4F0" />
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <Style x:Key="BotaoEtapaStyle" TargetType="Button" BasedOn="{StaticResource BotaoBaseArredondadoStyle}">
+            <Setter Property="Background" Value="White" />
+            <Setter Property="Foreground" Value="#123322" />
+            <Setter Property="BorderBrush" Value="#DFE7E2" />
+            <Setter Property="BorderThickness" Value="1" />
+            <Setter Property="Margin" Value="8" />
+            <Setter Property="Height" Value="140" />
+            <Setter Property="Padding" Value="20" />
+            <Setter Property="HorizontalContentAlignment" Value="Left" />
+            <Setter Property="VerticalContentAlignment" Value="Center" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="16"
+                                Padding="{TemplateBinding Padding}">
+                            <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                              VerticalAlignment="{TemplateBinding VerticalContentAlignment}" />
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="#F3F7F5" />
+                    <Setter Property="BorderBrush" Value="#196743" />
+                </Trigger>
+            </Style.Triggers>
         </Style>
     </Application.Resources>
 </Application>

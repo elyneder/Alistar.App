@@ -46,7 +46,7 @@
                                  Margin="0,0,6,0" />
                         <TextBlock FontSize="12"
                                    Foreground="#9ACFB5"
-                                   Text="Alistar - Sistema de Gestao de Alistamento e Selecao Militar" />
+                                   Text="Alistar - Sistema de Gestão de Alistamento e Seleção Militar" />
                     </StackPanel>
                 </StackPanel>
 
@@ -68,12 +68,12 @@
                             Padding="24"
                             CornerRadius="10">
                         <StackPanel Width="320">
-                            <TextBlock Text="Registrar um novo entrevistador"
+                            <TextBlock
                                        FontSize="24"
                                        FontWeight="SemiBold"
                                        Foreground="#1F2D26"
                                        TextAlignment="Center"
-                                       Margin="0,0,0,6" />
+                                       Margin="0,0,0,6" ><Run Text="Registrar "/><Run Language="pt-br" Text="E"/><Run Text="ntrevistador"/></TextBlock>
 
                             <TextBlock Text="Somente o administrador principal pode criar um novo acesso de entrevistador."
                                        FontSize="12"
@@ -148,12 +148,26 @@
                                              Background="Transparent" />
                                 </Border>
 
-                                <Button Content="Ver"
-                                        HorizontalAlignment="Right"
-                                        VerticalAlignment="Center"
-                                        Margin="0,0,6,0"
-                                        Style="{StaticResource BotaoIconeStyle}"
-                                        Click="AlternarSenhaBotao_Click" />
+                                <Button HorizontalAlignment="Right"
+                                    VerticalAlignment="Center"
+                                    Margin="0,0,6,0"
+                                    Style="{StaticResource BotaoIconeStyle}"
+                                    Click="AlternarSenhaBotao_Click">
+                                    <Button.Content>
+                                        <Grid Width="20" Height="20">
+                                            <Path x:Name="IconeOlhoAberto"
+                                               Fill="#4A6658"
+                                               Data="M12 4.5C7 4.5 2.7 7.6 1 12c1.7 4.4 6 7.5 11 7.5s9.3-3.1 11-7.5C21.3 7.6 17 4.5 12 4.5zm0 12.5c-2.8 0-5-2.2-5-5s2.2-5 5-5 5 2.2 5 5-2.2 5-5 5zm0-8c-1.7 0-3 1.3-3 3s1.3 3 3 3 3-1.3 3-3-1.3-3-3-3z"
+                                               Stretch="Uniform"
+                                               Visibility="Visible"/>
+                                            <Path x:Name="IconeOlhoFechado"
+                                               Fill="#4A6658"
+                                               Data="M12 7c2.8 0 5 2.2 5 5 0 .6-.1 1.2-.3 1.8l3 3c1.5-1.3 2.7-3 3.3-4.8C21.3 7.6 17 4.5 12 4.5c-1.4 0-2.7.3-3.9.7l2.2 2.2C10.8 7.1 11.4 7 12 7zM2 4.3l2.3 2.3.5.5C3.1 8.5 1.8 10.1 1 12c1.7 4.4 6 7.5 11 7.5 1.6 0 3.1-.3 4.5-.9l.4.4L19.7 21 21 19.7 3.3 3 2 4.3zm5.5 5.5l1.6 1.6c-.1.2-.1.4-.1.6 0 1.7 1.3 3 3 3 .2 0 .4 0 .6-.1l1.6 1.6c-.7.3-1.4.5-2.2.5-2.8 0-5-2.2-5-5 0-.8.2-1.5.5-2.2z"
+                                               Stretch="Uniform"
+                                               Visibility="Collapsed"/>
+                                        </Grid>
+                                    </Button.Content>
+                                </Button>
                             </Grid>
 
                             <TextBlock x:Name="TextoFeedbackCadastro"

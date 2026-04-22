@@ -19,12 +19,16 @@ public partial class TelaCadastroUsuario : Window
             CaixaSenhaUsuario.Password = CaixaTextoSenhaVisivelUsuario.Text;
             CaixaSenhaUsuario.Visibility = Visibility.Visible;
             BordaSenhaVisivelUsuario.Visibility = Visibility.Collapsed;
+            IconeOlhoAberto.Visibility = Visibility.Visible;
+            IconeOlhoFechado.Visibility = Visibility.Collapsed;
         }
         else
         {
             CaixaTextoSenhaVisivelUsuario.Text = CaixaSenhaUsuario.Password;
             CaixaSenhaUsuario.Visibility = Visibility.Collapsed;
             BordaSenhaVisivelUsuario.Visibility = Visibility.Visible;
+            IconeOlhoAberto.Visibility = Visibility.Collapsed;
+            IconeOlhoFechado.Visibility = Visibility.Visible;
         }
 
         _senhaVisivel = !_senhaVisivel;
@@ -46,13 +50,13 @@ public partial class TelaCadastroUsuario : Window
 
         if (resultadoCadastro == ResultadoCadastroUsuario.SemPermissao)
         {
-            TextoFeedbackCadastro.Text = "Apenas o usuario admin@alistar.com pode cadastrar um novo entrevistador.";
+            TextoFeedbackCadastro.Text = "Apenas o usuário admin@alistar.com pode cadastrar um novo entrevistador.";
             return;
         }
 
         if (resultadoCadastro == ResultadoCadastroUsuario.EmailJaCadastrado)
         {
-            TextoFeedbackCadastro.Text = "Ja existe uma conta com este e-mail.";
+            TextoFeedbackCadastro.Text = "Já existe uma conta com este e-mail.";
             return;
         }
 

@@ -30,7 +30,7 @@ public partial class TelaPainelControle : Window
 
     private void EtapaFuturaBotao_Click(object sender, RoutedEventArgs e)
     {
-        MessageBox.Show("Esta etapa ainda sera desenvolvida. Por enquanto, utilize a Primeira Etapa para cadastros.", "Em desenvolvimento", MessageBoxButton.OK, MessageBoxImage.Information);
+        MessageBox.Show("Esta etapa ainda será desenvolvida. Por enquanto, utilize a Primeira Etapa para cadastros.", "Em desenvolvimento", MessageBoxButton.OK, MessageBoxImage.Information);
     }
 
     private void MostrarTelaInicialBotao_Click(object sender, RoutedEventArgs e)
@@ -48,7 +48,7 @@ public partial class TelaPainelControle : Window
         if (!ServicoAutenticacao.UsuarioAtualEhAdministrador())
         {
             MessageBox.Show(
-                "Apenas o usuario admin@alistar.com pode cadastrar um novo entrevistador.",
+                "Apenas o usuário admin@alistar.com pode cadastrar um novo entrevistador.",
                 "Acesso negado",
                 MessageBoxButton.OK,
                 MessageBoxImage.Warning);
@@ -102,7 +102,9 @@ public partial class TelaPainelControle : Window
     {
         var filtrosVisiveis = PainelFiltrosRapidos.Visibility == Visibility.Visible;
         PainelFiltrosRapidos.Visibility = filtrosVisiveis ? Visibility.Collapsed : Visibility.Visible;
-        BotaoAlternarFiltros.Content = filtrosVisiveis ? "Filtros" : "Ocultar";
+        TextoBotaoFiltros.Text = filtrosVisiveis ? "Filtros" : "Ocultar";
+        IconeFiltros.Visibility = filtrosVisiveis ? Visibility.Visible : Visibility.Collapsed;
+        IconeOcultar.Visibility = filtrosVisiveis ? Visibility.Collapsed : Visibility.Visible;
     }
 
     private void FiltroRapido_Changed(object sender, RoutedEventArgs e)
@@ -144,7 +146,7 @@ public partial class TelaPainelControle : Window
             string.IsNullOrWhiteSpace(conscrito.MunicipioResidencia) ||
             string.IsNullOrWhiteSpace(conscrito.ZonaResidencia))
         {
-            TextoFeedbackCadastroConscrito.Text = "Preencha os campos obrigatorios das informacoes basicas para selecao.";
+            TextoFeedbackCadastroConscrito.Text = "Preencha os campos obrigatórios das informações básicas para seleção.";
             return;
         }
 
@@ -191,7 +193,7 @@ public partial class TelaPainelControle : Window
 
         var confirmacao = MessageBox.Show(
             "Deseja realmente excluir este conscrito?",
-            "Confirmar exclusao",
+            "Confirmar exclusão",
             MessageBoxButton.YesNo,
             MessageBoxImage.Warning);
 
@@ -245,8 +247,8 @@ public partial class TelaPainelControle : Window
     {
         _idConscritoEmEdicao = null;
         LimparCamposFormulario();
-        TextoTituloFormulario.Text = "Primeira Etapa de Selecao";
-        TextoDescricaoFormulario.Text = "Preencha a ficha completa do conscrito. As respostas serao salvas no sistema para consulta posterior.";
+        TextoTituloFormulario.Text = "Primeira Etapa de Seleção";
+        TextoDescricaoFormulario.Text = "Preencha a ficha completa do conscrito. As respostas serão salvas no sistema para consulta posterior.";
         BotaoSalvarConscrito.Content = "Salvar Ficha";
         BotaoLimparFormulario.Content = "Limpar";
         BotaoExcluirConscrito.Visibility = Visibility.Collapsed;
@@ -260,9 +262,9 @@ public partial class TelaPainelControle : Window
         LimparCamposFormulario();
 
         TextoTituloFormulario.Text = "Detalhes do Conscrito";
-        TextoDescricaoFormulario.Text = "Revise as informacoes, edite os dados necessarios, altere a situacao e salve as mudancas.";
-        BotaoSalvarConscrito.Content = "Salvar Alteracoes";
-        BotaoLimparFormulario.Content = "Voltar a Lista";
+        TextoDescricaoFormulario.Text = "Revise as informações, edite os dados necessários, altere a situação e salve as mudanças.";
+        BotaoSalvarConscrito.Content = "Salvar Alterações";
+        BotaoLimparFormulario.Content = "Voltar à Lista";
         BotaoExcluirConscrito.Visibility = Visibility.Visible;
 
         CaixaTextoNomeConscrito.Text = conscrito.Nome;
@@ -556,8 +558,8 @@ public partial class TelaPainelControle : Window
         }
 
         var ocupacaoNormalizada = ocupacao.Trim();
-        return !string.Equals(ocupacaoNormalizada, "Nao", StringComparison.OrdinalIgnoreCase) &&
-               !string.Equals(ocupacaoNormalizada, "Nao trabalha", StringComparison.OrdinalIgnoreCase) &&
+        return !string.Equals(ocupacaoNormalizada, "Não", StringComparison.OrdinalIgnoreCase) &&
+               !string.Equals(ocupacaoNormalizada, "Não trabalha", StringComparison.OrdinalIgnoreCase) &&
                !string.Equals(ocupacaoNormalizada, "Desempregado", StringComparison.OrdinalIgnoreCase);
     }
 
@@ -603,4 +605,5 @@ public partial class TelaPainelControle : Window
             LimparControles(VisualTreeHelper.GetChild(elemento, indice));
         }
     }
+
 }

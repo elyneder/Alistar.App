@@ -5,14 +5,14 @@ using System.Text;
 
 namespace Alistar.App.Services
 {
-    public static class Security
+    public static class Seguranca
     {
-        public static string HashPassword(string password)
+        public static string CriptografarSenha(string password)
         {
             return BCrypt.Net.BCrypt.HashPassword(password);
         }
 
-        public static bool VerifyPassword(string password, string hashedPassword)
+        public static bool VerificarSenha(string password, string hashedPassword)
         {
             return BCrypt.Net.BCrypt.Verify(password, hashedPassword);
         }

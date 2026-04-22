@@ -5,69 +5,69 @@ using System.Windows;
 
 namespace Alistar.App.Services;
 
-public static class AuthService
+public static class ServicoDeAutenticacao
 {
-    private static List<UserAccount> listUsers = new List<UserAccount>();
+    private static List<Administradores> listaAdm = new List<Administradores>();
     private static string caminhoArquivo = AppDomain.CurrentDomain.BaseDirectory;
     private static string raizDoProjeto = Path.GetFullPath(Path.Combine(caminhoArquivo, @"..\..\..\"));
     private static string caminhoCompleto = Path.Combine(raizDoProjeto, "entrevistadores.json");
 
-    static AuthService()
+    static ServicoDeAutenticacao()
     {
-        LoadAccounts();
+        CarregarLista();
     }
 
-    public static void LoadAccounts()
+    public static void CarregarLista()
     {
         if (File.Exists(caminhoCompleto))
         {
             string json = File.ReadAllText(caminhoCompleto);
-            var data = JsonSerializer.Deserialize<List<UserAccount>>(json);
+            var data = JsonSerializer.Deserialize<List<Administradores>>(json);
         
             if(data != null)
             {
-                listUsers.Clear();
-                listUsers.AddRange(data);
+                listaAdm.Clear();
+                listaAdm.AddRange(data);
             }
         }
     }
 
-    public static bool ValidateLogin(string email, string password)
+    public static bool ValidacaoDeLogin(string email, string password)
     {
-        var account = listUsers.FirstOrDefault(acc => string.Equals(acc.Email, email, StringComparison.OrdinalIgnoreCase));
+        var account = listaAdm.FirstOrDefault(acc => string.Equals(acc.Email, email, StringComparison.OrdinalIgnoreCase));
 
         if(account == null)
         {
             return false;
         }
 
-        return Security.VerifyPassword(password, account.Password);
+        return Seguranca.VerificarSenha(password, account.Password);
 
     }
 
-    public static bool UserExists(string email)
+    public static bool VerificacaoDeUsuario(string email)
     {
-        return listUsers.Any(account =>
+        return listaAdm.Any(account =>
             string.Equals(account.Email, email, StringComparison.OrdinalIgnoreCase));
     }
 
-    public static bool Register(string name, string email, string password)
+    public static bool RegistroDeUsuario(string name, string email, string password)
     {
-        if (UserExists(email))
+        if (VerificacaoDeUsuario(email))
         {
             return false;
         }
 
-        listUsers.Add(new UserAccount
+        listaAdm.Add(new Administradores
         {
             Name = name,
             Email = email,
-            Password = Security.HashPassword(password)
+            Password = Seguranca.CriptografarSenha(password)
         });
 
         try
         {
-            string jsonString = JsonSerializer.Serialize(listUsers, new JsonSerializerOptions { WriteIndented = true });
+            string jsonString = JsonSerializer.Serialize(listaAdm, new JsonSerializerOptions { WriteIndented = true });
 
             File.WriteAllText(caminhoCompleto, jsonString);
         }

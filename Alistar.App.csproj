@@ -9,10 +9,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="BCrypt.Net-Next" Version="4.1.0" />
-  </ItemGroup>
-
-  <ItemGroup>
     <Resource Include="Assets\a1.jpeg" />
   </ItemGroup>
 

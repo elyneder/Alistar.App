@@ -41,14 +41,23 @@ public partial class TelaLogin : Window
             CaixaSenha.Password = CaixaTextoSenhaVisivel.Text;
             CaixaSenha.Visibility = Visibility.Visible;
             BordaSenhaVisivel.Visibility = Visibility.Collapsed;
+            IconeOlhoAberto.Visibility = Visibility.Visible;
+            IconeOlhoFechado.Visibility = Visibility.Collapsed;
         }
         else
         {
             CaixaTextoSenhaVisivel.Text = CaixaSenha.Password;
             CaixaSenha.Visibility = Visibility.Collapsed;
             BordaSenhaVisivel.Visibility = Visibility.Visible;
+            IconeOlhoAberto.Visibility = Visibility.Collapsed;
+            IconeOlhoFechado.Visibility = Visibility.Visible;
         }
 
         _senhaVisivel = !_senhaVisivel;
+    }
+
+    private void EsqueceuSenhaBotao_Click(object sender, RoutedEventArgs e)
+    {
+        // sua lógica aqui
     }
 }

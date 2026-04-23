@@ -110,9 +110,24 @@
                             Margin="0,0,0,12"
                             Click="AbrirCadastroUsuarioBotao_Click" />
 
-                    <Button Content=" Sair do Sistema"
-                            Style="{StaticResource BotaoPerigoTextoStyle}"
-                            Click="SairSistemaBotao_Click" />
+                    <Button Style="{StaticResource BotaoPerigoTextoStyle}"
+            Click="SairSistemaBotao_Click">
+        <StackPanel Orientation="Horizontal">
+            <Canvas Width="14" Height="14" Margin="0,0,8,0" VerticalAlignment="Center">
+                <Rectangle Canvas.Left="2" Canvas.Top="0" Width="10" Height="13"
+                           Stroke="White" StrokeThickness="1.5" Fill="Transparent"/>
+                <Ellipse Canvas.Left="9" Canvas.Top="5.5" Width="2.5" Height="2.5"
+                         Fill="White"/>
+                <Line X1="6" Y1="6.5" X2="14" Y2="6.5" Stroke="White" StrokeThickness="1.5"
+                      StrokeStartLineCap="Round" StrokeEndLineCap="Round"/>
+                <Line X1="11" Y1="4" X2="14" Y2="6.5" Stroke="White" StrokeThickness="1.5"
+                      StrokeStartLineCap="Round" StrokeEndLineCap="Round"/>
+                <Line X1="11" Y1="9" X2="14" Y2="6.5" Stroke="White" StrokeThickness="1.5"
+                      StrokeStartLineCap="Round" StrokeEndLineCap="Round"/>
+            </Canvas>
+            <TextBlock Text="Sair do Sistema" Foreground="White" VerticalAlignment="Center"/>
+        </StackPanel>
+    </Button>
                 </StackPanel>
             </Grid>
         </Border>
@@ -130,7 +145,7 @@
                            FontSize="32"
                            FontWeight="Bold"
                            Foreground="#123322" />
-                <TextBlock Text="Use o painel como hub e abra cada etapa em sua propria tela."
+                <TextBlock Text="Use o painel como hub e abra cada etapa em sua própria tela."
                            FontSize="15"
                            Foreground="#688077"
                            Margin="0,4,0,0" />
@@ -160,7 +175,7 @@
                                                FontSize="18"
                                                Foreground="#123322"
                                                Margin="0,4,0,0" />
-                                    <TextBlock Text="Cadastro completo do conscrito"
+                                    <TextBlock Text="Cadastro Completo do Conscrito"
                                                FontSize="13"
                                                Foreground="#688077" />
                                 </StackPanel>
@@ -178,7 +193,7 @@
                                                FontSize="18"
                                                Foreground="#123322"
                                                Margin="0,4,0,0" />
-                                    <TextBlock Text="Exames e avaliacao"
+                                    <TextBlock Text="Exames e Avaliação"
                                                FontSize="13"
                                                Foreground="#688077" />
                                 </StackPanel>
@@ -196,7 +211,7 @@
                                                FontSize="18"
                                                Foreground="#123322"
                                                Margin="0,4,0,0" />
-                                    <TextBlock Text="Testes de aptidao"
+                                    <TextBlock Text="Testes de Aptidão"
                                                FontSize="13"
                                                Foreground="#688077" />
                                 </StackPanel>
@@ -214,7 +229,7 @@
                                                FontSize="18"
                                                Foreground="#123322"
                                                Margin="0,4,0,0" />
-                                    <TextBlock Text="Entrevista tecnica"
+                                    <TextBlock Text="Entrevista Técnica"
                                                FontSize="13"
                                                Foreground="#688077" />
                                 </StackPanel>
@@ -232,7 +247,7 @@
                                                FontSize="18"
                                                Foreground="#123322"
                                                Margin="0,4,0,0" />
-                                    <TextBlock Text="Designacao final"
+                                    <TextBlock Text="Designação Final"
                                                FontSize="13"
                                                Foreground="#688077" />
                                 </StackPanel>

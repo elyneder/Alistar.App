@@ -164,4 +164,9 @@ public partial class TelaSegundaEtapa : Window
             LimparControles(VisualTreeHelper.GetChild(elemento, indice));
         }
     }
+
+    private void VoltarBotao_Click(object sender, RoutedEventArgs e)
+    {
+        Close();
+    }
 }

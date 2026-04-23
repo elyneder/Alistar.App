@@ -1,7 +1,12 @@
 [
   {
-    "Name": "Administrador",
+    "Nome": "Administrador",
     "Email": "admin@alistar.com",
-    "Password": "$2a$11$9c/gtvWSNiZ6pTQqjQfdJeg4JrJDY8nsrnqGeKnsp9wD1VrNppIhi"
+    "Senha": "$2a$11$9c/gtvWSNiZ6pTQqjQfdJeg4JrJDY8nsrnqGeKnsp9wD1VrNppIhi"
+  },
+  {
+    "Nome": "Medico Exercito",
+    "Email": "medico1@alistar.com",
+    "Senha": "$2a$11$iyMesKR9emDlxInsjNKWSehASGm8ts0UY4qcTiTQnADZEWLteVKXa"
   }
 ]

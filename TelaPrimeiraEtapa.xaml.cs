@@ -52,7 +52,7 @@ public partial class TelaPrimeiraEtapa : Window
 
     private void EtapaFuturaBotao_Click(object sender, RoutedEventArgs e)
     {
-        MessageBox.Show("Esta etapa ainda sera desenvolvida em tela propria.", "Em desenvolvimento", MessageBoxButton.OK, MessageBoxImage.Information);
+        MessageBox.Show("Esta etapa ainda será desenvolvida em tela própria.", "Em desenvolvimento", MessageBoxButton.OK, MessageBoxImage.Information);
     }
 
     private void MostrarTelaInicialBotao_Click(object sender, RoutedEventArgs e)
@@ -70,7 +70,7 @@ public partial class TelaPrimeiraEtapa : Window
         if (!ServicoAutenticacao.UsuarioAtualEhAdministrador())
         {
             MessageBox.Show(
-                "Apenas o usuario admin@alistar.com pode cadastrar um novo entrevistador.",
+                "Apenas o usuário admin@alistar.com pode cadastrar um novo entrevistador.",
                 "Acesso negado",
                 MessageBoxButton.OK,
                 MessageBoxImage.Warning);
@@ -168,7 +168,7 @@ public partial class TelaPrimeiraEtapa : Window
             string.IsNullOrWhiteSpace(conscrito.MunicipioResidencia) ||
             string.IsNullOrWhiteSpace(conscrito.ZonaResidencia))
         {
-            TextoFeedbackCadastroConscrito.Text = "Preencha os campos obrigatorios das informacoes basicas para selecao.";
+            TextoFeedbackCadastroConscrito.Text = "Preencha os campos obrigatórios das informações básicas para seleção.";
             return;
         }
 
@@ -212,7 +212,7 @@ public partial class TelaPrimeiraEtapa : Window
 
         var confirmacao = MessageBox.Show(
             "Deseja realmente excluir este conscrito?",
-            "Confirmar exclusao",
+            "Confirmar exclusão",
             MessageBoxButton.YesNo,
             MessageBoxImage.Warning);
 
@@ -258,8 +258,8 @@ public partial class TelaPrimeiraEtapa : Window
     {
         _idConscritoEmEdicao = null;
         LimparCamposFormulario();
-        TextoTituloFormulario.Text = "Primeira Etapa de Selecao";
-        TextoDescricaoFormulario.Text = "Preencha a ficha completa do conscrito. As respostas serao salvas no sistema para consulta posterior.";
+        TextoTituloFormulario.Text = "Primeira Etapa de Seleção";
+        TextoDescricaoFormulario.Text = "Preencha a ficha completa do conscrito. As respostas serão salvas no sistema para consulta posterior.";
         BotaoSalvarConscrito.Content = "Salvar Ficha";
         BotaoLimparFormulario.Content = "Limpar";
         BotaoExcluirConscrito.Visibility = Visibility.Collapsed;
@@ -273,8 +273,8 @@ public partial class TelaPrimeiraEtapa : Window
         LimparCamposFormulario();
 
         TextoTituloFormulario.Text = "Detalhes do Conscrito";
-        TextoDescricaoFormulario.Text = "Revise as informacoes, edite os dados necessarios, altere a situacao e salve as mudancas.";
-        BotaoSalvarConscrito.Content = "Salvar Alteracoes";
+        TextoDescricaoFormulario.Text = "Revise as informações, edite os dados necessários, altere a situação e salve as mudanças.";
+        BotaoSalvarConscrito.Content = "Salvar Alterações";
         BotaoLimparFormulario.Content = "Fechar";
         BotaoExcluirConscrito.Visibility = Visibility.Visible;
 
@@ -490,7 +490,7 @@ public partial class TelaPrimeiraEtapa : Window
 
         if (FiltroDesejaServirNao.IsChecked == true)
         {
-            filtrosDesejo.Add("Nao");
+            filtrosDesejo.Add("Não");
         }
 
         if (filtrosDesejo.Count > 0)

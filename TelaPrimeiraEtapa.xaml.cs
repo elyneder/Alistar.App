@@ -10,12 +10,14 @@ namespace Alistar.App;
 public partial class TelaPrimeiraEtapa : Window
 {
     private readonly Conscrito? _conscritoInicial;
+    private readonly bool _abrirListaAoIniciar;
     private string? _idConscritoEmEdicao;
     private List<Conscrito> _conscritosCarregados = [];
 
-    public TelaPrimeiraEtapa(Conscrito? conscrito = null)
+    public TelaPrimeiraEtapa(Conscrito? conscrito = null, bool abrirListaAoIniciar = false)
     {
         _conscritoInicial = conscrito;
+        _abrirListaAoIniciar = abrirListaAoIniciar;
         InitializeComponent();
         CarregarConscritos();
         PrepararTela();
@@ -25,20 +27,21 @@ public partial class TelaPrimeiraEtapa : Window
 
     private void PrepararTela()
     {
-        BotaoTelaInicial.Visibility = Visibility.Collapsed;
-        BotaoListaConscritos.Visibility = Visibility.Collapsed;
         PainelFiltrosRapidos.Visibility = Visibility.Collapsed;
 
-        if (_conscritoInicial is null)
-        {
-            PrepararNovoCadastro();
-        }
-        else
+        if (_conscritoInicial is not null)
         {
             CarregarConscritoParaEdicao(_conscritoInicial);
         }
-
-        MostrarCadastroConscrito();
+        else if (_abrirListaAoIniciar)
+        {
+            MostrarListaConscritos();
+        }
+        else
+        {
+            PrepararNovoCadastro();
+            MostrarCadastroConscrito();
+        }
     }
 
     private void PrimeiraEtapaBotao_Click(object sender, RoutedEventArgs e)
@@ -59,7 +62,7 @@ public partial class TelaPrimeiraEtapa : Window
 
     private void MostrarListaConscritosBotao_Click(object sender, RoutedEventArgs e)
     {
-        Close();
+        MostrarListaConscritos();
     }
 
     private void AbrirCadastroUsuarioBotao_Click(object sender, RoutedEventArgs e)
@@ -240,6 +243,15 @@ public partial class TelaPrimeiraEtapa : Window
         VisaoListaConscritos.Visibility = Visibility.Collapsed;
         TextoFeedbackCadastroConscrito.Text = string.Empty;
         ScrollFormularioCadastro.ScrollToHome();
+    }
+
+    private void MostrarListaConscritos()
+    {
+        VisaoInicial.Visibility = Visibility.Collapsed;
+        VisaoCadastroConscrito.Visibility = Visibility.Collapsed;
+        VisaoListaConscritos.Visibility = Visibility.Visible;
+        GradeConscritos.SelectedItem = null;
+        CarregarConscritos();
     }
 
     private void PrepararNovoCadastro()

@@ -7,7 +7,8 @@
         WindowStartupLocation="CenterScreen"
         WindowState="Maximized"
         ResizeMode="CanResize"
-        FontFamily="Segoe UI">
+        FontFamily="Segoe UI"
+        Icon="/Views/Assets/a1.jpeg">
 
     <Grid Background="#0F291D">
         <Grid.ColumnDefinitions>
@@ -34,7 +35,7 @@
                             Padding="24"
                             Width="420"
                             Height="420">
-                        <Image Source="Assets/a1.jpeg"
+                        <Image Source="./Assets/a1.jpeg"
                                Stretch="UniformToFill" />
                     </Border>
 

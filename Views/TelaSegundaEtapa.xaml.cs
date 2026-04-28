@@ -16,9 +16,7 @@ public partial class TelaSegundaEtapa : Window
 
     private void MostrarTelaInicialBotao_Click(object sender, RoutedEventArgs e)
     {
-        TelaPainelControle janela = new TelaPainelControle();
-        janela.Show();
-        this.Close();
+        Close();
     }
 
     private void MostrarListaConscritosBotao_Click(object sender, RoutedEventArgs e)
@@ -111,11 +109,9 @@ public partial class TelaSegundaEtapa : Window
         TextoFeedback.Foreground = Brushes.Firebrick;
     }
 
-    private void VoltarBotao_Click(object sender, RoutedEventArgs e)
+    private void FecharBotao_Click(object sender, RoutedEventArgs e)
     {
-        TelaPainelControle janela = new TelaPainelControle();
-        janela.Show();
-        this.Close();
+        Close();
     }
 
     private void CarregarResumo()
@@ -169,5 +165,8 @@ public partial class TelaSegundaEtapa : Window
         }
     }
 
-    
+    private void VoltarBotao_Click(object sender, RoutedEventArgs e)
+    {
+        Close();
+    }
 }

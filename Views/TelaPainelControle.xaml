@@ -105,14 +105,14 @@
                 </StackPanel>
 
                 <StackPanel Grid.Row="2">
-                    <Button x:Name="CadastrarEntrevistador" Content=" 👤 Cadastrar Entrevistador"
+                    <Button Content=" 👤 Cadastrar Entrevistador"
                             Style="{StaticResource BotaoBarraLateralStyle}"
                             Margin="0,0,0,12"
                             Click="AbrirCadastroUsuarioBotao_Click" />
 
                     <Button Content=" ➜] Sair do Sistema"
-                            Style="{StaticResource BotaoPerigoTextoStyle}"
-                            Click="SairSistemaBotao_Click" />
+                        Style="{StaticResource BotaoPerigoTextoStyle}"
+                        Click="SairSistemaBotao_Click" />
                 </StackPanel>
             </Grid>
         </Border>
@@ -130,7 +130,7 @@
                            FontSize="32"
                            FontWeight="Bold"
                            Foreground="#123322" />
-                <TextBlock Text="Use o painel como hub e abra cada etapa em sua propria tela."
+                <TextBlock Text="Use o painel como hub e abra cada etapa em sua própria tela."
                            FontSize="15"
                            Foreground="#688077"
                            Margin="0,4,0,0" />
@@ -155,13 +155,13 @@
                                                FontSize="32"
                                                FontWeight="Black"
                                                Foreground="#123322" />
-                                    <TextBlock Text="Primeira Etapa"
+                                    <TextBlock Text="Cadastrar Conscrito"
                                                FontWeight="Bold"
-                                               FontSize="18"
+                                               FontSize="24"
                                                Foreground="#123322"
                                                Margin="0,4,0,0" />
-                                    <TextBlock Text="Cadastro completo do conscrito"
-                                               FontSize="13"
+                                    <TextBlock Text="Registro completo de dados pessoais e perfil do candidato"
+                                               FontSize="14"
                                                Foreground="#688077" />
                                 </StackPanel>
                             </Button>
@@ -173,13 +173,13 @@
                                                FontSize="32"
                                                FontWeight="Black"
                                                Foreground="#123322" />
-                                    <TextBlock Text="Segunda Etapa"
+                                    <TextBlock Text="Exames Médicos"
                                                FontWeight="Bold"
-                                               FontSize="18"
+                                               FontSize="24"
                                                Foreground="#123322"
                                                Margin="0,4,0,0" />
-                                    <TextBlock Text="Exames e avaliacao"
-                                               FontSize="13"
+                                    <TextBlock Text="Avaliação clínica e laudos de aptidão física"
+                                               FontSize="14"
                                                Foreground="#688077" />
                                 </StackPanel>
                             </Button>
@@ -191,13 +191,13 @@
                                                FontSize="32"
                                                FontWeight="Black"
                                                Foreground="#123322" />
-                                    <TextBlock Text="Terceira Etapa"
+                                    <TextBlock Text="Testes de Aptidão"
                                                FontWeight="Bold"
-                                               FontSize="18"
+                                               FontSize="24"
                                                Foreground="#123322"
                                                Margin="0,4,0,0" />
-                                    <TextBlock Text="Testes de aptidao"
-                                               FontSize="13"
+                                    <TextBlock Text="Avaliação de habilidades e competências"
+                                               FontSize="14"
                                                Foreground="#688077" />
                                 </StackPanel>
                             </Button>
@@ -209,13 +209,13 @@
                                                FontSize="32"
                                                FontWeight="Black"
                                                Foreground="#123322" />
-                                    <TextBlock Text="Quarta Etapa"
+                                    <TextBlock Text="Entrevista Técnica"
                                                FontWeight="Bold"
-                                               FontSize="18"
+                                               FontSize="24"
                                                Foreground="#123322"
                                                Margin="0,4,0,0" />
-                                    <TextBlock Text="Entrevista tecnica"
-                                               FontSize="13"
+                                    <TextBlock Text="Avaliação comportamental e perfil profissional"
+                                               FontSize="14"
                                                Foreground="#688077" />
                                 </StackPanel>
                             </Button>
@@ -227,13 +227,13 @@
                                                FontSize="32"
                                                FontWeight="Black"
                                                Foreground="#123322" />
-                                    <TextBlock Text="Quinta Etapa"
+                                    <TextBlock Text="Designação Final"
                                                FontWeight="Bold"
-                                               FontSize="18"
+                                               FontSize="24"
                                                Foreground="#123322"
                                                Margin="0,4,0,0" />
-                                    <TextBlock Text="Designacao final"
-                                               FontSize="13"
+                                    <TextBlock Text="Classificação e atribuição de função ao conscrito"
+                                               FontSize="14"
                                                Foreground="#688077" />
                                 </StackPanel>
                             </Button>

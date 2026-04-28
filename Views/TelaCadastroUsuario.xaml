@@ -172,9 +172,10 @@
 
                             <TextBlock x:Name="TextoFeedbackCadastro"
                                        Foreground="#D9534F"
-                                       FontSize="11"
+                                       FontSize="12"
                                        TextWrapping="Wrap"
-                                       Margin="0,4,0,8" />
+                                       TextAlignment="Center"
+                                       Margin="0,4,0,4" />
 
                             <Button Content="Salvar entrevistador"
                                     Style="{StaticResource BotaoPrimarioStyle}"

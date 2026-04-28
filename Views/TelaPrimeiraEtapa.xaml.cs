@@ -595,4 +595,6 @@ public partial class TelaPrimeiraEtapa : Window
             LimparControles(VisualTreeHelper.GetChild(elemento, indice));
         }
     }
+
+
 }

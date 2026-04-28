@@ -155,13 +155,18 @@
                                                FontSize="32"
                                                FontWeight="Black"
                                                Foreground="#123322" />
-                                    <TextBlock Text="Primeira Etapa"
+                                    <TextBlock Text="Cadastrar Conscrito"
                                                FontWeight="Bold"
-                                               FontSize="18"
+                                               FontSize="24"
                                                Foreground="#123322"
                                                Margin="0,4,0,0" />
+<<<<<<< HEAD:TelaPainelControle.xaml
                                     <TextBlock Text="Cadastro Completo do Conscrito"
                                                FontSize="13"
+=======
+                                    <TextBlock Text="Registro completo de dados pessoais e perfil do candidato"
+                                               FontSize="14"
+>>>>>>> main:Views/TelaPainelControle.xaml
                                                Foreground="#688077" />
                                 </StackPanel>
                             </Button>
@@ -173,13 +178,18 @@
                                                FontSize="32"
                                                FontWeight="Black"
                                                Foreground="#123322" />
-                                    <TextBlock Text="Segunda Etapa"
+                                    <TextBlock Text="Exames Médicos"
                                                FontWeight="Bold"
-                                               FontSize="18"
+                                               FontSize="24"
                                                Foreground="#123322"
                                                Margin="0,4,0,0" />
+<<<<<<< HEAD:TelaPainelControle.xaml
                                     <TextBlock Text="Exames e Avaliação"
                                                FontSize="13"
+=======
+                                    <TextBlock Text="Avaliação clínica e laudos de aptidão física"
+                                               FontSize="14"
+>>>>>>> main:Views/TelaPainelControle.xaml
                                                Foreground="#688077" />
                                 </StackPanel>
                             </Button>
@@ -191,13 +201,18 @@
                                                FontSize="32"
                                                FontWeight="Black"
                                                Foreground="#123322" />
-                                    <TextBlock Text="Terceira Etapa"
+                                    <TextBlock Text="Testes de Aptidão"
                                                FontWeight="Bold"
-                                               FontSize="18"
+                                               FontSize="24"
                                                Foreground="#123322"
                                                Margin="0,4,0,0" />
+<<<<<<< HEAD:TelaPainelControle.xaml
                                     <TextBlock Text="Testes de Aptidão"
                                                FontSize="13"
+=======
+                                    <TextBlock Text="Avaliação de habilidades e competências"
+                                               FontSize="14"
+>>>>>>> main:Views/TelaPainelControle.xaml
                                                Foreground="#688077" />
                                 </StackPanel>
                             </Button>
@@ -209,13 +224,18 @@
                                                FontSize="32"
                                                FontWeight="Black"
                                                Foreground="#123322" />
-                                    <TextBlock Text="Quarta Etapa"
+                                    <TextBlock Text="Entrevista Técnica"
                                                FontWeight="Bold"
-                                               FontSize="18"
+                                               FontSize="24"
                                                Foreground="#123322"
                                                Margin="0,4,0,0" />
+<<<<<<< HEAD:TelaPainelControle.xaml
                                     <TextBlock Text="Entrevista Técnica"
                                                FontSize="13"
+=======
+                                    <TextBlock Text="Avaliação comportamental e perfil profissional"
+                                               FontSize="14"
+>>>>>>> main:Views/TelaPainelControle.xaml
                                                Foreground="#688077" />
                                 </StackPanel>
                             </Button>
@@ -227,13 +247,18 @@
                                                FontSize="32"
                                                FontWeight="Black"
                                                Foreground="#123322" />
-                                    <TextBlock Text="Quinta Etapa"
+                                    <TextBlock Text="Designação Final"
                                                FontWeight="Bold"
-                                               FontSize="18"
+                                               FontSize="24"
                                                Foreground="#123322"
                                                Margin="0,4,0,0" />
+<<<<<<< HEAD:TelaPainelControle.xaml
                                     <TextBlock Text="Designação Final"
                                                FontSize="13"
+=======
+                                    <TextBlock Text="Classificação e atribuição de função ao conscrito"
+                                               FontSize="14"
+>>>>>>> main:Views/TelaPainelControle.xaml
                                                Foreground="#688077" />
                                 </StackPanel>
                             </Button>

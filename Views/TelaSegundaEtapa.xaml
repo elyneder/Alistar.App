@@ -102,30 +102,17 @@
                 </Grid.RowDefinitions>
 
                 <StackPanel Grid.Row="0"
-                            Margin="0,0,0,40"
-                            HorizontalAlignment="Center">
-                    <Border Width="110"
-                            Height="110"
-                            CornerRadius="20"
-                            BorderBrush="#2A6644"
-                            BorderThickness="2"
-                            Margin="0,0,0,16">
-                        <Border.Background>
-                            <ImageBrush ImageSource="Assets/a1.jpeg"
-                                        Stretch="UniformToFill" />
-                        </Border.Background>
-                    </Border>
-
-                    <TextBlock Text="ALISTAR"
-                               FontSize="26"
-                               FontWeight="Black"
-                               Foreground="White"
-                               HorizontalAlignment="Center" />
+                    Margin="0,0,0,40"
+                    HorizontalAlignment="Center">
+                    <Image Source="Assets/semfundo.png"
+                        Width="177"
+                        Height="133"
+                        Stretch="UniformToFill"/>
                     <TextBlock Text="Sistema de Conscritos"
-                               FontSize="12"
-                               Foreground="#688077"
-                               HorizontalAlignment="Center"
-                               Margin="0,4,0,0" />
+                        FontSize="12"
+                        Foreground="#688077"
+                        HorizontalAlignment="Center"
+                        Margin="0,4,0,0" />
                 </StackPanel>
 
                 <StackPanel Grid.Row="1">

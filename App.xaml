@@ -98,18 +98,35 @@
             </Style.Triggers>
         </Style>
 
-        <Style x:Key="BotaoPerigoTextoStyle" TargetType="Button" BasedOn="{StaticResource BotaoBaseArredondadoStyle}">
-            <Setter Property="Height" Value="40" />
+        <Style x:Key="BotaoPerigoTextoStyle" TargetType="Button">
+            <Setter Property="Height" Value="30" />
             <Setter Property="Margin" Value="0" />
-            <Setter Property="Padding" Value="12,8" />
-            <Setter Property="Background" Value="Transparent" />
-            <Setter Property="Foreground" Value="#E74C3C" />
-            <Setter Property="HorizontalContentAlignment" Value="Left" />
-            <Style.Triggers>
-                <Trigger Property="IsMouseOver" Value="True">
-                    <Setter Property="Background" Value="#1A3127" />
-                </Trigger>
-            </Style.Triggers>
+            <Setter Property="Padding" Value="20,6" />
+            <Setter Property="Background" Value="#C0392B" />
+            <Setter Property="Foreground" Value="White" />
+            <Setter Property="Cursor" Value="Hand" />
+            <Setter Property="FontWeight" Value="SemiBold" />
+            <Setter Property="FontSize" Value="14" />
+            <Setter Property="HorizontalContentAlignment" Value="Center" />
+            <Setter Property="VerticalContentAlignment" Value="Center" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="Borda"
+                        Background="{TemplateBinding Background}"
+                        CornerRadius="10"
+                        Padding="{TemplateBinding Padding}">
+                            <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                      VerticalAlignment="{TemplateBinding VerticalContentAlignment}" />
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="Borda" Property="Background" Value="#E74C3C" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
         </Style>
 
         <Style x:Key="BotaoIconeStyle" TargetType="Button" BasedOn="{StaticResource BotaoBaseArredondadoStyle}">

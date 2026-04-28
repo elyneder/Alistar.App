@@ -51,23 +51,10 @@
                 <StackPanel Grid.Row="0"
                             Margin="0,0,0,40"
                             HorizontalAlignment="Center">
-                    <Border Width="110"
-                            Height="110"
-                            CornerRadius="20"
-                            BorderBrush="#2A6644"
-                            BorderThickness="2"
-                            Margin="0,0,0,16">
-                        <Border.Background>
-                            <ImageBrush ImageSource="Assets/a1.jpeg"
-                                        Stretch="UniformToFill" />
-                        </Border.Background>
-                    </Border>
-
-                    <TextBlock Text="ALISTAR"
-                               FontSize="26"
-                               FontWeight="Black"
-                               Foreground="White"
-                               HorizontalAlignment="Center" />
+                    <Image Source="Assets/semfundo.png"
+                        Width="177"
+                        Height="133"
+                        Stretch="UniformToFill"/>
                     <TextBlock Text="Sistema de Conscritos"
                                FontSize="12"
                                Foreground="#688077"
@@ -160,13 +147,8 @@
                                                FontSize="24"
                                                Foreground="#123322"
                                                Margin="0,4,0,0" />
-<<<<<<< HEAD:TelaPainelControle.xaml
-                                    <TextBlock Text="Cadastro Completo do Conscrito"
-                                               FontSize="13"
-=======
                                     <TextBlock Text="Registro completo de dados pessoais e perfil do candidato"
                                                FontSize="14"
->>>>>>> main:Views/TelaPainelControle.xaml
                                                Foreground="#688077" />
                                 </StackPanel>
                             </Button>
@@ -183,13 +165,8 @@
                                                FontSize="24"
                                                Foreground="#123322"
                                                Margin="0,4,0,0" />
-<<<<<<< HEAD:TelaPainelControle.xaml
-                                    <TextBlock Text="Exames e Avaliação"
-                                               FontSize="13"
-=======
                                     <TextBlock Text="Avaliação clínica e laudos de aptidão física"
                                                FontSize="14"
->>>>>>> main:Views/TelaPainelControle.xaml
                                                Foreground="#688077" />
                                 </StackPanel>
                             </Button>
@@ -206,13 +183,8 @@
                                                FontSize="24"
                                                Foreground="#123322"
                                                Margin="0,4,0,0" />
-<<<<<<< HEAD:TelaPainelControle.xaml
-                                    <TextBlock Text="Testes de Aptidão"
-                                               FontSize="13"
-=======
                                     <TextBlock Text="Avaliação de habilidades e competências"
                                                FontSize="14"
->>>>>>> main:Views/TelaPainelControle.xaml
                                                Foreground="#688077" />
                                 </StackPanel>
                             </Button>
@@ -229,13 +201,8 @@
                                                FontSize="24"
                                                Foreground="#123322"
                                                Margin="0,4,0,0" />
-<<<<<<< HEAD:TelaPainelControle.xaml
-                                    <TextBlock Text="Entrevista Técnica"
-                                               FontSize="13"
-=======
                                     <TextBlock Text="Avaliação comportamental e perfil profissional"
                                                FontSize="14"
->>>>>>> main:Views/TelaPainelControle.xaml
                                                Foreground="#688077" />
                                 </StackPanel>
                             </Button>
@@ -252,13 +219,8 @@
                                                FontSize="24"
                                                Foreground="#123322"
                                                Margin="0,4,0,0" />
-<<<<<<< HEAD:TelaPainelControle.xaml
-                                    <TextBlock Text="Designação Final"
-                                               FontSize="13"
-=======
                                     <TextBlock Text="Classificação e atribuição de função ao conscrito"
                                                FontSize="14"
->>>>>>> main:Views/TelaPainelControle.xaml
                                                Foreground="#688077" />
                                 </StackPanel>
                             </Button>

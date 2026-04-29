@@ -104,7 +104,7 @@
                 <StackPanel Grid.Row="0"
                     Margin="0,0,0,40"
                     HorizontalAlignment="Center">
-                    <Image Source="Assets/semfundo.png"
+                    <Image Source="/Views/Assets/2-semfundo.png"
                         Width="177"
                         Height="133"
                         Stretch="UniformToFill"/>
@@ -145,7 +145,7 @@
                 </StackPanel>
 
                 <StackPanel Grid.Row="2">
-                    <Button Content=" 👤 Cadastrar Entrevistador"
+                    <Button x:Name="CadastrarEntrevistador" Content=" 👤 Cadastrar Entrevistador"
                             Style="{StaticResource BotaoBarraLateralStyle}"
                             Margin="0,0,0,12"
                             Click="AbrirCadastroUsuarioBotao_Click" />
@@ -169,7 +169,7 @@
                 <Button HorizontalAlignment="Left"
                     Margin="0,0,0,12"
                     Style="{StaticResource BotaoSecundarioStyle}"
-                    Click="VoltarBotao_Click">
+                    Click="MostrarTelaInicialBotao_Click">
                     <StackPanel Orientation="Horizontal">
                         <Canvas Width="14" Height="14" Margin="0,0,6,0">
                             <Line X1="8" Y1="1" X2="1" Y2="7" Stroke="#196743" StrokeThickness="1.5" StrokeStartLineCap="Round" StrokeEndLineCap="Round"/>
@@ -483,7 +483,7 @@
                             <Button Width="120"
                                 Margin="16,8,0,0"
                                 Style="{StaticResource BotaoSecundarioStyle}"
-                                Click="FecharBotao_Click">
+                                Click="MostrarTelaInicialBotao_Click">
                                 <StackPanel Orientation="Horizontal">
                                     <Canvas Width="14" Height="14" Margin="0,0,6,0">
                                         <Line X1="7" Y1="1" X2="7" Y2="13" Stroke="#196743" StrokeThickness="1.5" StrokeStartLineCap="Round" StrokeEndLineCap="Round"/>

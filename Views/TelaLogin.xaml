@@ -7,7 +7,8 @@
         WindowStartupLocation="CenterScreen"
         WindowState="Maximized"
         ResizeMode="CanResize"
-        FontFamily="Segoe UI">
+        FontFamily="Segoe UI"
+        Icon="/Views/Assets/2-semfundo.png">
 
     <Grid Background="#0F291D">
         <Grid.ColumnDefinitions>
@@ -34,7 +35,7 @@
                             Padding="24"
                             Width="420"
                             Height="420">
-                        <Image Source="Assets/a1.jpeg"
+                        <Image Source="./Assets/1.png"
                                Stretch="UniformToFill" />
                     </Border>
 
@@ -50,13 +51,6 @@
                                    Text="Alistar - Sistema de Gestão de Alistamento e Seleção Militar" />
                     </StackPanel>
                 </StackPanel>
-
-                <TextBlock VerticalAlignment="Bottom"
-                           HorizontalAlignment="Left"
-                           Margin="40,0,0,28"
-                           FontSize="11"
-                           Foreground="#2A4D38"
-                           Text="ALISTAR - Uso restrito - Acesso autorizado" />
             </Grid>
         </Border>
 

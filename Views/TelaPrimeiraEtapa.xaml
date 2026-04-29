@@ -5,7 +5,8 @@
         Height="760"
         Width="1280"
         WindowState="Maximized"
-        WindowStartupLocation="CenterScreen">
+        WindowStartupLocation="CenterScreen"
+        Icon="./Assets/1.png">
 
     <Window.Resources>
         <Style x:Key="TituloSecaoPapelStyle" TargetType="TextBlock">
@@ -133,7 +134,7 @@
                 <StackPanel Grid.Row="0"
                     Margin="0,0,0,40"
                     HorizontalAlignment="Center">
-                    <Image Source="Assets/semfundo.png"
+                    <Image Source="./Assets/2-semfundo.png"
                         Width="177"
                         Height="133"
                         Stretch="UniformToFill"/>
@@ -174,7 +175,7 @@
                 </StackPanel>
 
                 <StackPanel Grid.Row="2">
-                    <Button Content=" 👤 Cadastrar Entrevistador"
+                    <Button x:Name="CadastrarEntrevistador" Content=" 👤 Cadastrar Entrevistador"
                             Style="{StaticResource BotaoBarraLateralStyle}"
                             Margin="0,0,0,12"
                             Click="AbrirCadastroUsuarioBotao_Click" />

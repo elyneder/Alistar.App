@@ -21,6 +21,12 @@ public partial class TelaPrimeiraEtapa : Window
         InitializeComponent();
         CarregarConscritos();
         PrepararTela();
+
+        if (!ServicoAutenticacao.UsuarioAtualEhAdministrador())
+        {
+            CadastrarEntrevistador.Visibility = Visibility.Collapsed;
+            CadastrarEntrevistador.IsEnabled = false;
+        }
     }
 
     private bool EmModoEdicao => !string.IsNullOrWhiteSpace(_idConscritoEmEdicao);
@@ -57,7 +63,9 @@ public partial class TelaPrimeiraEtapa : Window
 
     private void MostrarTelaInicialBotao_Click(object sender, RoutedEventArgs e)
     {
-        Close();
+        TelaPainelControle janela = new TelaPainelControle();
+        janela.Show();
+        this.Close();
     }
 
     private void MostrarListaConscritosBotao_Click(object sender, RoutedEventArgs e)
@@ -67,15 +75,7 @@ public partial class TelaPrimeiraEtapa : Window
 
     private void AbrirCadastroUsuarioBotao_Click(object sender, RoutedEventArgs e)
     {
-        if (!ServicoAutenticacao.UsuarioAtualEhAdministrador())
-        {
-            MessageBox.Show(
-                "Apenas o usuário admin@alistar.com pode cadastrar um novo entrevistador.",
-                "Acesso negado",
-                MessageBoxButton.OK,
-                MessageBoxImage.Warning);
-            return;
-        }
+
 
         var telaCadastroUsuario = new TelaCadastroUsuario
         {

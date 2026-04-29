@@ -15,31 +15,43 @@ public partial class TelaPainelControle : Window
         InitializeComponent();
         CarregarConscritos();
         MostrarVisaoInicial();
+
+        if (!ServicoAutenticacao.UsuarioAtualEhAdministrador())
+        {
+            CadastrarEntrevistador.Visibility = Visibility.Collapsed;
+            CadastrarEntrevistador.IsEnabled = false;
+        }
     }
 
     private void PrimeiraEtapaBotao_Click(object sender, RoutedEventArgs e)
     {
-        AbrirJanelaEtapa(new TelaPrimeiraEtapa());
+        Window janelaAtual = Window.GetWindow(sender as DependencyObject);
+        AbrirJanelaEtapa(new TelaPrimeiraEtapa(), janelaAtual);
+
     }
 
     private void SegundaEtapaBotao_Click(object sender, RoutedEventArgs e)
     {
-        AbrirJanelaEtapa(new TelaSegundaEtapa());
+        Window janelaAtual = Window.GetWindow(sender as DependencyObject);
+        AbrirJanelaEtapa(new TelaSegundaEtapa(), janelaAtual);
     }
 
     private void TerceiraEtapaBotao_Click(object sender, RoutedEventArgs e)
     {
-        AbrirJanelaEtapa(new TelaTerceiraEtapa());
+        Window janelaAtual = Window.GetWindow(sender as DependencyObject);
+        AbrirJanelaEtapa(new TelaTerceiraEtapa(), janelaAtual);
     }
 
     private void QuartaEtapaBotao_Click(object sender, RoutedEventArgs e)
     {
-        AbrirJanelaEtapa(new TelaQuartaEtapa());
+        Window janelaAtual = Window.GetWindow(sender as DependencyObject);
+        AbrirJanelaEtapa(new TelaQuartaEtapa(), janelaAtual);
     }
 
     private void QuintaEtapaBotao_Click(object sender, RoutedEventArgs e)
     {
-        AbrirJanelaEtapa(new TelaQuintaEtapa());
+        Window janelaAtual = Window.GetWindow(sender as DependencyObject);
+        AbrirJanelaEtapa(new TelaQuintaEtapa(), janelaAtual);
     }
 
     private void MostrarTelaInicialBotao_Click(object sender, RoutedEventArgs e)
@@ -54,15 +66,7 @@ public partial class TelaPainelControle : Window
 
     private void AbrirCadastroUsuarioBotao_Click(object sender, RoutedEventArgs e)
     {
-        if (!ServicoAutenticacao.UsuarioAtualEhAdministrador())
-        {
-            MessageBox.Show(
-                "Apenas o usuario admin@alistar.com pode cadastrar um novo entrevistador.",
-                "Acesso negado",
-                MessageBoxButton.OK,
-                MessageBoxImage.Warning);
-            return;
-        }
+
 
         var telaCadastroUsuario = new TelaCadastroUsuario
         {
@@ -88,7 +92,8 @@ public partial class TelaPainelControle : Window
         }
 
         GradeConscritos.SelectedItem = null;
-        AbrirJanelaEtapa(new TelaPrimeiraEtapa(conscritoSelecionado));
+        Window janelaAtual = Window.GetWindow(sender as DependencyObject);
+        AbrirJanelaEtapa(new TelaPrimeiraEtapa(conscritoSelecionado), janelaAtual);
     }
 
     private void CaixaPesquisaConscrito_KeyDown(object sender, KeyEventArgs e)
@@ -142,12 +147,13 @@ public partial class TelaPainelControle : Window
         AplicarFiltrosLista();
     }
 
-    private void AbrirJanelaEtapa(Window janela)
+    private void AbrirJanelaEtapa(Window janela, Window janelaAntiga)
     {
-        janela.Owner = this;
-        janela.ShowDialog();
+        janela.Show();
         CarregarConscritos();
+        janelaAntiga?.Close();
     }
+
 
     private void CarregarConscritos()
     {

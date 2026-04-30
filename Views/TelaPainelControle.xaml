@@ -356,13 +356,87 @@
                                 </Style>
                                 <Style TargetType="DataGridCell">
                                     <Setter Property="Padding" Value="12,0" />
+                                    <Setter Property="Template">
+                                        <Setter.Value>
+                                            <ControlTemplate TargetType="DataGridCell">
+                                                <Border Padding="{TemplateBinding Padding}"
+                                                        Background="Transparent">
+                                                    <ContentPresenter VerticalAlignment="Center" />
+                                                </Border>
+                                            </ControlTemplate>
+                                        </Setter.Value>
+                                    </Setter>
                                 </Style>
                             </DataGrid.Resources>
                             <DataGrid.Columns>
-                                <DataGridTextColumn Header="Nome" Width="1.6*" Binding="{Binding Nome}" />
-                                <DataGridTextColumn Header="CPF" Width="1.1*" Binding="{Binding CPF}" />
-                                <DataGridTextColumn Header="RA" Width="0.9*" Binding="{Binding RA}" />
-                                <DataGridTextColumn Header="Situacao" Width="1*" Binding="{Binding Situacao}" />
+                                <DataGridTextColumn Header="Nome"
+                                                    Width="1.6*"
+                                                    Binding="{Binding Nome}" />
+                                <DataGridTextColumn Header="CPF"
+                                                    Width="1.1*"
+                                                    Binding="{Binding CPF}" />
+                                <DataGridTextColumn Header="RA"
+                                                    Width="0.9*"
+                                                    Binding="{Binding RA}" />
+                                <DataGridTemplateColumn Header="Situação"
+                                                        Width="1*"
+                                                        SortMemberPath="Situacao">
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <Border Padding="10,4"
+                                                    CornerRadius="12"
+                                                    HorizontalAlignment="Left">
+                                                <Border.Style>
+                                                    <Style TargetType="Border">
+                                                        <Setter Property="Background" Value="#E5E7EB" />
+                                                        <Style.Triggers>
+                                                            <DataTrigger Binding="{Binding Situacao}" Value="TG">
+                                                                <Setter Property="Background" Value="#166534" />
+                                                            </DataTrigger>
+                                                            <DataTrigger Binding="{Binding Situacao}" Value="Substituto">
+                                                                <Setter Property="Background" Value="#86EFAC" />
+                                                            </DataTrigger>
+                                                            <DataTrigger Binding="{Binding Situacao}" Value="Apto">
+                                                                <Setter Property="Background" Value="#FACC15" />
+                                                            </DataTrigger>
+                                                            <DataTrigger Binding="{Binding Situacao}" Value="Inapto">
+                                                                <Setter Property="Background" Value="#F97316" />
+                                                            </DataTrigger>
+                                                            <DataTrigger Binding="{Binding Situacao}" Value="Dispensado">
+                                                                <Setter Property="Background" Value="#DC2626" />
+                                                            </DataTrigger>
+                                                        </Style.Triggers>
+                                                    </Style>
+                                                </Border.Style>
+                                                <TextBlock Text="{Binding Situacao}"
+                                                           FontWeight="SemiBold">
+                                                    <TextBlock.Style>
+                                                        <Style TargetType="TextBlock">
+                                                            <Setter Property="Foreground" Value="#1F2937" />
+                                                            <Style.Triggers>
+                                                                <DataTrigger Binding="{Binding Situacao}" Value="TG">
+                                                                    <Setter Property="Foreground" Value="White" />
+                                                                </DataTrigger>
+                                                                <DataTrigger Binding="{Binding Situacao}" Value="Substituto">
+                                                                    <Setter Property="Foreground" Value="#14532D" />
+                                                                </DataTrigger>
+                                                                <DataTrigger Binding="{Binding Situacao}" Value="Apto">
+                                                                    <Setter Property="Foreground" Value="#713F12" />
+                                                                </DataTrigger>
+                                                                <DataTrigger Binding="{Binding Situacao}" Value="Inapto">
+                                                                    <Setter Property="Foreground" Value="White" />
+                                                                </DataTrigger>
+                                                                <DataTrigger Binding="{Binding Situacao}" Value="Dispensado">
+                                                                    <Setter Property="Foreground" Value="White" />
+                                                                </DataTrigger>
+                                                            </Style.Triggers>
+                                                        </Style>
+                                                    </TextBlock.Style>
+                                                </TextBlock>
+                                            </Border>
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                </DataGridTemplateColumn>
                             </DataGrid.Columns>
                         </DataGrid>
                     </Grid>
@@ -371,3 +445,4 @@
         </Grid>
     </Grid>
 </Window>
+

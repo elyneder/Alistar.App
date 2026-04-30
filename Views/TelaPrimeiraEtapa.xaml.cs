@@ -214,8 +214,9 @@ public partial class TelaPrimeiraEtapa : Window
             ServicoArmazenamentoConscritos.Adicionar(conscrito);
         }
 
-        DialogResult = true;
-        Close();
+        TelaPainelControle janela = new TelaPainelControle();
+        janela.Show();
+        this.Close();
     }
 
     private void LimparFormularioBotao_Click(object sender, RoutedEventArgs e)

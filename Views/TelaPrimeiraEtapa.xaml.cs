@@ -223,8 +223,9 @@ public partial class TelaPrimeiraEtapa : Window
     {
         if (EmModoEdicao)
         {
-            DialogResult = false;
-            Close();
+            TelaPainelControle janela = new TelaPainelControle();
+            janela.Show();
+            this.Close();
             return;
         }
 
@@ -252,8 +253,9 @@ public partial class TelaPrimeiraEtapa : Window
         }
 
         ServicoArmazenamentoConscritos.Excluir(_idConscritoEmEdicao);
-        DialogResult = true;
-        Close();
+        TelaPainelControle janela = new TelaPainelControle();
+        janela.Show();
+        this.Close();
     }
 
     private void CarregarConscritos()

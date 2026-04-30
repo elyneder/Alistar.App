@@ -78,7 +78,7 @@
                             CornerRadius="12"
                             Background="#163626">
                         <StackPanel>
-                            <TextBlock Text="Total Cadastrados"
+                            <TextBlock Text="Total de Conscritos Cadastrados"
                                        Foreground="#8BA698"
                                        FontSize="12" />
                             <TextBlock x:Name="TextoQuantidadeConscritos"

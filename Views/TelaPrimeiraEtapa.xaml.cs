@@ -186,7 +186,7 @@ public partial class TelaPrimeiraEtapa : Window
 
         if (_etapaWizardAtual != EtapaWizardConfirmacao)
         {
-            if (_etapaWizardAtual == EtapaWizardInformacoesBasicas && !ValidarInformacoesBasicas(conscrito))
+            if (!ValidarEtapaAtualFormulario())
             {
                 return;
             }
@@ -195,7 +195,7 @@ public partial class TelaPrimeiraEtapa : Window
             return;
         }
 
-        if (!ValidarInformacoesBasicas(conscrito))
+        if (!ValidarFormularioCompleto())
         {
             return;
         }
@@ -611,6 +611,80 @@ public partial class TelaPrimeiraEtapa : Window
             TextoFeedbackCadastroConscrito.Text = "Preencha os campos obrigatórios das informações básicas para seleção.";
             DefinirEtapaWizard(EtapaWizardInformacoesBasicas);
             return false;
+        }
+
+        return true;
+    }
+
+    private bool ValidarEtapaAtualFormulario()
+    {
+        var areaValidacao = ObterAreaValidacaoEtapaAtual();
+        if (FormularioEstaPreenchido(areaValidacao))
+        {
+            return true;
+        }
+
+        TextoFeedbackCadastroConscrito.Text = "Preencha todos os campos desta etapa antes de avançar.";
+        return false;
+    }
+
+    private bool ValidarFormularioCompleto()
+    {
+        if (FormularioEstaPreenchido(PainelFormularioCadastro))
+        {
+            return true;
+        }
+
+        TextoFeedbackCadastroConscrito.Text = "Preencha todos os campos do formulário antes de salvar.";
+        return false;
+    }
+
+    private DependencyObject ObterAreaValidacaoEtapaAtual()
+    {
+        return _etapaWizardAtual switch
+        {
+            EtapaWizardInformacoesBasicas => SecaoInformacoesBasicas,
+            EtapaWizardBlocoA => SecaoBlocoA,
+            EtapaWizardBlocoB => SecaoBlocoB,
+            EtapaWizardBlocoC => SecaoBlocoC,
+            EtapaWizardBlocoD => SecaoBlocoD,
+            EtapaWizardBlocoE => SecaoBlocoE,
+            EtapaWizardBlocoF => SecaoBlocoF,
+            EtapaWizardBlocoG => SecaoBlocoG,
+            EtapaWizardBlocoH => SecaoBlocoH,
+            EtapaWizardBlocoI => SecaoBlocoI,
+            EtapaWizardBlocoJ => SecaoBlocoJ,
+            EtapaWizardManifestacao => SecaoManifestacaoDesejoServir,
+            _ => PainelFormularioCadastro
+        };
+    }
+
+    private static bool FormularioEstaPreenchido(DependencyObject elemento)
+    {
+        if (elemento is UIElement { Visibility: Visibility.Collapsed })
+        {
+            return true;
+        }
+
+        if (elemento is TextBox caixaTexto && string.IsNullOrWhiteSpace(caixaTexto.Text))
+        {
+            caixaTexto.Focus();
+            return false;
+        }
+
+        if (elemento is ComboBox comboBox && string.IsNullOrWhiteSpace(ObterTextoSelecionado(comboBox)))
+        {
+            comboBox.Focus();
+            return false;
+        }
+
+        var quantidadeFilhos = VisualTreeHelper.GetChildrenCount(elemento);
+        for (var indice = 0; indice < quantidadeFilhos; indice++)
+        {
+            if (!FormularioEstaPreenchido(VisualTreeHelper.GetChild(elemento, indice)))
+            {
+                return false;
+            }
         }
 
         return true;

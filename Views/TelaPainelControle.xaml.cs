@@ -222,27 +222,27 @@ public partial class TelaPainelControle : Window
 
         if (FiltroTrabalha.IsChecked == true)
         {
-            consulta = consulta.Where(conscrito => TemTrabalhoDeclarado(conscrito.Ocupacao));
+            consulta = consulta.Where(conscrito => TemTrabalhoDeclarado(conscrito.Entrevista_Vida_Pessoal.Ocupacao));
         }
 
         if (FiltroRecebeAuxilio.IsChecked == true)
         {
-            consulta = consulta.Where(conscrito => RespostaEhSim(conscrito.RecebeAuxilioGovernamental));
+            consulta = consulta.Where(conscrito => RespostaEhSim(conscrito.Entrevista_Vida_Pessoal.RecebeAuxilioGovernamental));
         }
 
         if (FiltroEstuda.IsChecked == true)
         {
-            consulta = consulta.Where(conscrito => RespostaEhSim(conscrito.EstudaAtualmente));
+            consulta = consulta.Where(conscrito => RespostaEhSim(conscrito.Entrevista_Arrimo_De_Familia.EstudaAtualmente));
         }
 
         if (FiltroExperiencia.IsChecked == true)
         {
-            consulta = consulta.Where(conscrito => RespostaEhSim(conscrito.ExperienciaProfissional));
+            consulta = consulta.Where(conscrito => RespostaEhSim(conscrito.Entrevista_Experiencia.ExperienciaProfissional));
         }
 
         if (FiltroProblemaSaude.IsChecked == true)
         {
-            consulta = consulta.Where(conscrito => RespostaEhSim(conscrito.JaTeveProblemaSaude));
+            consulta = consulta.Where(conscrito => RespostaEhSim(conscrito.Entrevista_Saude.JaTeveProblemaSaude));
         }
 
         var filtrosDesejo = new List<string>();

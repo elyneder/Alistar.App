@@ -13,27 +13,39 @@ namespace Alistar.App.Services;
 /// </remarks>
 public static class ServicoArmazenamentoConscritos
 {
-    // Pasta do usuario no Windows. Evita depender da pasta do projeto para dados reais.
-    private static readonly string DiretorioArmazenamento =
-        Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "Alistar");
-
-    // Arquivo atual e arquivo antigo usado para migracao simples de nome.
-    private static readonly string CaminhoArmazenamento = Path.Combine(DiretorioArmazenamento, "conscritos.json");
-    private static readonly string CaminhoArmazenamentoAntigo = Path.Combine(DiretorioArmazenamento, "conscripts.json");
+    private static List<Conscrito> conscritos = new List<Conscrito>();
+    private static string caminhoArquivo = AppDomain.CurrentDomain.BaseDirectory;
+    private static string raizDoProjeto = Path.GetFullPath(Path.Combine(caminhoArquivo, @"..\..\..\"));
+    private static string caminhoCompleto = Path.Combine(raizDoProjeto, "conscritos.json");
 
     private static readonly JsonSerializerOptions OpcoesJson = new()
     {
         WriteIndented = true
     };
 
-    /// <summary>
-    /// Carrega todos os conscritos salvos no JSON.
-    /// </summary>
+    static ServicoArmazenamentoConscritos()
+    {
+        CarregarLista();
+    }
+
+    public static void CarregarLista()
+    {
+        if (File.Exists(caminhoCompleto))
+        {
+            string json = File.ReadAllText(caminhoCompleto);
+            var data = JsonSerializer.Deserialize<List<Conscrito>>(json);
+
+            if (data != null)
+            {
+                conscritos.Clear();
+                conscritos.AddRange(data);
+            }
+        }
+    }
+
     public static List<Conscrito> ObterTodos()
     {
-        GarantirArmazenamentoCriado();
-
-        var conteudo = File.ReadAllText(CaminhoArmazenamento);
+        var conteudo = File.ReadAllText(caminhoCompleto);
 
         if (string.IsNullOrWhiteSpace(conteudo))
         {
@@ -128,9 +140,8 @@ public static class ServicoArmazenamentoConscritos
     /// </summary>
     private static void SalvarTodos(List<Conscrito> conscritos)
     {
-        Directory.CreateDirectory(DiretorioArmazenamento);
         var json = JsonSerializer.Serialize(conscritos, OpcoesJson);
-        File.WriteAllText(CaminhoArmazenamento, json);
+        File.WriteAllText(caminhoCompleto, json);
     }
 
     /// <summary>

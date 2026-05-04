@@ -571,20 +571,20 @@ public partial class TelaSegundaEtapa : Window
     /// </summary>
     private void PreencherDadosMedicos(Conscrito conscrito)
     {
-        conscrito.Altura = CaixaTextoAltura.Text.Trim();
-        conscrito.Peso = CaixaTextoPeso.Text.Trim();
-        conscrito.ProblemaPostura = ObterTextoSelecionado(ComboProblemaPostura);
-        conscrito.ObservacaoProblemaPostura = CaixaTextoObservacaoPostura.Text.Trim();
-        conscrito.DificuldadeVisualOuPrecisaOculos = ObterTextoSelecionado(ComboDificuldadeVisual);
-        conscrito.TesteAuditivoAlterado = ObterTextoSelecionado(ComboTesteAuditivo);
-        conscrito.ObservacaoTesteAuditivo = CaixaTextoObservacaoAuditiva.Text.Trim();
-        conscrito.PressaoArterial = CaixaTextoPressaoArterial.Text.Trim();
-        conscrito.FrequenciaCardiaca = CaixaTextoFrequenciaCardiaca.Text.Trim();
-        conscrito.Respiracao = CaixaTextoRespiracao.Text.Trim();
-        conscrito.FamiliaTemDoencasGraves = ObterTextoSelecionado(ComboDoencasGravesFamilia);
-        conscrito.JaTeveProblemaCardiacoOuRespiratorio = ObterTextoSelecionado(ComboProblemaCardiacoRespiratorio);
-        conscrito.JaTeveAnsiedadeDepressaoOuAcompanhamentoPsicologico = ObterTextoSelecionado(ComboSaudeMental);
-        conscrito.TemDificuldadeParaDormir = ObterTextoSelecionado(ComboDificuldadeDormir);
+        conscrito.Entrevista_Medica.Altura = CaixaTextoAltura.Text.Trim();
+        conscrito.Entrevista_Medica.Peso = CaixaTextoPeso.Text.Trim();
+        conscrito.Entrevista_Medica.ProblemaPostura = ObterTextoSelecionado(ComboProblemaPostura);
+        conscrito.Entrevista_Medica.ObservacaoProblemaPostura = CaixaTextoObservacaoPostura.Text.Trim();
+        conscrito.Entrevista_Medica.DificuldadeVisualOuPrecisaOculos = ObterTextoSelecionado(ComboDificuldadeVisual);
+        conscrito.Entrevista_Medica.TesteAuditivoAlterado = ObterTextoSelecionado(ComboTesteAuditivo);
+        conscrito.Entrevista_Medica.ObservacaoTesteAuditivo = CaixaTextoObservacaoAuditiva.Text.Trim();
+        conscrito.Entrevista_Medica.PressaoArterial = CaixaTextoPressaoArterial.Text.Trim();
+        conscrito.Entrevista_Medica.FrequenciaCardiaca = CaixaTextoFrequenciaCardiaca.Text.Trim();
+        conscrito.Entrevista_Medica.Respiracao = CaixaTextoRespiracao.Text.Trim();
+        conscrito.Entrevista_Medica.FamiliaTemDoencasGraves = ObterTextoSelecionado(ComboDoencasGravesFamilia);
+        conscrito.Entrevista_Medica.JaTeveProblemaCardiacoOuRespiratorio = ObterTextoSelecionado(ComboProblemaCardiacoRespiratorio);
+        conscrito.Entrevista_Medica.JaTeveAnsiedadeDepressaoOuAcompanhamentoPsicologico = ObterTextoSelecionado(ComboSaudeMental);
+        conscrito.Entrevista_Medica.TemDificuldadeParaDormir = ObterTextoSelecionado(ComboDificuldadeDormir);
     }
 
     private static string ObterTextoSelecionado(ComboBox comboBox)

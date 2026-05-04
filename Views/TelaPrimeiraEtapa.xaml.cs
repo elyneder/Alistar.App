@@ -202,9 +202,10 @@ public partial class TelaPrimeiraEtapa : Window
         var conscrito = MontarConscritoPeloFormulario();
 
         if (_etapaWizardAtual != EtapaWizardConfirmacao)
-        {
-            if (!ValidarEtapaAtualFormulario())
+        {    
+            if (!ValidarEtapaAtual(conscrito))
             {
+                TextoFeedbackCadastroConscrito.Text = "Preencha todos os campos desta etapa antes de continuar.";
                 return;
             }
 
@@ -212,8 +213,9 @@ public partial class TelaPrimeiraEtapa : Window
             return;
         }
 
-        if (!ValidarFormularioCompleto())
+        if (!ValidarFichaCompleta(conscrito))
         {
+            TextoFeedbackCadastroConscrito.Text = "Preencha todos os campos da ficha antes de salvar.";
             return;
         }
 
@@ -331,67 +333,67 @@ public partial class TelaPrimeiraEtapa : Window
         CaixaTextoMunicipioResidencia.Text = conscrito.MunicipioResidencia;
         SelecionarComboPorTexto(ComboZonaResidencia, conscrito.ZonaResidencia);
         SelecionarComboPorTexto(ComboSituacaoConscrito, conscrito.Situacao, "Indefinido");
-        CaixaTextoEndereco.Text = conscrito.Endereco;
-        CaixaTextoBairro.Text = conscrito.Bairro;
-        CaixaTextoCEP.Text = conscrito.CEP;
-        CaixaTextoTelefone.Text = conscrito.Telefone;
-        CaixaTextoMunicipio.Text = conscrito.Municipio;
-        CaixaTextoEmail.Text = conscrito.Email;
-        CaixaTextoOcupacao.Text = conscrito.Ocupacao;
-        CaixaTextoMoraCom.Text = conscrito.MoraCom;
-        SelecionarComboPorTexto(ComboEstadoCivil, conscrito.EstadoCivil);
-        SelecionarComboPorTexto(ComboPossuiFilhos, conscrito.PossuiFilhos);
-        CaixaTextoQuantidadeFilhos.Text = conscrito.QuantidadeFilhos;
-        CaixaTextoQuemTrabalhaFamilia.Text = conscrito.QuemTrabalhaNaFamilia;
-        CaixaTextoQuemSustentaFamilia.Text = conscrito.QuemSustentaAFamilia;
-        SelecionarComboPorTexto(ComboRecebeAuxilioGovernamental, conscrito.RecebeAuxilioGovernamental);
-        SelecionarComboPorTexto(ComboSituacaoArrimo, conscrito.SituacaoArrimo);
-        SelecionarComboPorTexto(ComboEstudaAtualmente, conscrito.EstudaAtualmente);
-        CaixaTextoAnoEscolar.Text = conscrito.AnoQueEstaCursandoOuUltimoAnoQueCursou;
-        SelecionarComboPorTexto(ComboTemCursosProfissionalizantes, conscrito.TemCursosProfissionalizantes);
-        CaixaTextoQuaisCursos.Text = conscrito.QuaisCursosProfissionalizantes;
-        SelecionarComboPorTexto(ComboComprovaCursos, conscrito.ComprovaCursosProfissionalizantes);
-        SelecionarComboPorTexto(ComboExperienciaProfissional, conscrito.ExperienciaProfissional);
-        CaixaTextoQuaisExperiencias.Text = conscrito.QuaisExperienciasProfissionais;
-        SelecionarComboPorTexto(ComboComprovaExperiencia, conscrito.ComprovaExperienciaProfissional);
-        SelecionarComboPorTexto(ComboPossuiCNH, conscrito.PossuiCNH);
-        SelecionarComboPorTexto(ComboCursoHabilitacao, conscrito.RealizandoCursoParaHabilitacao);
-        CaixaTextoCategoriaCNH.Text = conscrito.CategoriaCNH;
-        CaixaTextoPrimeiroPadraoPreQualificacao.Text = conscrito.PrimeiroPadraoPreQualificacao;
-        CaixaTextoSegundoPadraoPreQualificacao.Text = conscrito.SegundoPadraoPreQualificacao;
-        SelecionarComboPorTexto(ComboPraticaEsportes, conscrito.PraticaEsportes);
-        CaixaTextoQuaisEsportes.Text = conscrito.QuaisEsportes;
-        SelecionarComboPorTexto(ComboFederado, conscrito.EhOuJaFoiFederado);
-        SelecionarComboPorTexto(ComboSabeNadar, conscrito.SabeNadar);
-        CaixaTextoLazer.Text = conscrito.OQueFazNasHorasDeLazer;
-        SelecionarComboPorTexto(ComboProblemaSaude, conscrito.JaTeveProblemaSaude);
-        CaixaTextoQualProblemaSaude.Text = conscrito.QualProblemaSaude;
-        SelecionarComboPorTexto(ComboRemedioControlado, conscrito.UsaRemedioControlado);
-        CaixaTextoQualRemedioControlado.Text = conscrito.QualRemedioControlado;
-        CaixaTextoParaQueRemedio.Text = conscrito.ParaQueUsaRemedioControlado;
-        CaixaTextoHaQuantoTempoRemedio.Text = conscrito.HaQuantoTempoUsaRemedioControlado;
-        CaixaTextoTempoRestanteRemedio.Text = conscrito.PorQuantoTempoAindaUsaraRemedio;
-        SelecionarComboPorTexto(ComboInternacaoPsiquiatrica, conscrito.JaEsteveInternadoHospitalOuClinicaPsiquiatrica);
-        CaixaTextoMotivoInternacao.Text = conscrito.MotivoInternacao;
-        CaixaTextoTempoInternacao.Text = conscrito.TempoInternacao;
-        SelecionarComboPorTexto(ComboFuma, conscrito.Fuma);
-        CaixaTextoTempoFuma.Text = conscrito.HaQuantoTempoFuma;
-        SelecionarComboPorTexto(ComboBebidaAlcoolica, conscrito.FazUsoBebidaAlcoolica);
-        CaixaTextoFrequenciaBebida.Text = conscrito.FrequenciaBebidaAlcoolica;
-        SelecionarComboPorTexto(ComboExperimentouDrogas, conscrito.JaExperimentouDrogas);
-        CaixaTextoQualDroga.Text = conscrito.QualDroga;
-        SelecionarComboPorTexto(ComboAindaUsaDroga, conscrito.AindaFazUsoDroga);
-        CaixaTextoFrequenciaDroga.Text = conscrito.FrequenciaUsoDroga;
-        CaixaTextoUltimaVezDroga.Text = conscrito.QuandoFoiUltimaVezQueUtilizouDroga;
-        SelecionarComboPorTexto(ComboParenteUsuarioDrogas, conscrito.PossuiParenteUsuarioDrogas);
-        CaixaTextoQuemParenteUsuarioDrogas.Text = conscrito.QuemParenteUsuarioDrogas;
-        CaixaTextoImpactoParenteUsuarioDrogas.Text = conscrito.ComoParenteUsuarioDrogasAfetaSuaVida;
-        SelecionarComboPorTexto(ComboParenteTranstornoPsiquiatrico, conscrito.PossuiParenteComHistoricoTranstornoPsiquiatrico);
-        CaixaTextoQuemParenteTranstornoPsiquiatrico.Text = conscrito.QuemParenteComHistoricoTranstornoPsiquiatrico;
-        CaixaTextoImpactoTranstornoPsiquiatrico.Text = conscrito.ComoTranstornoPsiquiatricoAfetaSuaVida;
-        SelecionarComboPorTexto(ComboDetidoPelaPolicia, conscrito.JaFoiDetidoPelaPolicia);
-        CaixaTextoQualInfracao.Text = conscrito.QualFoiAInfracao;
-        CaixaTextoOutrosAtosInfracionais.Text = conscrito.OutrosAtosInfracionais;
+        CaixaTextoEndereco.Text = conscrito.Entrevista_Vida_Pessoal.Endereco;
+        CaixaTextoBairro.Text = conscrito.Entrevista_Vida_Pessoal.Bairro;
+        CaixaTextoCEP.Text = conscrito.Entrevista_Vida_Pessoal.CEP;
+        CaixaTextoTelefone.Text = conscrito.Entrevista_Vida_Pessoal.Telefone;
+        CaixaTextoMunicipio.Text = conscrito.Entrevista_Vida_Pessoal.Municipio;
+        CaixaTextoEmail.Text = conscrito.Entrevista_Vida_Pessoal.Email;
+        CaixaTextoOcupacao.Text = conscrito.Entrevista_Vida_Pessoal.Ocupacao;
+        CaixaTextoMoraCom.Text = conscrito.Entrevista_Vida_Pessoal.MoraCom;
+        SelecionarComboPorTexto(ComboEstadoCivil, conscrito.Entrevista_Vida_Pessoal.EstadoCivil);
+        SelecionarComboPorTexto(ComboPossuiFilhos, conscrito.Entrevista_Vida_Pessoal.PossuiFilhos);
+        CaixaTextoQuantidadeFilhos.Text = conscrito.Entrevista_Vida_Pessoal.QuantidadeFilhos;
+        CaixaTextoQuemTrabalhaFamilia.Text = conscrito.Entrevista_Vida_Pessoal.QuemTrabalhaNaFamilia;
+        CaixaTextoQuemSustentaFamilia.Text = conscrito.Entrevista_Vida_Pessoal.QuemSustentaAFamilia;
+        SelecionarComboPorTexto(ComboRecebeAuxilioGovernamental, conscrito.Entrevista_Vida_Pessoal.RecebeAuxilioGovernamental);
+        SelecionarComboPorTexto(ComboSituacaoArrimo, conscrito.Entrevista_Arrimo_De_Familia.SituacaoArrimo);
+        SelecionarComboPorTexto(ComboEstudaAtualmente, conscrito.Entrevista_Arrimo_De_Familia.EstudaAtualmente);
+        CaixaTextoAnoEscolar.Text = conscrito.Entrevista_Arrimo_De_Familia.AnoQueEstaCursandoOuUltimoAnoQueCursou;
+        SelecionarComboPorTexto(ComboTemCursosProfissionalizantes, conscrito.Entrevista_Cursos.TemCursosProfissionalizantes);
+        CaixaTextoQuaisCursos.Text = conscrito.Entrevista_Cursos.QuaisCursosProfissionalizantes;
+        SelecionarComboPorTexto(ComboComprovaCursos, conscrito.Entrevista_Cursos.ComprovaCursosProfissionalizantes);
+        SelecionarComboPorTexto(ComboExperienciaProfissional, conscrito.Entrevista_Experiencia.ExperienciaProfissional);
+        CaixaTextoQuaisExperiencias.Text = conscrito.Entrevista_Experiencia.QuaisExperienciasProfissionais;
+        SelecionarComboPorTexto(ComboComprovaExperiencia, conscrito.Entrevista_Experiencia.ComprovaExperienciaProfissional);
+        SelecionarComboPorTexto(ComboPossuiCNH, conscrito.Entrevista_Habilitacao.PossuiCNH);
+        SelecionarComboPorTexto(ComboCursoHabilitacao, conscrito.Entrevista_Habilitacao.RealizandoCursoParaHabilitacao);
+        CaixaTextoCategoriaCNH.Text = conscrito.Entrevista_Habilitacao.CategoriaCNH;
+        CaixaTextoPrimeiroPadraoPreQualificacao.Text = conscrito.Entrevista_Pre_Qualificacao_Imediata.PrimeiroPadraoPreQualificacao;
+        CaixaTextoSegundoPadraoPreQualificacao.Text = conscrito.Entrevista_Pre_Qualificacao_Imediata.SegundoPadraoPreQualificacao;
+        SelecionarComboPorTexto(ComboPraticaEsportes, conscrito.Entrevista_Esportes.PraticaEsportes);
+        CaixaTextoQuaisEsportes.Text = conscrito.Entrevista_Esportes.QuaisEsportes;
+        SelecionarComboPorTexto(ComboFederado, conscrito.Entrevista_Esportes.EhOuJaFoiFederado);
+        SelecionarComboPorTexto(ComboSabeNadar, conscrito.Entrevista_Esportes.SabeNadar);
+        CaixaTextoLazer.Text = conscrito.Entrevista_Lazer.OQueFazNasHorasDeLazer;
+        SelecionarComboPorTexto(ComboProblemaSaude, conscrito.Entrevista_Saude.JaTeveProblemaSaude);
+        CaixaTextoQualProblemaSaude.Text = conscrito.Entrevista_Saude.QualProblemaSaude;
+        SelecionarComboPorTexto(ComboRemedioControlado, conscrito.Entrevista_Saude.UsaRemedioControlado);
+        CaixaTextoQualRemedioControlado.Text = conscrito.Entrevista_Saude.QualRemedioControlado;
+        CaixaTextoParaQueRemedio.Text = conscrito.Entrevista_Saude.ParaQueUsaRemedioControlado;
+        CaixaTextoHaQuantoTempoRemedio.Text = conscrito.Entrevista_Saude.HaQuantoTempoUsaRemedioControlado;
+        CaixaTextoTempoRestanteRemedio.Text = conscrito.Entrevista_Saude.PorQuantoTempoAindaUsaraRemedio;
+        SelecionarComboPorTexto(ComboInternacaoPsiquiatrica, conscrito.Entrevista_Saude.JaEsteveInternadoHospitalOuClinicaPsiquiatrica);
+        CaixaTextoMotivoInternacao.Text = conscrito.Entrevista_Saude.MotivoInternacao;
+        CaixaTextoTempoInternacao.Text = conscrito.Entrevista_Saude.TempoInternacao;
+        SelecionarComboPorTexto(ComboFuma, conscrito.Entrevista_Saude.Fuma);
+        CaixaTextoTempoFuma.Text = conscrito.Entrevista_Saude.HaQuantoTempoFuma;
+        SelecionarComboPorTexto(ComboBebidaAlcoolica, conscrito.Entrevista_Saude.FazUsoBebidaAlcoolica);
+        CaixaTextoFrequenciaBebida.Text = conscrito.Entrevista_Saude.FrequenciaBebidaAlcoolica;
+        SelecionarComboPorTexto(ComboExperimentouDrogas, conscrito.Entrevista_Saude.JaExperimentouDrogas);
+        CaixaTextoQualDroga.Text = conscrito.Entrevista_Saude.QualDroga;
+        SelecionarComboPorTexto(ComboAindaUsaDroga, conscrito.Entrevista_Saude.AindaFazUsoDroga);
+        CaixaTextoFrequenciaDroga.Text = conscrito.Entrevista_Saude.FrequenciaUsoDroga;
+        CaixaTextoUltimaVezDroga.Text = conscrito.Entrevista_Saude.QuandoFoiUltimaVezQueUtilizouDroga;
+        SelecionarComboPorTexto(ComboParenteUsuarioDrogas, conscrito.Entrevista_Saude.PossuiParenteUsuarioDrogas);
+        CaixaTextoQuemParenteUsuarioDrogas.Text = conscrito.Entrevista_Saude.QuemParenteUsuarioDrogas;
+        CaixaTextoImpactoParenteUsuarioDrogas.Text = conscrito.Entrevista_Saude.ComoParenteUsuarioDrogasAfetaSuaVida;
+        SelecionarComboPorTexto(ComboParenteTranstornoPsiquiatrico, conscrito.Entrevista_Saude.PossuiParenteComHistoricoTranstornoPsiquiatrico);
+        CaixaTextoQuemParenteTranstornoPsiquiatrico.Text = conscrito.Entrevista_Saude.QuemParenteComHistoricoTranstornoPsiquiatrico;
+        CaixaTextoImpactoTranstornoPsiquiatrico.Text = conscrito.Entrevista_Saude.ComoTranstornoPsiquiatricoAfetaSuaVida;
+        SelecionarComboPorTexto(ComboDetidoPelaPolicia, conscrito.Entrevista_Infracao.JaFoiDetidoPelaPolicia);
+        CaixaTextoQualInfracao.Text = conscrito.Entrevista_Infracao.QualFoiAInfracao;
+        CaixaTextoOutrosAtosInfracionais.Text = conscrito.Entrevista_Infracao.OutrosAtosInfracionais;
         SelecionarComboPorTexto(ComboDesejaServir, conscrito.DesejaServir);
 
         MostrarCadastroConscrito();
@@ -736,18 +738,8 @@ public partial class TelaPrimeiraEtapa : Window
     /// </summary>
     private Conscrito MontarConscritoPeloFormulario()
     {
-        return new Conscrito
+        VidaPessoal vidaPessoal = new VidaPessoal()
         {
-            Id = _idConscritoEmEdicao ?? string.Empty,
-            Nome = CaixaTextoNomeConscrito.Text.Trim(),
-            CPF = CaixaTextoCPF.Text.Trim(),
-            RA = CaixaTextoRA.Text.Trim(),
-            Situacao = ObterTextoSelecionado(ComboSituacaoConscrito),
-            NomeMae = CaixaTextoNomeMae.Text.Trim(),
-            DataNascimento = CaixaTextoDataNascimento.Text.Trim(),
-            PaisResidencia = CaixaTextoPaisResidencia.Text.Trim(),
-            MunicipioResidencia = CaixaTextoMunicipioResidencia.Text.Trim(),
-            ZonaResidencia = ObterTextoSelecionado(ComboZonaResidencia),
             Endereco = CaixaTextoEndereco.Text.Trim(),
             Bairro = CaixaTextoBairro.Text.Trim(),
             CEP = CaixaTextoCEP.Text.Trim(),
@@ -761,26 +753,58 @@ public partial class TelaPrimeiraEtapa : Window
             QuantidadeFilhos = CaixaTextoQuantidadeFilhos.Text.Trim(),
             QuemTrabalhaNaFamilia = CaixaTextoQuemTrabalhaFamilia.Text.Trim(),
             QuemSustentaAFamilia = CaixaTextoQuemSustentaFamilia.Text.Trim(),
-            RecebeAuxilioGovernamental = ObterTextoSelecionado(ComboRecebeAuxilioGovernamental),
+            RecebeAuxilioGovernamental = ObterTextoSelecionado(ComboRecebeAuxilioGovernamental)
+        };
+
+        Arrimo arrimo = new Arrimo()
+        {
             SituacaoArrimo = ObterTextoSelecionado(ComboSituacaoArrimo),
             EstudaAtualmente = ObterTextoSelecionado(ComboEstudaAtualmente),
-            AnoQueEstaCursandoOuUltimoAnoQueCursou = CaixaTextoAnoEscolar.Text.Trim(),
+            AnoQueEstaCursandoOuUltimoAnoQueCursou = CaixaTextoAnoEscolar.Text.Trim()
+        };
+
+        Cursos cursos = new Cursos()
+        {
             TemCursosProfissionalizantes = ObterTextoSelecionado(ComboTemCursosProfissionalizantes),
             QuaisCursosProfissionalizantes = CaixaTextoQuaisCursos.Text.Trim(),
-            ComprovaCursosProfissionalizantes = ObterTextoSelecionado(ComboComprovaCursos),
+            ComprovaCursosProfissionalizantes = ObterTextoSelecionado(ComboComprovaCursos)
+        };
+
+        Experiencia experiencia = new Experiencia()
+        {
             ExperienciaProfissional = ObterTextoSelecionado(ComboExperienciaProfissional),
             QuaisExperienciasProfissionais = CaixaTextoQuaisExperiencias.Text.Trim(),
-            ComprovaExperienciaProfissional = ObterTextoSelecionado(ComboComprovaExperiencia),
+            ComprovaExperienciaProfissional = ObterTextoSelecionado(ComboComprovaExperiencia)
+        };
+
+        Habilitacao habilitacao = new Habilitacao()
+        {
             PossuiCNH = ObterTextoSelecionado(ComboPossuiCNH),
             RealizandoCursoParaHabilitacao = ObterTextoSelecionado(ComboCursoHabilitacao),
-            CategoriaCNH = CaixaTextoCategoriaCNH.Text.Trim(),
+            CategoriaCNH = CaixaTextoCategoriaCNH.Text.Trim()
+        };
+
+        PreImediata preImediata = new PreImediata()
+        {
             PrimeiroPadraoPreQualificacao = CaixaTextoPrimeiroPadraoPreQualificacao.Text.Trim(),
-            SegundoPadraoPreQualificacao = CaixaTextoSegundoPadraoPreQualificacao.Text.Trim(),
+            SegundoPadraoPreQualificacao = CaixaTextoSegundoPadraoPreQualificacao.Text.Trim()
+        };
+
+        Esportes esportes = new Esportes()
+        {
             PraticaEsportes = ObterTextoSelecionado(ComboPraticaEsportes),
             QuaisEsportes = CaixaTextoQuaisEsportes.Text.Trim(),
             EhOuJaFoiFederado = ObterTextoSelecionado(ComboFederado),
-            SabeNadar = ObterTextoSelecionado(ComboSabeNadar),
-            OQueFazNasHorasDeLazer = CaixaTextoLazer.Text.Trim(),
+            SabeNadar = ObterTextoSelecionado(ComboSabeNadar)
+        };
+
+        Lazer lazer = new Lazer()
+        {
+            OQueFazNasHorasDeLazer = CaixaTextoLazer.Text.Trim()
+        };
+
+        Saude saude = new Saude()
+        {
             JaTeveProblemaSaude = ObterTextoSelecionado(ComboProblemaSaude),
             QualProblemaSaude = CaixaTextoQualProblemaSaude.Text.Trim(),
             UsaRemedioControlado = ObterTextoSelecionado(ComboRemedioControlado),
@@ -805,11 +829,39 @@ public partial class TelaPrimeiraEtapa : Window
             ComoParenteUsuarioDrogasAfetaSuaVida = CaixaTextoImpactoParenteUsuarioDrogas.Text.Trim(),
             PossuiParenteComHistoricoTranstornoPsiquiatrico = ObterTextoSelecionado(ComboParenteTranstornoPsiquiatrico),
             QuemParenteComHistoricoTranstornoPsiquiatrico = CaixaTextoQuemParenteTranstornoPsiquiatrico.Text.Trim(),
-            ComoTranstornoPsiquiatricoAfetaSuaVida = CaixaTextoImpactoTranstornoPsiquiatrico.Text.Trim(),
+            ComoTranstornoPsiquiatricoAfetaSuaVida = CaixaTextoImpactoTranstornoPsiquiatrico.Text.Trim()
+        };
+
+        Infracao infracao = new Infracao()
+        {
             JaFoiDetidoPelaPolicia = ObterTextoSelecionado(ComboDetidoPelaPolicia),
             QualFoiAInfracao = CaixaTextoQualInfracao.Text.Trim(),
-            OutrosAtosInfracionais = CaixaTextoOutrosAtosInfracionais.Text.Trim(),
-            DesejaServir = ObterTextoSelecionado(ComboDesejaServir)
+            OutrosAtosInfracionais = CaixaTextoOutrosAtosInfracionais.Text.Trim()
+        };
+
+        return new Conscrito
+        {
+            Id = _idConscritoEmEdicao ?? string.Empty,
+            Nome = CaixaTextoNomeConscrito.Text.Trim(),
+            CPF = CaixaTextoCPF.Text.Trim(),
+            RA = CaixaTextoRA.Text.Trim(),
+            Situacao = ObterTextoSelecionado(ComboSituacaoConscrito),
+            NomeMae = CaixaTextoNomeMae.Text.Trim(),
+            DataNascimento = CaixaTextoDataNascimento.Text.Trim(),
+            PaisResidencia = CaixaTextoPaisResidencia.Text.Trim(),
+            MunicipioResidencia = CaixaTextoMunicipioResidencia.Text.Trim(),
+            ZonaResidencia = ObterTextoSelecionado(ComboZonaResidencia),
+            DesejaServir = ObterTextoSelecionado(ComboDesejaServir),
+            Entrevista_Vida_Pessoal = vidaPessoal,
+            Entrevista_Arrimo_De_Familia = arrimo,
+            Entrevista_Cursos = cursos,
+            Entrevista_Experiencia = experiencia,
+            Entrevista_Habilitacao = habilitacao,
+            Entrevista_Pre_Qualificacao_Imediata = preImediata,
+            Entrevista_Esportes = esportes,
+            Entrevista_Lazer = lazer,
+            Entrevista_Saude = saude,
+            Entrevista_Infracao = infracao
         };
     }
 
@@ -843,27 +895,27 @@ public partial class TelaPrimeiraEtapa : Window
 
         if (FiltroTrabalha.IsChecked == true)
         {
-            consulta = consulta.Where(conscrito => TemTrabalhoDeclarado(conscrito.Ocupacao));
+            consulta = consulta.Where(conscrito => TemTrabalhoDeclarado(conscrito.Entrevista_Vida_Pessoal.Ocupacao));
         }
 
         if (FiltroRecebeAuxilio.IsChecked == true)
         {
-            consulta = consulta.Where(conscrito => RespostaEhSim(conscrito.RecebeAuxilioGovernamental));
+            consulta = consulta.Where(conscrito => RespostaEhSim(conscrito.Entrevista_Vida_Pessoal.RecebeAuxilioGovernamental));
         }
 
         if (FiltroEstuda.IsChecked == true)
         {
-            consulta = consulta.Where(conscrito => RespostaEhSim(conscrito.EstudaAtualmente));
+            consulta = consulta.Where(conscrito => RespostaEhSim(conscrito.Entrevista_Arrimo_De_Familia.EstudaAtualmente));
         }
 
         if (FiltroExperiencia.IsChecked == true)
         {
-            consulta = consulta.Where(conscrito => RespostaEhSim(conscrito.ExperienciaProfissional));
+            consulta = consulta.Where(conscrito => RespostaEhSim(conscrito.Entrevista_Experiencia.ExperienciaProfissional));
         }
 
         if (FiltroProblemaSaude.IsChecked == true)
         {
-            consulta = consulta.Where(conscrito => RespostaEhSim(conscrito.JaTeveProblemaSaude));
+            consulta = consulta.Where(conscrito => RespostaEhSim(conscrito.Entrevista_Saude.JaTeveProblemaSaude));
         }
 
         var filtrosDesejo = new List<string>();
@@ -977,8 +1029,189 @@ public partial class TelaPrimeiraEtapa : Window
         for (var indice = 0; indice < quantidadeFilhos; indice++)
         {
             LimparControles(VisualTreeHelper.GetChild(elemento, indice));
+
         }
     }
 
+    private bool ValidarEtapaAtual(Conscrito c)
+    {
+        switch (_etapaWizardAtual)
+        {
+            case EtapaWizardInformacoesBasicas:
+                return ValidarInformacoesBasicas(c);
+
+            case EtapaWizardBlocoA:
+                return ValidarBlocoA(c);
+
+            case EtapaWizardBlocoB:
+                return ValidarBlocoB(c);
+
+            case EtapaWizardBlocoC:
+                return ValidarBlocoC(c);
+
+            case EtapaWizardBlocoD:
+                return ValidarBlocoD(c);
+
+            case EtapaWizardBlocoE:
+                return ValidarBlocoE(c);
+
+            case EtapaWizardBlocoF:
+                return ValidarBlocoF(c);
+
+            case EtapaWizardBlocoG:
+                return ValidarBlocoG(c);
+
+            case EtapaWizardBlocoH:
+                return ValidarBlocoH(c);
+
+            case EtapaWizardBlocoI:
+                return ValidarBlocoI(c);
+
+            case EtapaWizardBlocoJ:
+                return ValidarBlocoJ(c);
+
+            case EtapaWizardManifestacao:
+                return !string.IsNullOrWhiteSpace(c.DesejaServir);
+
+            default:
+                return true;
+        }
+    }
+
+
+    private bool ValidarBlocoA(Conscrito c)
+    {
+        var vp = c.Entrevista_Vida_Pessoal;
+
+        return !string.IsNullOrWhiteSpace(vp.Endereco) &&
+               !string.IsNullOrWhiteSpace(vp.Bairro) &&
+               !string.IsNullOrWhiteSpace(vp.CEP) &&
+               !string.IsNullOrWhiteSpace(vp.Telefone) &&
+               !string.IsNullOrWhiteSpace(vp.Municipio) &&
+               !string.IsNullOrWhiteSpace(vp.Email) &&
+               !string.IsNullOrWhiteSpace(vp.Ocupacao) &&
+               !string.IsNullOrWhiteSpace(vp.MoraCom) &&
+               !string.IsNullOrWhiteSpace(vp.EstadoCivil) &&
+               !string.IsNullOrWhiteSpace(vp.PossuiFilhos) &&
+               !string.IsNullOrWhiteSpace(vp.QuantidadeFilhos) &&
+               !string.IsNullOrWhiteSpace(vp.QuemTrabalhaNaFamilia) &&
+               !string.IsNullOrWhiteSpace(vp.QuemSustentaAFamilia) &&
+               !string.IsNullOrWhiteSpace(vp.RecebeAuxilioGovernamental);
+    }
+
+    private bool ValidarBlocoB(Conscrito c)
+    {
+        var a = c.Entrevista_Arrimo_De_Familia;
+
+        return !string.IsNullOrWhiteSpace(a.SituacaoArrimo) &&
+               !string.IsNullOrWhiteSpace(a.EstudaAtualmente) &&
+               !string.IsNullOrWhiteSpace(a.AnoQueEstaCursandoOuUltimoAnoQueCursou);
+    }
+
+    private bool ValidarBlocoC(Conscrito c)
+    {
+        var cursos = c.Entrevista_Cursos;
+
+        return !string.IsNullOrWhiteSpace(cursos.TemCursosProfissionalizantes) &&
+               !string.IsNullOrWhiteSpace(cursos.QuaisCursosProfissionalizantes) &&
+               !string.IsNullOrWhiteSpace(cursos.ComprovaCursosProfissionalizantes);
+    }
+
+    private bool ValidarBlocoD(Conscrito c)
+    {
+        var exp = c.Entrevista_Experiencia;
+
+        return !string.IsNullOrWhiteSpace(exp.ExperienciaProfissional) &&
+               !string.IsNullOrWhiteSpace(exp.QuaisExperienciasProfissionais) &&
+               !string.IsNullOrWhiteSpace(exp.ComprovaExperienciaProfissional);
+    }
+
+    private bool ValidarBlocoE(Conscrito c)
+    {
+        var h = c.Entrevista_Habilitacao;
+
+        return !string.IsNullOrWhiteSpace(h.PossuiCNH) &&
+               !string.IsNullOrWhiteSpace(h.RealizandoCursoParaHabilitacao) &&
+               !string.IsNullOrWhiteSpace(h.CategoriaCNH);
+    }
+
+    private bool ValidarBlocoF(Conscrito c)
+    {
+        var p = c.Entrevista_Pre_Qualificacao_Imediata;
+
+        return !string.IsNullOrWhiteSpace(p.PrimeiroPadraoPreQualificacao) &&
+               !string.IsNullOrWhiteSpace(p.SegundoPadraoPreQualificacao);
+    }
+
+    private bool ValidarBlocoG(Conscrito c)
+    {
+        var e = c.Entrevista_Esportes;
+
+        return !string.IsNullOrWhiteSpace(e.PraticaEsportes) &&
+               !string.IsNullOrWhiteSpace(e.QuaisEsportes) &&
+               !string.IsNullOrWhiteSpace(e.EhOuJaFoiFederado) &&
+               !string.IsNullOrWhiteSpace(e.SabeNadar);
+    }
+
+    private bool ValidarBlocoH(Conscrito c)
+    {
+        return !string.IsNullOrWhiteSpace(c.Entrevista_Lazer.OQueFazNasHorasDeLazer);
+    }
+
+    private bool ValidarBlocoI(Conscrito c)
+    {
+        var s = c.Entrevista_Saude;
+
+        return !string.IsNullOrWhiteSpace(s.JaTeveProblemaSaude) &&
+               !string.IsNullOrWhiteSpace(s.QualProblemaSaude) &&
+               !string.IsNullOrWhiteSpace(s.UsaRemedioControlado) &&
+               !string.IsNullOrWhiteSpace(s.QualRemedioControlado) &&
+               !string.IsNullOrWhiteSpace(s.ParaQueUsaRemedioControlado) &&
+               !string.IsNullOrWhiteSpace(s.HaQuantoTempoUsaRemedioControlado) &&
+               !string.IsNullOrWhiteSpace(s.PorQuantoTempoAindaUsaraRemedio) &&
+               !string.IsNullOrWhiteSpace(s.JaEsteveInternadoHospitalOuClinicaPsiquiatrica) &&
+               !string.IsNullOrWhiteSpace(s.MotivoInternacao) &&
+               !string.IsNullOrWhiteSpace(s.TempoInternacao) &&
+               !string.IsNullOrWhiteSpace(s.Fuma) &&
+               !string.IsNullOrWhiteSpace(s.HaQuantoTempoFuma) &&
+               !string.IsNullOrWhiteSpace(s.FazUsoBebidaAlcoolica) &&
+               !string.IsNullOrWhiteSpace(s.FrequenciaBebidaAlcoolica) &&
+               !string.IsNullOrWhiteSpace(s.JaExperimentouDrogas) &&
+               !string.IsNullOrWhiteSpace(s.QualDroga) &&
+               !string.IsNullOrWhiteSpace(s.AindaFazUsoDroga) &&
+               !string.IsNullOrWhiteSpace(s.FrequenciaUsoDroga) &&
+               !string.IsNullOrWhiteSpace(s.QuandoFoiUltimaVezQueUtilizouDroga) &&
+               !string.IsNullOrWhiteSpace(s.PossuiParenteUsuarioDrogas) &&
+               !string.IsNullOrWhiteSpace(s.QuemParenteUsuarioDrogas) &&
+               !string.IsNullOrWhiteSpace(s.ComoParenteUsuarioDrogasAfetaSuaVida) &&
+               !string.IsNullOrWhiteSpace(s.PossuiParenteComHistoricoTranstornoPsiquiatrico) &&
+               !string.IsNullOrWhiteSpace(s.QuemParenteComHistoricoTranstornoPsiquiatrico) &&
+               !string.IsNullOrWhiteSpace(s.ComoTranstornoPsiquiatricoAfetaSuaVida);
+    }
+
+    private bool ValidarBlocoJ(Conscrito c)
+    {
+        var i = c.Entrevista_Infracao;
+
+        return !string.IsNullOrWhiteSpace(i.JaFoiDetidoPelaPolicia) &&
+               !string.IsNullOrWhiteSpace(i.QualFoiAInfracao) &&
+               !string.IsNullOrWhiteSpace(i.OutrosAtosInfracionais);
+    }
+
+    private bool ValidarFichaCompleta(Conscrito c)
+    {
+        return ValidarInformacoesBasicas(c) &&
+               ValidarBlocoA(c) &&
+               ValidarBlocoB(c) &&
+               ValidarBlocoC(c) &&
+               ValidarBlocoD(c) &&
+               ValidarBlocoE(c) &&
+               ValidarBlocoF(c) &&
+               ValidarBlocoG(c) &&
+               ValidarBlocoH(c) &&
+               ValidarBlocoI(c) &&
+               ValidarBlocoJ(c) &&
+               !string.IsNullOrWhiteSpace(c.DesejaServir);
+    }
 
 }

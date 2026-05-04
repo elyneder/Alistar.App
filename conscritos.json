@@ -1,0 +1,240 @@
+[
+  {
+    "Id": "4ad69ebb-213b-43a2-bce6-853ec4e5c65b",
+    "Name": "Lucas Santos",
+    "CPF": "231.321.321-32",
+    "RA": "3211321",
+    "Situacao": "Indefinido",
+    "MotherName": "dasdasdasdasd",
+    "BirthDate": "32/12/3123",
+    "PaisResidencia": "dasdasdasdas1",
+    "MunicipioResidencia": "das2d3as123",
+    "ZonaResidencia": "Urbana",
+    "DesejaServir": "",
+    "Entrevista_Vida_Pessoal": null,
+    "Entrevista_Arrimo_De_Familia": null,
+    "Entrevista_Cursos": null,
+    "Entrevista_Experiencia": null,
+    "Entrevista_Habilitacao": null,
+    "Entrevista_Pre_Qualificacao_Imediata": null,
+    "Entrevista_Esportes": null,
+    "Entrevista_Lazer": null,
+    "Entrevista_Saude": null,
+    "Entrevista_Infracao": null,
+    "Entrevista_Medica": null
+  },
+  {
+    "Id": "596c7254-48c0-425c-8873-807999e3a3bb",
+    "Name": "dasdasdasdasd",
+    "CPF": "536.453.254-46",
+    "RA": "24224563",
+    "Situacao": "Indefinido",
+    "MotherName": "dasdsadasdasd",
+    "BirthDate": "21/31/1354",
+    "PaisResidencia": "adasdasdasd",
+    "MunicipioResidencia": "dsadasdasdas",
+    "ZonaResidencia": "Urbana",
+    "DesejaServir": "",
+    "Entrevista_Vida_Pessoal": null,
+    "Entrevista_Arrimo_De_Familia": null,
+    "Entrevista_Cursos": null,
+    "Entrevista_Experiencia": null,
+    "Entrevista_Habilitacao": null,
+    "Entrevista_Pre_Qualificacao_Imediata": null,
+    "Entrevista_Esportes": null,
+    "Entrevista_Lazer": null,
+    "Entrevista_Saude": null,
+    "Entrevista_Infracao": null,
+    "Entrevista_Medica": null
+  },
+  {
+    "Id": "6e073261-8258-4975-9383-7bd5eee5fe98",
+    "Name": "dasdasdasdasdasdasdsadasdasdasdsad dasasdas das dasd asd asd asdas dasd asd",
+    "CPF": "243.245.364-56",
+    "RA": "245245",
+    "Situacao": "Indefinido",
+    "MotherName": "dasdsadsad asd asd sa das dasd asdsadsadsa",
+    "BirthDate": "56/46/4565",
+    "PaisResidencia": "dadsadasdsad",
+    "MunicipioResidencia": "dasdasdasdsad",
+    "ZonaResidencia": "Urbana",
+    "DesejaServir": "",
+    "Entrevista_Vida_Pessoal": {
+      "Address": "",
+      "Bairro": "",
+      "CEP": "",
+      "Telefone": "",
+      "City": "",
+      "Email": "",
+      "Ocupacao": "",
+      "MoraCom": "",
+      "EstadoCivil": "",
+      "PossuiFilhos": "",
+      "QuantidadeFilhos": "",
+      "QuemTrabalhaNaFamilia": "",
+      "QuemSustentaAFamilia": "",
+      "RecebeAuxilioGovernamental": ""
+    },
+    "Entrevista_Arrimo_De_Familia": {
+      "SituacaoArrimo": "",
+      "EstudaAtualmente": "",
+      "Education": ""
+    },
+    "Entrevista_Cursos": {
+      "TemCursosProfissionalizantes": "",
+      "QuaisCursosProfissionalizantes": "",
+      "ComprovaCursosProfissionalizantes": ""
+    },
+    "Entrevista_Experiencia": {
+      "ExperienciaProfissional": "",
+      "QuaisExperienciasProfissionais": "",
+      "ComprovaExperienciaProfissional": ""
+    },
+    "Entrevista_Habilitacao": {
+      "PossuiCNH": "",
+      "RealizandoCursoParaHabilitacao": "",
+      "CategoriaCNH": ""
+    },
+    "Entrevista_Pre_Qualificacao_Imediata": {
+      "PrimeiroPadraoPreQualificacao": "",
+      "SegundoPadraoPreQualificacao": ""
+    },
+    "Entrevista_Esportes": {
+      "PraticaEsportes": "",
+      "QuaisEsportes": "",
+      "EhOuJaFoiFederado": "",
+      "SabeNadar": ""
+    },
+    "Entrevista_Lazer": {
+      "OQueFazNasHorasDeLazer": ""
+    },
+    "Entrevista_Saude": {
+      "JaTeveProblemaSaude": "",
+      "QualProblemaSaude": "",
+      "UsaRemedioControlado": "",
+      "QualRemedioControlado": "",
+      "ParaQueUsaRemedioControlado": "",
+      "HaQuantoTempoUsaRemedioControlado": "",
+      "PorQuantoTempoAindaUsaraRemedio": "",
+      "JaEsteveInternadoHospitalOuClinicaPsiquiatrica": "",
+      "MotivoInternacao": "",
+      "TempoInternacao": "",
+      "Fuma": "",
+      "HaQuantoTempoFuma": "",
+      "FazUsoBebidaAlcoolica": "",
+      "FrequenciaBebidaAlcoolica": "",
+      "JaExperimentouDrogas": "",
+      "QualDroga": "",
+      "AindaFazUsoDroga": "",
+      "FrequenciaUsoDroga": "",
+      "QuandoFoiUltimaVezQueUtilizouDroga": "",
+      "PossuiParenteUsuarioDrogas": "",
+      "QuemParenteUsuarioDrogas": "",
+      "ComoParenteUsuarioDrogasAfetaSuaVida": "",
+      "PossuiParenteComHistoricoTranstornoPsiquiatrico": "",
+      "QuemParenteComHistoricoTranstornoPsiquiatrico": "",
+      "ComoTranstornoPsiquiatricoAfetaSuaVida": ""
+    },
+    "Entrevista_Infracao": {
+      "JaFoiDetidoPelaPolicia": "",
+      "QualFoiAInfracao": "",
+      "OutrosAtosInfracionais": ""
+    },
+    "Entrevista_Medica": null
+  },
+  {
+    "Id": "48cd017a-eb9d-4749-b0d1-482f6ebac2ec",
+    "Name": "Ademilton",
+    "CPF": "123",
+    "RA": "1234",
+    "Situacao": "Indefinido",
+    "MotherName": "Mae",
+    "BirthDate": "01/01/2000",
+    "PaisResidencia": "qua",
+    "MunicipioResidencia": "qu",
+    "ZonaResidencia": "Urbana",
+    "DesejaServir": "",
+    "Entrevista_Vida_Pessoal": {
+      "Address": "Rua",
+      "Bairro": "casa",
+      "CEP": "12",
+      "Telefone": "12",
+      "City": "Bra",
+      "Email": "adem@email",
+      "Ocupacao": "nao",
+      "MoraCom": "nao",
+      "EstadoCivil": "",
+      "PossuiFilhos": "",
+      "QuantidadeFilhos": "",
+      "QuemTrabalhaNaFamilia": "",
+      "QuemSustentaAFamilia": "",
+      "RecebeAuxilioGovernamental": ""
+    },
+    "Entrevista_Arrimo_De_Familia": {
+      "SituacaoArrimo": "",
+      "EstudaAtualmente": "",
+      "Education": ""
+    },
+    "Entrevista_Cursos": {
+      "TemCursosProfissionalizantes": "",
+      "QuaisCursosProfissionalizantes": "",
+      "ComprovaCursosProfissionalizantes": ""
+    },
+    "Entrevista_Experiencia": {
+      "ExperienciaProfissional": "",
+      "QuaisExperienciasProfissionais": "",
+      "ComprovaExperienciaProfissional": ""
+    },
+    "Entrevista_Habilitacao": {
+      "PossuiCNH": "",
+      "RealizandoCursoParaHabilitacao": "",
+      "CategoriaCNH": ""
+    },
+    "Entrevista_Pre_Qualificacao_Imediata": {
+      "PrimeiroPadraoPreQualificacao": "",
+      "SegundoPadraoPreQualificacao": ""
+    },
+    "Entrevista_Esportes": {
+      "PraticaEsportes": "",
+      "QuaisEsportes": "",
+      "EhOuJaFoiFederado": "",
+      "SabeNadar": ""
+    },
+    "Entrevista_Lazer": {
+      "OQueFazNasHorasDeLazer": ""
+    },
+    "Entrevista_Saude": {
+      "JaTeveProblemaSaude": "",
+      "QualProblemaSaude": "",
+      "UsaRemedioControlado": "",
+      "QualRemedioControlado": "",
+      "ParaQueUsaRemedioControlado": "",
+      "HaQuantoTempoUsaRemedioControlado": "",
+      "PorQuantoTempoAindaUsaraRemedio": "",
+      "JaEsteveInternadoHospitalOuClinicaPsiquiatrica": "",
+      "MotivoInternacao": "",
+      "TempoInternacao": "",
+      "Fuma": "",
+      "HaQuantoTempoFuma": "",
+      "FazUsoBebidaAlcoolica": "",
+      "FrequenciaBebidaAlcoolica": "",
+      "JaExperimentouDrogas": "",
+      "QualDroga": "",
+      "AindaFazUsoDroga": "",
+      "FrequenciaUsoDroga": "",
+      "QuandoFoiUltimaVezQueUtilizouDroga": "",
+      "PossuiParenteUsuarioDrogas": "",
+      "QuemParenteUsuarioDrogas": "",
+      "ComoParenteUsuarioDrogasAfetaSuaVida": "",
+      "PossuiParenteComHistoricoTranstornoPsiquiatrico": "",
+      "QuemParenteComHistoricoTranstornoPsiquiatrico": "",
+      "ComoTranstornoPsiquiatricoAfetaSuaVida": ""
+    },
+    "Entrevista_Infracao": {
+      "JaFoiDetidoPelaPolicia": "",
+      "QualFoiAInfracao": "",
+      "OutrosAtosInfracionais": ""
+    },
+    "Entrevista_Medica": null
+  }
+]

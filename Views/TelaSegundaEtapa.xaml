@@ -7,6 +7,7 @@
         WindowState="Maximized"
         WindowStartupLocation="CenterScreen">
     <Window.Resources>
+        <!-- Estilos locais da segunda etapa: ficha medica, campos e cards do wizard. -->
         <Style x:Key="TituloSecaoStyle" TargetType="TextBlock">
             <Setter Property="Foreground" Value="White" />
             <Setter Property="Background" Value="#111111" />
@@ -84,8 +85,38 @@
             <Setter Property="BorderBrush" Value="#E5E7EB" />
             <Setter Property="BorderThickness" Value="1" />
         </Style>
+
+        <Style x:Key="CartaoEtapaWizardStyle" TargetType="Border">
+            <Setter Property="Background" Value="White" />
+            <Setter Property="BorderBrush" Value="#D9E1DD" />
+            <Setter Property="BorderThickness" Value="1" />
+            <Setter Property="CornerRadius" Value="14" />
+            <Setter Property="Padding" Value="16,12" />
+            <Setter Property="Margin" Value="0,0,12,0" />
+        </Style>
+
+        <Style x:Key="NumeroEtapaWizardStyle" TargetType="TextBlock">
+            <Setter Property="Foreground" Value="#123322" />
+            <Setter Property="FontWeight" Value="Bold" />
+            <Setter Property="FontSize" Value="18" />
+        </Style>
+
+        <Style x:Key="TituloEtapaWizardStyle" TargetType="TextBlock">
+            <Setter Property="Foreground" Value="#123322" />
+            <Setter Property="FontWeight" Value="SemiBold" />
+            <Setter Property="FontSize" Value="13" />
+            <Setter Property="Margin" Value="0,4,0,0" />
+        </Style>
+
+        <Style x:Key="DescricaoEtapaWizardStyle" TargetType="TextBlock">
+            <Setter Property="Foreground" Value="#5F7168" />
+            <Setter Property="FontSize" Value="12" />
+            <Setter Property="TextWrapping" Value="Wrap" />
+            <Setter Property="Margin" Value="0,2,0,0" />
+        </Style>
     </Window.Resources>
 
+    <!-- Tela da avaliacao medica: menu lateral, busca por RA e formulario dividido em wizard. -->
     <Grid Background="#F4F7F6">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="260" />
@@ -131,7 +162,7 @@
                             CornerRadius="12"
                             Background="#163626">
                         <StackPanel>
-                            <TextBlock Text="Total Cadastrados"
+                            <TextBlock Text="Total de Conscritos Cadastrados"
                                        Foreground="#8BA698"
                                        FontSize="12" />
                             <TextBlock x:Name="TextoQuantidadeConscritos"
@@ -195,20 +226,127 @@
                     BorderBrush="#DFE7E2"
                     BorderThickness="1"
                     Padding="22">
-                <ScrollViewer VerticalScrollBarVisibility="Auto">
-                    <StackPanel MaxWidth="980"
+                <ScrollViewer x:Name="ScrollFormularioSegundaEtapa"
+                              VerticalScrollBarVisibility="Auto">
+                    <StackPanel x:Name="PainelFormularioSegundaEtapa"
+                                MaxWidth="980"
                                 HorizontalAlignment="Center">
-                        <TextBlock Text="Segunda Etapa - Avaliação Médica"
+                        <TextBlock x:Name="TextoTituloFormulario"
+                                   Text="Segunda Etapa - Avaliação Médica"
                                    Style="{StaticResource TituloBlocoStyle}" 
                                    TextAlignment="Center"/>
-                        <TextBlock Text="Preencha os exames e observações médicas do conscrito."
+                        <TextBlock x:Name="TextoDescricaoFormulario"
+                                   Text="Preencha os exames e observações médicas do conscrito."
                                    Style="{StaticResource DescricaoBlocoStyle}" 
                                    TextAlignment="Center"/>
 
-                        <Border Style="{StaticResource CaixaSecaoStyle}">
+                        <Border Background="#F8FBF9"
+                                BorderBrush="#DDE7E1"
+                                BorderThickness="1"
+                                CornerRadius="18"
+                                Padding="18"
+                                Margin="0,0,0,20">
+                            <StackPanel>
+                                <UniformGrid Columns="4"
+                                             Margin="0,0,0,16">
+                                    <Border x:Name="IndicadorEtapaIdentificacao" Style="{StaticResource CartaoEtapaWizardStyle}">
+                                        <StackPanel>
+                                            <TextBlock Text="01" Style="{StaticResource NumeroEtapaWizardStyle}" />
+                                            <TextBlock Text="Identificação" Style="{StaticResource TituloEtapaWizardStyle}" />
+                                            <TextBlock Text="Dados do conscrito" Style="{StaticResource DescricaoEtapaWizardStyle}" />
+                                        </StackPanel>
+                                    </Border>
+
+                                    <Border x:Name="IndicadorEtapaExames" Style="{StaticResource CartaoEtapaWizardStyle}">
+                                        <StackPanel>
+                                            <TextBlock Text="02" Style="{StaticResource NumeroEtapaWizardStyle}" />
+                                            <TextBlock Text="Exames" Style="{StaticResource TituloEtapaWizardStyle}" />
+                                            <TextBlock Text="Blocos médicos separados" Style="{StaticResource DescricaoEtapaWizardStyle}" />
+                                        </StackPanel>
+                                    </Border>
+
+                                    <Border x:Name="IndicadorEtapaSaudeMental" Style="{StaticResource CartaoEtapaWizardStyle}">
+                                        <StackPanel>
+                                            <TextBlock Text="03" Style="{StaticResource NumeroEtapaWizardStyle}" />
+                                            <TextBlock Text="Saúde mental" Style="{StaticResource TituloEtapaWizardStyle}" />
+                                            <TextBlock Text="Último bloco médico" Style="{StaticResource DescricaoEtapaWizardStyle}" />
+                                        </StackPanel>
+                                    </Border>
+
+                                    <Border x:Name="IndicadorEtapaConfirmacao" Style="{StaticResource CartaoEtapaWizardStyle}" Margin="0">
+                                        <StackPanel>
+                                            <TextBlock Text="04" Style="{StaticResource NumeroEtapaWizardStyle}" />
+                                            <TextBlock Text="Confirmação" Style="{StaticResource TituloEtapaWizardStyle}" />
+                                            <TextBlock Text="Ficha completa para revisar" Style="{StaticResource DescricaoEtapaWizardStyle}" />
+                                        </StackPanel>
+                                    </Border>
+                                </UniformGrid>
+
+                                <TextBlock x:Name="TextoEtapaWizard"
+                                           Text="Etapa 1 de 8 · Identificação"
+                                           Foreground="#123322"
+                                           FontSize="18"
+                                           FontWeight="SemiBold"
+                                           TextAlignment="Center" />
+                                <TextBlock x:Name="TextoResumoEtapaWizard"
+                                           Margin="0,6,0,0"
+                                           Text="Preencha os dados do conscrito para iniciar a avaliação médica."
+                                           Foreground="#63756E"
+                                           FontSize="13"
+                                           TextWrapping="Wrap"
+                                           TextAlignment="Center" />
+                            </StackPanel>
+                        </Border>
+
+                        <Border x:Name="SecaoIdentificacao" Style="{StaticResource CaixaSecaoStyle}">
                             <StackPanel>
                                 <TextBlock Text="IDENTIFICAÇÃO DO CONSCRITO"
                                            Style="{StaticResource TituloSecaoStyle}" />
+
+                                <StackPanel Style="{StaticResource PainelVerticalStyle}">
+                                    <TextBlock Text="Pesquisar por RA:" Style="{StaticResource RotuloCampoStyle}" />
+                                    <Border Style="{StaticResource LinhaCampoStyle}">
+                                        <TextBox x:Name="CaixaPesquisaRA"
+                                                 Style="{StaticResource CampoTextoStyle}"
+                                                 TextChanged="CaixaPesquisaRA_TextChanged" />
+                                    </Border>
+                                    <Border x:Name="PainelResultadosPesquisaRA"
+                                            Visibility="Collapsed"
+                                            Margin="0,8,0,0"
+                                            Background="#F8FBF9"
+                                            BorderBrush="#DDE7E1"
+                                            BorderThickness="1"
+                                            CornerRadius="8"
+                                            Padding="0">
+                                        <ListBox x:Name="ListaResultadosPesquisaRA"
+                                                 MaxHeight="180"
+                                                 BorderThickness="0"
+                                                 Background="Transparent"
+                                                 SelectionChanged="ListaResultadosPesquisaRA_SelectionChanged">
+                                            <ListBox.ItemTemplate>
+                                                <DataTemplate>
+                                                    <Grid Margin="10,8">
+                                                        <Grid.ColumnDefinitions>
+                                                            <ColumnDefinition Width="140" />
+                                                            <ColumnDefinition Width="*" />
+                                                        </Grid.ColumnDefinitions>
+                                                        <TextBlock Text="{Binding RA}"
+                                                                   FontWeight="Bold"
+                                                                   Foreground="#123322" />
+                                                        <TextBlock Grid.Column="1"
+                                                                   Text="{Binding Nome}"
+                                                                   Foreground="#1F2937" />
+                                                    </Grid>
+                                                </DataTemplate>
+                                            </ListBox.ItemTemplate>
+                                        </ListBox>
+                                    </Border>
+                                    <TextBlock x:Name="TextoResultadoPesquisaRA"
+                                               Margin="0,6,0,0"
+                                               Foreground="#63756E"
+                                               FontSize="12"
+                                               TextWrapping="Wrap" />
+                                </StackPanel>
 
                                 <Grid Style="{StaticResource LinhaCamposStyle}">
                                     <Grid.ColumnDefinitions>
@@ -220,28 +358,36 @@
                                     <StackPanel Grid.Column="0" Margin="0,0,24,0">
                                         <TextBlock Text="Nome:" Style="{StaticResource RotuloCampoStyle}" />
                                         <Border Style="{StaticResource LinhaCampoStyle}">
-                                            <TextBox x:Name="CaixaTextoNome" Style="{StaticResource CampoTextoStyle}" />
+                                            <TextBox x:Name="CaixaTextoNome"
+                                                     IsReadOnly="True"
+                                                     Style="{StaticResource CampoTextoStyle}" />
                                         </Border>
                                     </StackPanel>
 
                                     <StackPanel Grid.Column="1" Margin="0,0,24,0">
                                         <TextBlock Text="CPF:" Style="{StaticResource RotuloCampoStyle}" />
                                         <Border Style="{StaticResource LinhaCampoStyle}">
-                                            <TextBox x:Name="CaixaTextoCPF" Style="{StaticResource CampoTextoStyle}" />
+                                            <TextBox x:Name="CaixaTextoCPF"
+                                                     MaxLength="14"
+                                                     IsReadOnly="True"
+                                                     TextChanged="CampoComMascara_TextChanged"
+                                                     Style="{StaticResource CampoTextoStyle}" />
                                         </Border>
                                     </StackPanel>
 
                                     <StackPanel Grid.Column="2">
                                         <TextBlock Text="RA:" Style="{StaticResource RotuloCampoStyle}" />
                                         <Border Style="{StaticResource LinhaCampoStyle}">
-                                            <TextBox x:Name="CaixaTextoRA" Style="{StaticResource CampoTextoStyle}" />
+                                            <TextBox x:Name="CaixaTextoRA"
+                                                     IsReadOnly="True"
+                                                     Style="{StaticResource CampoTextoStyle}" />
                                         </Border>
                                     </StackPanel>
                                 </Grid>
                             </StackPanel>
                         </Border>
 
-                        <Border Style="{StaticResource CaixaSecaoStyle}">
+                        <Border x:Name="SecaoAvaliacaoFisica" Style="{StaticResource CaixaSecaoStyle}">
                             <StackPanel>
                                 <TextBlock Text="1. AVALIAÇÃO FÍSICA"
                                            Style="{StaticResource TituloSecaoStyle}" />
@@ -288,7 +434,7 @@
                             </StackPanel>
                         </Border>
 
-                        <Border Style="{StaticResource CaixaSecaoStyle}">
+                        <Border x:Name="SecaoVisao" Style="{StaticResource CaixaSecaoStyle}">
                             <StackPanel>
                                 <TextBlock Text="2. VISÃO"
                                            Style="{StaticResource TituloSecaoStyle}" />
@@ -306,7 +452,7 @@
                             </StackPanel>
                         </Border>
 
-                        <Border Style="{StaticResource CaixaSecaoStyle}">
+                        <Border x:Name="SecaoTesteAuditivo" Style="{StaticResource CaixaSecaoStyle}">
                             <StackPanel>
                                 <TextBlock Text="3. TESTE AUDITIVO"
                                            Style="{StaticResource TituloSecaoStyle}" />
@@ -338,7 +484,7 @@
                             </StackPanel>
                         </Border>
 
-                        <Border Style="{StaticResource CaixaSecaoStyle}">
+                        <Border x:Name="SecaoExameGeral" Style="{StaticResource CaixaSecaoStyle}">
                             <StackPanel>
                                 <TextBlock Text="4. EXAME GERAL"
                                            Style="{StaticResource TituloSecaoStyle}" />
@@ -374,7 +520,7 @@
                             </StackPanel>
                         </Border>
 
-                        <Border Style="{StaticResource CaixaSecaoStyle}">
+                        <Border x:Name="SecaoHistoricoMedico" Style="{StaticResource CaixaSecaoStyle}">
                             <StackPanel>
                                 <TextBlock Text="5. HISTÓRICO MÉDICO"
                                            Style="{StaticResource TituloSecaoStyle}" />
@@ -410,7 +556,7 @@
                             </StackPanel>
                         </Border>
 
-                        <Border Style="{StaticResource CaixaSecaoStyle}">
+                        <Border x:Name="SecaoSaudeMental" Style="{StaticResource CaixaSecaoStyle}">
                             <StackPanel>
                                 <TextBlock Text="6. SAÚDE MENTAL"
                                            Style="{StaticResource TituloSecaoStyle}" />
@@ -454,16 +600,39 @@
 
                         <StackPanel Orientation="Horizontal"
                                     HorizontalAlignment="Center">
-                            <Button Width="180"
+                            <Button x:Name="BotaoVoltarEtapaWizard"
+                                Width="120"
+                                Margin="0,8,0,0"
+                                Style="{StaticResource BotaoSecundarioStyle}"
+                                Click="VoltarEtapaWizardBotao_Click">
+                                <StackPanel Orientation="Horizontal">
+                                    <Canvas Width="14" Height="14" Margin="0,0,6,0" VerticalAlignment="Center">
+                                        <Line X1="8" Y1="1" X2="1" Y2="7" Stroke="#196743" StrokeThickness="1.5" StrokeStartLineCap="Round" StrokeEndLineCap="Round"/>
+                                        <Line X1="1" Y1="7" X2="8" Y2="13" Stroke="#196743" StrokeThickness="1.5" StrokeStartLineCap="Round" StrokeEndLineCap="Round"/>
+                                        <Line X1="1" Y1="7" X2="13" Y2="7" Stroke="#196743" StrokeThickness="1.5" StrokeStartLineCap="Round" StrokeEndLineCap="Round"/>
+                                    </Canvas>
+                                    <TextBlock Text="Voltar"/>
+                                </StackPanel>
+                            </Button>
+
+                            <Button x:Name="BotaoSalvar"
+                                Width="180"
+                                Margin="16,8,0,0"
                                 Style="{StaticResource BotaoPrimarioStyle}"
                                 Click="SalvarBotao_Click">
                                 <StackPanel Orientation="Horizontal">
-                                    <Canvas Width="14" Height="14" Margin="0,0,6,0">
+                                    <TextBlock x:Name="IconeAvancarBotaoSalvar"
+                                               Text="->"
+                                               FontWeight="Bold"
+                                               FontSize="14"
+                                               Margin="0,0,6,0"
+                                               VerticalAlignment="Center" />
+                                    <Canvas x:Name="IconeSalvarBotaoSalvar" Width="14" Height="14" Margin="0,0,6,0" Visibility="Collapsed">
                                         <Polyline Points="2,7 6,11 12,3"
                                           Stroke="White" StrokeThickness="1.5"
                                           StrokeLineJoin="Round" StrokeStartLineCap="Round" StrokeEndLineCap="Round"/>
                                     </Canvas>
-                                    <TextBlock Text="Salvar Ficha"/>
+                                    <TextBlock x:Name="TextoBotaoSalvar" Text="Próximo"/>
                                 </StackPanel>
                             </Button>
 

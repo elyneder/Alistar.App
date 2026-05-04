@@ -3,8 +3,16 @@ using Alistar.App.Services;
 
 namespace Alistar.App;
 
+/// <summary>
+/// Tela inicial de autenticacao do sistema.
+/// </summary>
+/// <remarks>
+/// Recebe e-mail e senha, valida no ServicoAutenticacao e abre o painel principal
+/// quando o login e aprovado.
+/// </remarks>
 public partial class TelaLogin : Window
 {
+    // Controla se a senha esta visivel em TextBox ou escondida no PasswordBox.
     private bool _senhaVisivel;
 
     public TelaLogin()
@@ -12,6 +20,9 @@ public partial class TelaLogin : Window
         InitializeComponent();
     }
 
+    /// <summary>
+    /// Evento do botao Entrar. Valida campos obrigatorios e autentica o usuario.
+    /// </summary>
     private void EntrarBotao_Click(object sender, RoutedEventArgs e)
     {
         var email = CaixaTextoEmail.Text.Trim();
@@ -34,6 +45,9 @@ public partial class TelaLogin : Window
         Close();
     }
 
+    /// <summary>
+    /// Alterna entre senha escondida e senha visivel, mantendo o mesmo texto.
+    /// </summary>
     private void AlternarSenhaBotao_Click(object sender, RoutedEventArgs e)
     {
         if (_senhaVisivel)
@@ -56,6 +70,9 @@ public partial class TelaLogin : Window
         _senhaVisivel = !_senhaVisivel;
     }
 
+    /// <summary>
+    /// Ponto reservado para futura regra de recuperacao de senha.
+    /// </summary>
     private void EsqueceuSenhaBotao_Click(object sender, RoutedEventArgs e)
     {
         // sua lógica aqui

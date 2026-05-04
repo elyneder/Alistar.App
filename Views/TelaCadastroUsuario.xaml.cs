@@ -3,8 +3,16 @@ using Alistar.App.Services;
 
 namespace Alistar.App;
 
+/// <summary>
+/// Tela modal usada para cadastrar novos entrevistadores.
+/// </summary>
+/// <remarks>
+/// A regra de permissao fica no ServicoAutenticacao: somente o administrador
+/// pode cadastrar outras contas.
+/// </remarks>
 public partial class TelaCadastroUsuario : Window
 {
+    // Indica se a senha esta sendo exibida como texto ou protegida no PasswordBox.
     private bool _senhaVisivel;
 
     public TelaCadastroUsuario()
@@ -12,6 +20,9 @@ public partial class TelaCadastroUsuario : Window
         InitializeComponent();
     }
 
+    /// <summary>
+    /// Alterna a visualizacao da senha sem perder o valor digitado.
+    /// </summary>
     private void AlternarSenhaBotao_Click(object sender, RoutedEventArgs e)
     {
         if (_senhaVisivel)
@@ -34,6 +45,9 @@ public partial class TelaCadastroUsuario : Window
         _senhaVisivel = !_senhaVisivel;
     }
 
+    /// <summary>
+    /// Valida os campos e solicita o cadastro ao servico de autenticacao.
+    /// </summary>
     private void SalvarCadastroBotao_Click(object sender, RoutedEventArgs e)
     {
         var nome = CaixaTextoNomeUsuario.Text.Trim();
@@ -64,6 +78,9 @@ public partial class TelaCadastroUsuario : Window
         Close();
     }
 
+    /// <summary>
+    /// Fecha a janela sem salvar cadastro.
+    /// </summary>
     private void CancelarBotao_Click(object sender, RoutedEventArgs e)
     {
         Close();

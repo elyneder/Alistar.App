@@ -9,6 +9,7 @@
         ResizeMode="NoResize"
         FontFamily="Segoe UI">
 
+    <!-- Tela modal de cadastro: identidade visual a esquerda e campos do entrevistador a direita. -->
     <Grid Background="#0F291D">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="1.2*" />

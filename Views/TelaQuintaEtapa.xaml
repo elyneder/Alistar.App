@@ -5,6 +5,7 @@
         Height="520"
         Width="860"
         WindowStartupLocation="CenterOwner">
+    <!-- Estrutura inicial da quinta etapa, reservada para designacao final. -->
     <Grid Background="#F4F7F6">
         <Border Margin="24"
                 Padding="28"

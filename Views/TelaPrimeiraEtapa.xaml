@@ -9,6 +9,7 @@
         Icon="./Assets/1.png">
 
     <Window.Resources>
+        <!-- Estilos do formulario em formato de ficha e dos controles do wizard. -->
         <Style x:Key="TituloSecaoPapelStyle" TargetType="TextBlock">
             <Setter Property="Foreground" Value="White" />
             <Setter Property="Background" Value="#111111" />
@@ -145,6 +146,7 @@
         </Style>
     </Window.Resources>
 
+    <!-- Tela com menu lateral, painel inicial, formulario da primeira etapa e lista de conscritos. -->
     <Grid Background="#F4F7F6">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="260" />
@@ -190,7 +192,7 @@
                             CornerRadius="12"
                             Background="#163626">
                         <StackPanel>
-                            <TextBlock Text="Total Cadastrados"
+                            <TextBlock Text="Total de Conscritos Cadastrados"
                                        Foreground="#8BA698"
                                        FontSize="12" />
                             <TextBlock x:Name="TextoQuantidadeConscritos"

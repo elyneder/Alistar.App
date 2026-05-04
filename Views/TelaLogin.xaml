@@ -10,6 +10,7 @@
         FontFamily="Segoe UI"
         Icon="/Views/Assets/2-semfundo.png">
 
+    <!-- Layout da tela de login: area visual da marca a esquerda e formulario a direita. -->
     <Grid Background="#0F291D">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="1.2*" />

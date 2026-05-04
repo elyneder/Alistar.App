@@ -185,9 +185,10 @@ public partial class TelaPrimeiraEtapa : Window
         var conscrito = MontarConscritoPeloFormulario();
 
         if (_etapaWizardAtual != EtapaWizardConfirmacao)
-        {
-            if (_etapaWizardAtual == EtapaWizardInformacoesBasicas && !ValidarInformacoesBasicas(conscrito))
+        {    
+            if (!ValidarEtapaAtual(conscrito))
             {
+                TextoFeedbackCadastroConscrito.Text = "Preencha todos os campos desta etapa antes de continuar.";
                 return;
             }
 
@@ -195,8 +196,9 @@ public partial class TelaPrimeiraEtapa : Window
             return;
         }
 
-        if (!ValidarInformacoesBasicas(conscrito))
+        if (!ValidarFichaCompleta(conscrito))
         {
+            TextoFeedbackCadastroConscrito.Text = "Preencha todos os campos da ficha antes de salvar.";
             return;
         }
 
@@ -904,8 +906,189 @@ public partial class TelaPrimeiraEtapa : Window
         for (var indice = 0; indice < quantidadeFilhos; indice++)
         {
             LimparControles(VisualTreeHelper.GetChild(elemento, indice));
+
         }
     }
 
+    private bool ValidarEtapaAtual(Conscrito c)
+    {
+        switch (_etapaWizardAtual)
+        {
+            case EtapaWizardInformacoesBasicas:
+                return ValidarInformacoesBasicas(c);
+
+            case EtapaWizardBlocoA:
+                return ValidarBlocoA(c);
+
+            case EtapaWizardBlocoB:
+                return ValidarBlocoB(c);
+
+            case EtapaWizardBlocoC:
+                return ValidarBlocoC(c);
+
+            case EtapaWizardBlocoD:
+                return ValidarBlocoD(c);
+
+            case EtapaWizardBlocoE:
+                return ValidarBlocoE(c);
+
+            case EtapaWizardBlocoF:
+                return ValidarBlocoF(c);
+
+            case EtapaWizardBlocoG:
+                return ValidarBlocoG(c);
+
+            case EtapaWizardBlocoH:
+                return ValidarBlocoH(c);
+
+            case EtapaWizardBlocoI:
+                return ValidarBlocoI(c);
+
+            case EtapaWizardBlocoJ:
+                return ValidarBlocoJ(c);
+
+            case EtapaWizardManifestacao:
+                return !string.IsNullOrWhiteSpace(c.DesejaServir);
+
+            default:
+                return true;
+        }
+    }
+
+
+    private bool ValidarBlocoA(Conscrito c)
+    {
+        var vp = c.Entrevista_Vida_Pessoal;
+
+        return !string.IsNullOrWhiteSpace(vp.Endereco) &&
+               !string.IsNullOrWhiteSpace(vp.Bairro) &&
+               !string.IsNullOrWhiteSpace(vp.CEP) &&
+               !string.IsNullOrWhiteSpace(vp.Telefone) &&
+               !string.IsNullOrWhiteSpace(vp.Municipio) &&
+               !string.IsNullOrWhiteSpace(vp.Email) &&
+               !string.IsNullOrWhiteSpace(vp.Ocupacao) &&
+               !string.IsNullOrWhiteSpace(vp.MoraCom) &&
+               !string.IsNullOrWhiteSpace(vp.EstadoCivil) &&
+               !string.IsNullOrWhiteSpace(vp.PossuiFilhos) &&
+               !string.IsNullOrWhiteSpace(vp.QuantidadeFilhos) &&
+               !string.IsNullOrWhiteSpace(vp.QuemTrabalhaNaFamilia) &&
+               !string.IsNullOrWhiteSpace(vp.QuemSustentaAFamilia) &&
+               !string.IsNullOrWhiteSpace(vp.RecebeAuxilioGovernamental);
+    }
+
+    private bool ValidarBlocoB(Conscrito c)
+    {
+        var a = c.Entrevista_Arrimo_De_Familia;
+
+        return !string.IsNullOrWhiteSpace(a.SituacaoArrimo) &&
+               !string.IsNullOrWhiteSpace(a.EstudaAtualmente) &&
+               !string.IsNullOrWhiteSpace(a.AnoQueEstaCursandoOuUltimoAnoQueCursou);
+    }
+
+    private bool ValidarBlocoC(Conscrito c)
+    {
+        var cursos = c.Entrevista_Cursos;
+
+        return !string.IsNullOrWhiteSpace(cursos.TemCursosProfissionalizantes) &&
+               !string.IsNullOrWhiteSpace(cursos.QuaisCursosProfissionalizantes) &&
+               !string.IsNullOrWhiteSpace(cursos.ComprovaCursosProfissionalizantes);
+    }
+
+    private bool ValidarBlocoD(Conscrito c)
+    {
+        var exp = c.Entrevista_Experiencia;
+
+        return !string.IsNullOrWhiteSpace(exp.ExperienciaProfissional) &&
+               !string.IsNullOrWhiteSpace(exp.QuaisExperienciasProfissionais) &&
+               !string.IsNullOrWhiteSpace(exp.ComprovaExperienciaProfissional);
+    }
+
+    private bool ValidarBlocoE(Conscrito c)
+    {
+        var h = c.Entrevista_Habilitacao;
+
+        return !string.IsNullOrWhiteSpace(h.PossuiCNH) &&
+               !string.IsNullOrWhiteSpace(h.RealizandoCursoParaHabilitacao) &&
+               !string.IsNullOrWhiteSpace(h.CategoriaCNH);
+    }
+
+    private bool ValidarBlocoF(Conscrito c)
+    {
+        var p = c.Entrevista_Pre_Qualificacao_Imediata;
+
+        return !string.IsNullOrWhiteSpace(p.PrimeiroPadraoPreQualificacao) &&
+               !string.IsNullOrWhiteSpace(p.SegundoPadraoPreQualificacao);
+    }
+
+    private bool ValidarBlocoG(Conscrito c)
+    {
+        var e = c.Entrevista_Esportes;
+
+        return !string.IsNullOrWhiteSpace(e.PraticaEsportes) &&
+               !string.IsNullOrWhiteSpace(e.QuaisEsportes) &&
+               !string.IsNullOrWhiteSpace(e.EhOuJaFoiFederado) &&
+               !string.IsNullOrWhiteSpace(e.SabeNadar);
+    }
+
+    private bool ValidarBlocoH(Conscrito c)
+    {
+        return !string.IsNullOrWhiteSpace(c.Entrevista_Lazer.OQueFazNasHorasDeLazer);
+    }
+
+    private bool ValidarBlocoI(Conscrito c)
+    {
+        var s = c.Entrevista_Saude;
+
+        return !string.IsNullOrWhiteSpace(s.JaTeveProblemaSaude) &&
+               !string.IsNullOrWhiteSpace(s.QualProblemaSaude) &&
+               !string.IsNullOrWhiteSpace(s.UsaRemedioControlado) &&
+               !string.IsNullOrWhiteSpace(s.QualRemedioControlado) &&
+               !string.IsNullOrWhiteSpace(s.ParaQueUsaRemedioControlado) &&
+               !string.IsNullOrWhiteSpace(s.HaQuantoTempoUsaRemedioControlado) &&
+               !string.IsNullOrWhiteSpace(s.PorQuantoTempoAindaUsaraRemedio) &&
+               !string.IsNullOrWhiteSpace(s.JaEsteveInternadoHospitalOuClinicaPsiquiatrica) &&
+               !string.IsNullOrWhiteSpace(s.MotivoInternacao) &&
+               !string.IsNullOrWhiteSpace(s.TempoInternacao) &&
+               !string.IsNullOrWhiteSpace(s.Fuma) &&
+               !string.IsNullOrWhiteSpace(s.HaQuantoTempoFuma) &&
+               !string.IsNullOrWhiteSpace(s.FazUsoBebidaAlcoolica) &&
+               !string.IsNullOrWhiteSpace(s.FrequenciaBebidaAlcoolica) &&
+               !string.IsNullOrWhiteSpace(s.JaExperimentouDrogas) &&
+               !string.IsNullOrWhiteSpace(s.QualDroga) &&
+               !string.IsNullOrWhiteSpace(s.AindaFazUsoDroga) &&
+               !string.IsNullOrWhiteSpace(s.FrequenciaUsoDroga) &&
+               !string.IsNullOrWhiteSpace(s.QuandoFoiUltimaVezQueUtilizouDroga) &&
+               !string.IsNullOrWhiteSpace(s.PossuiParenteUsuarioDrogas) &&
+               !string.IsNullOrWhiteSpace(s.QuemParenteUsuarioDrogas) &&
+               !string.IsNullOrWhiteSpace(s.ComoParenteUsuarioDrogasAfetaSuaVida) &&
+               !string.IsNullOrWhiteSpace(s.PossuiParenteComHistoricoTranstornoPsiquiatrico) &&
+               !string.IsNullOrWhiteSpace(s.QuemParenteComHistoricoTranstornoPsiquiatrico) &&
+               !string.IsNullOrWhiteSpace(s.ComoTranstornoPsiquiatricoAfetaSuaVida);
+    }
+
+    private bool ValidarBlocoJ(Conscrito c)
+    {
+        var i = c.Entrevista_Infracao;
+
+        return !string.IsNullOrWhiteSpace(i.JaFoiDetidoPelaPolicia) &&
+               !string.IsNullOrWhiteSpace(i.QualFoiAInfracao) &&
+               !string.IsNullOrWhiteSpace(i.OutrosAtosInfracionais);
+    }
+
+    private bool ValidarFichaCompleta(Conscrito c)
+    {
+        return ValidarInformacoesBasicas(c) &&
+               ValidarBlocoA(c) &&
+               ValidarBlocoB(c) &&
+               ValidarBlocoC(c) &&
+               ValidarBlocoD(c) &&
+               ValidarBlocoE(c) &&
+               ValidarBlocoF(c) &&
+               ValidarBlocoG(c) &&
+               ValidarBlocoH(c) &&
+               ValidarBlocoI(c) &&
+               ValidarBlocoJ(c) &&
+               !string.IsNullOrWhiteSpace(c.DesejaServir);
+    }
 
 }

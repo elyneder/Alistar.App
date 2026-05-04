@@ -21,20 +21,7 @@
     "Entrevista_Lazer": null,
     "Entrevista_Saude": null,
     "Entrevista_Infracao": null,
-    "Altura": "",
-    "Peso": "",
-    "ProblemaPostura": "",
-    "ObservacaoProblemaPostura": "",
-    "DificuldadeVisualOuPrecisaOculos": "",
-    "TesteAuditivoAlterado": "",
-    "ObservacaoTesteAuditivo": "",
-    "PressaoArterial": "",
-    "FrequenciaCardiaca": "",
-    "Respiracao": "",
-    "FamiliaTemDoencasGraves": "",
-    "JaTeveProblemaCardiacoOuRespiratorio": "",
-    "JaTeveAnsiedadeDepressaoOuAcompanhamentoPsicologico": "",
-    "TemDificuldadeParaDormir": ""
+    "Entrevista_Medica": null
   },
   {
     "Id": "596c7254-48c0-425c-8873-807999e3a3bb",
@@ -58,20 +45,7 @@
     "Entrevista_Lazer": null,
     "Entrevista_Saude": null,
     "Entrevista_Infracao": null,
-    "Altura": "",
-    "Peso": "",
-    "ProblemaPostura": "",
-    "ObservacaoProblemaPostura": "",
-    "DificuldadeVisualOuPrecisaOculos": "",
-    "TesteAuditivoAlterado": "",
-    "ObservacaoTesteAuditivo": "",
-    "PressaoArterial": "",
-    "FrequenciaCardiaca": "",
-    "Respiracao": "",
-    "FamiliaTemDoencasGraves": "",
-    "JaTeveProblemaCardiacoOuRespiratorio": "",
-    "JaTeveAnsiedadeDepressaoOuAcompanhamentoPsicologico": "",
-    "TemDificuldadeParaDormir": ""
+    "Entrevista_Medica": null
   },
   {
     "Id": "6e073261-8258-4975-9383-7bd5eee5fe98",
@@ -166,19 +140,101 @@
       "QualFoiAInfracao": "",
       "OutrosAtosInfracionais": ""
     },
-    "Altura": "",
-    "Peso": "",
-    "ProblemaPostura": "",
-    "ObservacaoProblemaPostura": "",
-    "DificuldadeVisualOuPrecisaOculos": "",
-    "TesteAuditivoAlterado": "",
-    "ObservacaoTesteAuditivo": "",
-    "PressaoArterial": "",
-    "FrequenciaCardiaca": "",
-    "Respiracao": "",
-    "FamiliaTemDoencasGraves": "",
-    "JaTeveProblemaCardiacoOuRespiratorio": "",
-    "JaTeveAnsiedadeDepressaoOuAcompanhamentoPsicologico": "",
-    "TemDificuldadeParaDormir": ""
+    "Entrevista_Medica": null
+  },
+  {
+    "Id": "48cd017a-eb9d-4749-b0d1-482f6ebac2ec",
+    "Name": "Ademilton",
+    "CPF": "123",
+    "RA": "1234",
+    "Situacao": "Indefinido",
+    "MotherName": "Mae",
+    "BirthDate": "01/01/2000",
+    "PaisResidencia": "qua",
+    "MunicipioResidencia": "qu",
+    "ZonaResidencia": "Urbana",
+    "DesejaServir": "",
+    "Entrevista_Vida_Pessoal": {
+      "Address": "Rua",
+      "Bairro": "casa",
+      "CEP": "12",
+      "Telefone": "12",
+      "City": "Bra",
+      "Email": "adem@email",
+      "Ocupacao": "nao",
+      "MoraCom": "nao",
+      "EstadoCivil": "",
+      "PossuiFilhos": "",
+      "QuantidadeFilhos": "",
+      "QuemTrabalhaNaFamilia": "",
+      "QuemSustentaAFamilia": "",
+      "RecebeAuxilioGovernamental": ""
+    },
+    "Entrevista_Arrimo_De_Familia": {
+      "SituacaoArrimo": "",
+      "EstudaAtualmente": "",
+      "Education": ""
+    },
+    "Entrevista_Cursos": {
+      "TemCursosProfissionalizantes": "",
+      "QuaisCursosProfissionalizantes": "",
+      "ComprovaCursosProfissionalizantes": ""
+    },
+    "Entrevista_Experiencia": {
+      "ExperienciaProfissional": "",
+      "QuaisExperienciasProfissionais": "",
+      "ComprovaExperienciaProfissional": ""
+    },
+    "Entrevista_Habilitacao": {
+      "PossuiCNH": "",
+      "RealizandoCursoParaHabilitacao": "",
+      "CategoriaCNH": ""
+    },
+    "Entrevista_Pre_Qualificacao_Imediata": {
+      "PrimeiroPadraoPreQualificacao": "",
+      "SegundoPadraoPreQualificacao": ""
+    },
+    "Entrevista_Esportes": {
+      "PraticaEsportes": "",
+      "QuaisEsportes": "",
+      "EhOuJaFoiFederado": "",
+      "SabeNadar": ""
+    },
+    "Entrevista_Lazer": {
+      "OQueFazNasHorasDeLazer": ""
+    },
+    "Entrevista_Saude": {
+      "JaTeveProblemaSaude": "",
+      "QualProblemaSaude": "",
+      "UsaRemedioControlado": "",
+      "QualRemedioControlado": "",
+      "ParaQueUsaRemedioControlado": "",
+      "HaQuantoTempoUsaRemedioControlado": "",
+      "PorQuantoTempoAindaUsaraRemedio": "",
+      "JaEsteveInternadoHospitalOuClinicaPsiquiatrica": "",
+      "MotivoInternacao": "",
+      "TempoInternacao": "",
+      "Fuma": "",
+      "HaQuantoTempoFuma": "",
+      "FazUsoBebidaAlcoolica": "",
+      "FrequenciaBebidaAlcoolica": "",
+      "JaExperimentouDrogas": "",
+      "QualDroga": "",
+      "AindaFazUsoDroga": "",
+      "FrequenciaUsoDroga": "",
+      "QuandoFoiUltimaVezQueUtilizouDroga": "",
+      "PossuiParenteUsuarioDrogas": "",
+      "QuemParenteUsuarioDrogas": "",
+      "ComoParenteUsuarioDrogasAfetaSuaVida": "",
+      "PossuiParenteComHistoricoTranstornoPsiquiatrico": "",
+      "QuemParenteComHistoricoTranstornoPsiquiatrico": "",
+      "ComoTranstornoPsiquiatricoAfetaSuaVida": ""
+    },
+    "Entrevista_Infracao": {
+      "JaFoiDetidoPelaPolicia": "",
+      "QualFoiAInfracao": "",
+      "OutrosAtosInfracionais": ""
+    },
+    "Entrevista_Medica": null
   }
 ]

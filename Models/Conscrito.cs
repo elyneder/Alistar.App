@@ -22,15 +22,15 @@ public class Conscrito
     public string MunicipioResidencia { get; set; } = string.Empty;
     public string ZonaResidencia { get; set; } = string.Empty;
     public string DesejaServir { get; set; } = string.Empty;
-    public VidaPessoal Entrevista_Vida_Pessoal { get; set; }
-    public Arrimo Entrevista_Arrimo_De_Familia { get; set; }
-    public Cursos Entrevista_Cursos { get; set; }
-    public Experiencia Entrevista_Experiencia { get; set; }
-    public Habilitacao Entrevista_Habilitacao { get; set; }
-    public PreImediata Entrevista_Pre_Qualificacao_Imediata { get; set; }
-    public Esportes Entrevista_Esportes { get; set; }
-    public Lazer Entrevista_Lazer { get; set; }
-    public Saude Entrevista_Saude { get; set; }
-    public Infracao Entrevista_Infracao { get; set; }
-    public EntrevistaMedica Entrevista_Medica { get; set; }
+    public VidaPessoal Entrevista_Vida_Pessoal { get; set; } = new VidaPessoal();
+    public Arrimo Entrevista_Arrimo_De_Familia { get; set; } = new Arrimo();
+    public Cursos Entrevista_Cursos { get; set; } = new Cursos();
+    public Experiencia Entrevista_Experiencia { get; set; } = new Experiencia();
+    public Habilitacao Entrevista_Habilitacao { get; set; } = new Habilitacao();
+    public PreImediata Entrevista_Pre_Qualificacao_Imediata { get; set; } = new PreImediata();
+    public Esportes Entrevista_Esportes { get; set; } = new Esportes();
+    public Lazer Entrevista_Lazer { get; set; } = new Lazer();
+    public Saude Entrevista_Saude { get; set; } = new Saude();
+    public Infracao Entrevista_Infracao { get; set; } = new Infracao();
+    public EntrevistaMedica Entrevista_Medica { get; set; } = new EntrevistaMedica();
 }

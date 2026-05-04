@@ -114,6 +114,35 @@
             <Setter Property="FontSize" Value="13" />
             <Setter Property="Margin" Value="10,0,0,0" />
         </Style>
+
+        <Style x:Key="CartaoEtapaWizardStyle" TargetType="Border">
+            <Setter Property="Background" Value="White" />
+            <Setter Property="BorderBrush" Value="#D9E1DD" />
+            <Setter Property="BorderThickness" Value="1" />
+            <Setter Property="CornerRadius" Value="14" />
+            <Setter Property="Padding" Value="16,12" />
+            <Setter Property="Margin" Value="0,0,12,0" />
+        </Style>
+
+        <Style x:Key="NumeroEtapaWizardStyle" TargetType="TextBlock">
+            <Setter Property="Foreground" Value="#123322" />
+            <Setter Property="FontWeight" Value="Bold" />
+            <Setter Property="FontSize" Value="18" />
+        </Style>
+
+        <Style x:Key="TituloEtapaWizardStyle" TargetType="TextBlock">
+            <Setter Property="Foreground" Value="#123322" />
+            <Setter Property="FontWeight" Value="SemiBold" />
+            <Setter Property="FontSize" Value="13" />
+            <Setter Property="Margin" Value="0,4,0,0" />
+        </Style>
+
+        <Style x:Key="DescricaoEtapaWizardStyle" TargetType="TextBlock">
+            <Setter Property="Foreground" Value="#5F7168" />
+            <Setter Property="FontSize" Value="12" />
+            <Setter Property="TextWrapping" Value="Wrap" />
+            <Setter Property="Margin" Value="0,2,0,0" />
+        </Style>
     </Window.Resources>
 
     <Grid Background="#F4F7F6">
@@ -346,7 +375,65 @@
                                        Style="{StaticResource DescricaoBlocoPapelStyle}" 
                                        TextAlignment="Center"/>
 
-                            <Border Style="{StaticResource CaixaSecaoDocumentoStyle}">
+                            <Border Background="#F8FBF9"
+                                    BorderBrush="#DDE7E1"
+                                    BorderThickness="1"
+                                    CornerRadius="18"
+                                    Padding="18"
+                                    Margin="0,0,0,20">
+                                <StackPanel>
+                                    <UniformGrid Columns="4"
+                                                 Margin="0,0,0,16">
+                                        <Border x:Name="IndicadorEtapaBasica" Style="{StaticResource CartaoEtapaWizardStyle}">
+                                            <StackPanel>
+                                                <TextBlock Text="01" Style="{StaticResource NumeroEtapaWizardStyle}" />
+                                                <TextBlock Text="Informações básicas" Style="{StaticResource TituloEtapaWizardStyle}" />
+                                                <TextBlock Text="Dados iniciais obrigatórios" Style="{StaticResource DescricaoEtapaWizardStyle}" />
+                                            </StackPanel>
+                                        </Border>
+
+                                        <Border x:Name="IndicadorEtapaQuestionario" Style="{StaticResource CartaoEtapaWizardStyle}">
+                                            <StackPanel>
+                                                <TextBlock Text="02" Style="{StaticResource NumeroEtapaWizardStyle}" />
+                                                <TextBlock Text="Blocos A até J" Style="{StaticResource TituloEtapaWizardStyle}" />
+                                                <TextBlock Text="Questionário complementar" Style="{StaticResource DescricaoEtapaWizardStyle}" />
+                                            </StackPanel>
+                                        </Border>
+
+                                        <Border x:Name="IndicadorEtapaManifestacao" Style="{StaticResource CartaoEtapaWizardStyle}">
+                                            <StackPanel>
+                                                <TextBlock Text="03" Style="{StaticResource NumeroEtapaWizardStyle}" />
+                                                <TextBlock Text="Bloco K" Style="{StaticResource TituloEtapaWizardStyle}" />
+                                                <TextBlock Text="Manifestação do desejo de servir" Style="{StaticResource DescricaoEtapaWizardStyle}" />
+                                            </StackPanel>
+                                        </Border>
+
+                                        <Border x:Name="IndicadorEtapaConfirmacao" Style="{StaticResource CartaoEtapaWizardStyle}" Margin="0">
+                                            <StackPanel>
+                                                <TextBlock Text="04" Style="{StaticResource NumeroEtapaWizardStyle}" />
+                                                <TextBlock Text="Confirmação final" Style="{StaticResource TituloEtapaWizardStyle}" />
+                                                <TextBlock Text="Formulário completo para revisão" Style="{StaticResource DescricaoEtapaWizardStyle}" />
+                                            </StackPanel>
+                                        </Border>
+                                    </UniformGrid>
+
+                                    <TextBlock x:Name="TextoEtapaWizard"
+                                               Text="Etapa 1 de 4 · Informações básicas"
+                                               Foreground="#123322"
+                                               FontSize="18"
+                                               FontWeight="SemiBold"
+                                               TextAlignment="Center" />
+                                    <TextBlock x:Name="TextoResumoEtapaWizard"
+                                               Margin="0,6,0,0"
+                                               Text="Preencha os dados essenciais do conscrito para iniciar o cadastro."
+                                               Foreground="#63756E"
+                                               FontSize="13"
+                                               TextWrapping="Wrap"
+                                               TextAlignment="Center" />
+                                </StackPanel>
+                            </Border>
+
+                            <Border x:Name="SecaoInformacoesBasicas" Style="{StaticResource CaixaSecaoDocumentoStyle}">
                                 <StackPanel>
                                     <TextBlock Text="INFORMAÇÕES BÁSICAS PARA SELEÇÃO"
                                                Style="{StaticResource TituloSecaoPapelStyle}" />
@@ -375,7 +462,10 @@
                                     <StackPanel Style="{StaticResource PainelCampoVerticalStyle}">
                                         <TextBlock Text="CPF:" Style="{StaticResource RotuloCampoDocumentoStyle}" />
                                         <Border Style="{StaticResource LinhaCampoDocumentoStyle}">
-                                            <TextBox x:Name="CaixaTextoCPF" Style="{StaticResource CampoTextoDocumentoStyle}" />
+                                                <TextBox x:Name="CaixaTextoCPF"
+                                                         MaxLength="14"
+                                                         TextChanged="CampoComMascara_TextChanged"
+                                                         Style="{StaticResource CampoTextoDocumentoStyle}" />
                                         </Border>
                                     </StackPanel>
 
@@ -390,6 +480,8 @@
                                         <TextBlock Text="Data de nascimento:" Style="{StaticResource RotuloCampoDocumentoStyle}" />
                                         <Border Style="{StaticResource LinhaCampoDocumentoStyle}">
                                             <TextBox x:Name="CaixaTextoDataNascimento"
+                                                     MaxLength="10"
+                                                     TextChanged="CampoComMascara_TextChanged"
                                                      ToolTip="Exemplo: 15/04/2006"
                                                      Style="{StaticResource CampoTextoDocumentoStyle}" />
                                         </Border>
@@ -443,9 +535,10 @@
                                 </StackPanel>
                             </Border>
 
-                            <Border Style="{StaticResource CaixaSecaoDocumentoStyle}">
-                                <StackPanel>
-                                    <TextBlock Text="A. VIDA PESSOAL"
+                            <StackPanel x:Name="PainelSecoesQuestionario">
+                                <Border x:Name="SecaoBlocoA" Style="{StaticResource CaixaSecaoDocumentoStyle}">
+                                    <StackPanel>
+                                        <TextBlock Text="A. VIDA PESSOAL"
                                                Style="{StaticResource TituloSecaoPapelStyle}" />
 
                                     <StackPanel Style="{StaticResource PainelCampoVerticalStyle}">
@@ -472,14 +565,20 @@
                                         <StackPanel Grid.Column="1" Margin="0,0,24,0">
                                             <TextBlock Text="CEP:" Style="{StaticResource RotuloCampoDocumentoStyle}" />
                                             <Border Style="{StaticResource LinhaCampoDocumentoStyle}">
-                                                <TextBox x:Name="CaixaTextoCEP" Style="{StaticResource CampoTextoDocumentoStyle}" />
+                                                <TextBox x:Name="CaixaTextoCEP"
+                                                         MaxLength="9"
+                                                         TextChanged="CampoComMascara_TextChanged"
+                                                         Style="{StaticResource CampoTextoDocumentoStyle}" />
                                             </Border>
                                         </StackPanel>
 
                                         <StackPanel Grid.Column="2">
                                             <TextBlock Text="Telefone:" Style="{StaticResource RotuloCampoDocumentoStyle}" />
                                             <Border Style="{StaticResource LinhaCampoDocumentoStyle}">
-                                                <TextBox x:Name="CaixaTextoTelefone" Style="{StaticResource CampoTextoDocumentoStyle}" />
+                                                <TextBox x:Name="CaixaTextoTelefone"
+                                                         MaxLength="15"
+                                                         TextChanged="CampoComMascara_TextChanged"
+                                                         Style="{StaticResource CampoTextoDocumentoStyle}" />
                                             </Border>
                                         </StackPanel>
                                     </Grid>
@@ -579,7 +678,7 @@
                                 </StackPanel>
                             </Border>
 
-                            <Border Style="{StaticResource CaixaSecaoDocumentoStyle}">
+                            <Border x:Name="SecaoBlocoB" Style="{StaticResource CaixaSecaoDocumentoStyle}">
                                 <StackPanel>
                                     <TextBlock Text="B. ARRIMO DE FAMILIA"
                                                Style="{StaticResource TituloSecaoPapelStyle}" />
@@ -622,7 +721,7 @@
                                 </StackPanel>
                             </Border>
 
-                            <Border Style="{StaticResource CaixaSecaoDocumentoStyle}">
+                            <Border x:Name="SecaoBlocoC" Style="{StaticResource CaixaSecaoDocumentoStyle}">
                                 <StackPanel>
                                     <TextBlock Text="C. CURSOS"
                                                Style="{StaticResource TituloSecaoPapelStyle}" />
@@ -666,7 +765,7 @@
                                 </StackPanel>
                             </Border>
 
-                            <Border Style="{StaticResource CaixaSecaoDocumentoStyle}">
+                            <Border x:Name="SecaoBlocoD" Style="{StaticResource CaixaSecaoDocumentoStyle}">
                                 <StackPanel>
                                     <TextBlock Text="D. EXPERIÊNCIA"
                                                Style="{StaticResource TituloSecaoPapelStyle}" />
@@ -710,7 +809,7 @@
                                 </StackPanel>
                             </Border>
 
-                            <Border Style="{StaticResource CaixaSecaoDocumentoStyle}">
+                            <Border x:Name="SecaoBlocoE" Style="{StaticResource CaixaSecaoDocumentoStyle}">
                                 <StackPanel>
                                     <TextBlock Text="E. HABILITAÇÃO"
                                                Style="{StaticResource TituloSecaoPapelStyle}" />
@@ -754,7 +853,7 @@
                                 </StackPanel>
                             </Border>
 
-                            <Border Style="{StaticResource CaixaSecaoDocumentoStyle}">
+                            <Border x:Name="SecaoBlocoF" Style="{StaticResource CaixaSecaoDocumentoStyle}">
                                 <StackPanel>
                                     <TextBlock Text="F. PRE-QUALIFICAÇÃO IMEDIATA"
                                                Style="{StaticResource TituloSecaoPapelStyle}" />
@@ -775,7 +874,7 @@
                                 </StackPanel>
                             </Border>
 
-                            <Border Style="{StaticResource CaixaSecaoDocumentoStyle}">
+                            <Border x:Name="SecaoBlocoG" Style="{StaticResource CaixaSecaoDocumentoStyle}">
                                 <StackPanel>
                                     <TextBlock Text="G. PRÁTICA DE ESPORTES"
                                                Style="{StaticResource TituloSecaoPapelStyle}" />
@@ -836,7 +935,7 @@
                                 </StackPanel>
                             </Border>
 
-                            <Border Style="{StaticResource CaixaSecaoDocumentoStyle}">
+                            <Border x:Name="SecaoBlocoH" Style="{StaticResource CaixaSecaoDocumentoStyle}">
                                 <StackPanel>
                                     <TextBlock Text="H. LAZER"
                                                Style="{StaticResource TituloSecaoPapelStyle}" />
@@ -850,7 +949,7 @@
                                 </StackPanel>
                             </Border>
 
-                            <Border Style="{StaticResource CaixaSecaoDocumentoStyle}">
+                            <Border x:Name="SecaoBlocoI" Style="{StaticResource CaixaSecaoDocumentoStyle}">
                                 <StackPanel>
                                     <TextBlock Text="I. SAÚDE"
                                                Style="{StaticResource TituloSecaoPapelStyle}" />
@@ -1140,7 +1239,7 @@
                                 </StackPanel>
                             </Border>
 
-                            <Border Style="{StaticResource CaixaSecaoDocumentoStyle}">
+                            <Border x:Name="SecaoBlocoJ" Style="{StaticResource CaixaSecaoDocumentoStyle}">
                                 <StackPanel>
                                     <TextBlock Text="J. ATO INFRACIONAL"
                                                Style="{StaticResource TituloSecaoPapelStyle}" />
@@ -1178,8 +1277,9 @@
                                     </StackPanel>
                                 </StackPanel>
                             </Border>
+                            </StackPanel>
 
-                            <Border Style="{StaticResource CaixaSecaoDocumentoStyle}">
+                            <Border x:Name="SecaoManifestacaoDesejoServir" Style="{StaticResource CaixaSecaoDocumentoStyle}">
                                 <StackPanel>
                                     <TextBlock Text="K. MANIFESTAÇÃO DO DESEJO DE SERVIR"
                                                Style="{StaticResource TituloSecaoPapelStyle}" />
@@ -1206,17 +1306,39 @@
 
                             <StackPanel Orientation="Horizontal"
                                         HorizontalAlignment="Center">
+                                <Button x:Name="BotaoVoltarEtapaWizard"
+                                    Width="120"
+                                    Margin="0,8,0,0"
+                                    Style="{StaticResource BotaoSecundarioStyle}"
+                                    Click="VoltarEtapaWizardBotao_Click">
+                                    <StackPanel Orientation="Horizontal">
+                                        <Canvas Width="14" Height="14" Margin="0,0,6,0" VerticalAlignment="Center">
+                                            <Line X1="8" Y1="1" X2="1" Y2="7" Stroke="#196743" StrokeThickness="1.5" StrokeStartLineCap="Round" StrokeEndLineCap="Round"/>
+                                            <Line X1="1" Y1="7" X2="8" Y2="13" Stroke="#196743" StrokeThickness="1.5" StrokeStartLineCap="Round" StrokeEndLineCap="Round"/>
+                                            <Line X1="1" Y1="7" X2="13" Y2="7" Stroke="#196743" StrokeThickness="1.5" StrokeStartLineCap="Round" StrokeEndLineCap="Round"/>
+                                        </Canvas>
+                                        <TextBlock Text="Voltar"/>
+                                    </StackPanel>
+                                </Button>
+
                                 <Button x:Name="BotaoSalvarConscrito"
                                     Width="180"
+                                    Margin="16,8,0,0"
                                     Style="{StaticResource BotaoPrimarioStyle}"
                                     Click="SalvarConscritoBotao_Click">
                                     <StackPanel Orientation="Horizontal">
-                                        <Canvas Width="14" Height="14" Margin="0,0,6,0">
+                                        <TextBlock x:Name="IconeAvancarBotaoSalvar"
+                                                   Text="->"
+                                                   FontWeight="Bold"
+                                                   FontSize="14"
+                                                   Margin="0,0,6,0"
+                                                   VerticalAlignment="Center" />
+                                        <Canvas x:Name="IconeSalvarBotaoSalvar" Width="14" Height="14" Margin="0,0,6,0" Visibility="Collapsed">
                                             <Polyline Points="2,7 6,11 12,3"
                                               Stroke="White" StrokeThickness="1.5"
                                               StrokeLineJoin="Round" StrokeStartLineCap="Round" StrokeEndLineCap="Round"/>
                                         </Canvas>
-                                        <TextBlock x:Name="TextoBotaoSalvar" Text="Salvar Ficha"/>
+                                        <TextBlock x:Name="TextoBotaoSalvar" Text="Próximo"/>
                                     </StackPanel>
                                 </Button>
 
@@ -1536,5 +1658,4 @@
         </Grid>
     </Grid>
 </Window>
-
 

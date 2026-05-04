@@ -5,6 +5,7 @@
         Height="520"
         Width="860"
         WindowStartupLocation="CenterOwner">
+    <!-- Estrutura inicial da quarta etapa, reservada para entrevista tecnica. -->
     <Grid Background="#F4F7F6">
         <Border Margin="24"
                 Padding="28"

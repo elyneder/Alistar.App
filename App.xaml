@@ -3,6 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              StartupUri="./Views/TelaLogin.xaml">
     <Application.Resources>
+        <!-- Recursos globais: cores, pincéis e estilos reutilizados pelas telas WPF. -->
         <Color x:Key="CorVerdePrimaria">#145C3B</Color>
         <Color x:Key="CorVerdeEscura">#0B1511</Color>
         <Color x:Key="CorBordaPainel">#DDE7E2</Color>

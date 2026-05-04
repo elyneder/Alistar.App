@@ -7,8 +7,17 @@ using Alistar.App.Services;
 
 namespace Alistar.App;
 
+/// <summary>
+/// Tela da primeira etapa de selecao/cadastro do conscrito.
+/// </summary>
+/// <remarks>
+/// Esta tela possui duas responsabilidades principais: cadastrar/editar a ficha
+/// completa do conscrito e consultar a lista de conscritos cadastrados.
+/// O formulario foi dividido em wizard para reduzir a quantidade de campos por tela.
+/// </remarks>
 public partial class TelaPrimeiraEtapa : Window
 {
+    // Indices usados para controlar qual parte do formulario aparece no wizard.
     private const int EtapaWizardInformacoesBasicas = 0;
     private const int EtapaWizardBlocoA = 1;
     private const int EtapaWizardBlocoB = 2;
@@ -24,6 +33,7 @@ public partial class TelaPrimeiraEtapa : Window
     private const int EtapaWizardConfirmacao = 12;
     private const int TotalEtapasWizard = 13;
 
+    // Cores usadas para destacar a etapa atual e as etapas ja concluidas.
     private static readonly Brush FundoEtapaAtiva = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#E3F5EA")!);
     private static readonly Brush FundoEtapaConcluida = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#F2FBF6")!);
     private static readonly Brush FundoEtapaInativa = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FFFFFF")!);
@@ -31,6 +41,7 @@ public partial class TelaPrimeiraEtapa : Window
     private static readonly Brush BordaEtapaConcluida = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#8CC7A3")!);
     private static readonly Brush BordaEtapaInativa = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#D9E1DD")!);
 
+    // Estado da tela: edicao, etapa atual, mascara de campos e lista carregada.
     private readonly Conscrito? _conscritoInicial;
     private readonly bool _abrirListaAoIniciar;
     private string? _idConscritoEmEdicao;
@@ -55,6 +66,9 @@ public partial class TelaPrimeiraEtapa : Window
 
     private bool EmModoEdicao => !string.IsNullOrWhiteSpace(_idConscritoEmEdicao);
 
+    /// <summary>
+    /// Decide se a tela inicia em novo cadastro, edicao ou lista de conscritos.
+    /// </summary>
     private void PrepararTela()
     {
         PainelFiltrosRapidos.Visibility = Visibility.Collapsed;
@@ -179,6 +193,9 @@ public partial class TelaPrimeiraEtapa : Window
         AplicarFiltrosLista();
     }
 
+    /// <summary>
+    /// Botao principal do formulario: avanca no wizard ou salva na confirmacao.
+    /// </summary>
     private void SalvarConscritoBotao_Click(object sender, RoutedEventArgs e)
     {
         TextoFeedbackCadastroConscrito.Text = string.Empty;
@@ -296,6 +313,9 @@ public partial class TelaPrimeiraEtapa : Window
         DefinirEtapaWizard(EtapaWizardInformacoesBasicas);
     }
 
+    /// <summary>
+    /// Carrega um conscrito existente para edicao, preenchendo todos os campos.
+    /// </summary>
     private void CarregarConscritoParaEdicao(Conscrito conscrito)
     {
         _idConscritoEmEdicao = conscrito.Id;
@@ -388,6 +408,9 @@ public partial class TelaPrimeiraEtapa : Window
         DefinirEtapaWizard(_etapaWizardAtual - 1);
     }
 
+    /// <summary>
+    /// Define a etapa atual do wizard e atualiza a interface.
+    /// </summary>
     private void DefinirEtapaWizard(int etapa)
     {
         _etapaWizardAtual = Math.Max(EtapaWizardInformacoesBasicas, Math.Min(EtapaWizardConfirmacao, etapa));
@@ -400,6 +423,9 @@ public partial class TelaPrimeiraEtapa : Window
         DefinirEtapaWizard(_etapaWizardAtual + 1);
     }
 
+    /// <summary>
+    /// Mostra somente a secao da etapa atual. Na confirmacao, mostra o formulario completo.
+    /// </summary>
     private void AtualizarWizardFormulario()
     {
         var mostrarFormularioCompleto = _etapaWizardAtual == EtapaWizardConfirmacao;
@@ -505,6 +531,9 @@ public partial class TelaPrimeiraEtapa : Window
         AplicarVisualIndicadorEtapa(indicador, etapaAtiva, etapaConcluida);
     }
 
+    /// <summary>
+    /// Aplica o visual de ativo/concluido/inativo em cada card do wizard.
+    /// </summary>
     private static void AplicarVisualIndicadorEtapa(Border indicador, bool etapaAtiva, bool etapaConcluida)
     {
         indicador.Background = etapaAtiva
@@ -520,6 +549,9 @@ public partial class TelaPrimeiraEtapa : Window
         indicador.BorderThickness = etapaAtiva ? new Thickness(2) : new Thickness(1);
     }
 
+    /// <summary>
+    /// Aplica mascara nos campos de CPF, data, CEP e telefone enquanto o usuario digita.
+    /// </summary>
     private void CampoComMascara_TextChanged(object sender, TextChangedEventArgs e)
     {
         if (_atualizandoMascara || sender is not TextBox caixaTexto)
@@ -616,6 +648,9 @@ public partial class TelaPrimeiraEtapa : Window
         return true;
     }
 
+    /// <summary>
+    /// Valida a etapa atual antes de permitir avancar no wizard.
+    /// </summary>
     private bool ValidarEtapaAtualFormulario()
     {
         var areaValidacao = ObterAreaValidacaoEtapaAtual();
@@ -628,6 +663,9 @@ public partial class TelaPrimeiraEtapa : Window
         return false;
     }
 
+    /// <summary>
+    /// Valida todos os campos antes de salvar a ficha final.
+    /// </summary>
     private bool ValidarFormularioCompleto()
     {
         if (FormularioEstaPreenchido(PainelFormularioCadastro))
@@ -659,6 +697,9 @@ public partial class TelaPrimeiraEtapa : Window
         };
     }
 
+    /// <summary>
+    /// Percorre os controles visiveis e verifica se TextBox e ComboBox estao preenchidos.
+    /// </summary>
     private static bool FormularioEstaPreenchido(DependencyObject elemento)
     {
         if (elemento is UIElement { Visibility: Visibility.Collapsed })
@@ -690,6 +731,9 @@ public partial class TelaPrimeiraEtapa : Window
         return true;
     }
 
+    /// <summary>
+    /// Monta o objeto Conscrito usando os valores digitados nos controles da tela.
+    /// </summary>
     private Conscrito MontarConscritoPeloFormulario()
     {
         return new Conscrito
@@ -775,6 +819,9 @@ public partial class TelaPrimeiraEtapa : Window
         return texto == "Selecione" ? string.Empty : texto;
     }
 
+    /// <summary>
+    /// Aplica pesquisa e filtros rapidos na lista de conscritos.
+    /// </summary>
     private void AplicarFiltrosLista()
     {
         IEnumerable<Conscrito> consulta = _conscritosCarregados;

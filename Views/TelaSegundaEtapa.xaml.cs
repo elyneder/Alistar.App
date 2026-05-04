@@ -6,8 +6,16 @@ using Alistar.App.Services;
 
 namespace Alistar.App;
 
+/// <summary>
+/// Tela da segunda etapa, responsavel pela avaliacao medica do conscrito.
+/// </summary>
+/// <remarks>
+/// A identificacao usa busca por RA para reaproveitar o cadastro feito na primeira
+/// etapa. Depois disso, os blocos medicos sao preenchidos em formato de wizard.
+/// </remarks>
 public partial class TelaSegundaEtapa : Window
 {
+    // Constantes que representam cada passo do wizard da avaliacao medica.
     private const int EtapaWizardIdentificacao = 0;
     private const int EtapaWizardAvaliacaoFisica = 1;
     private const int EtapaWizardVisao = 2;
@@ -18,6 +26,7 @@ public partial class TelaSegundaEtapa : Window
     private const int EtapaWizardConfirmacao = 7;
     private const int TotalEtapasWizard = 8;
 
+    // Cores dos cards de progresso do wizard.
     private static readonly Brush FundoEtapaAtiva = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#E3F5EA")!);
     private static readonly Brush FundoEtapaConcluida = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#F2FBF6")!);
     private static readonly Brush FundoEtapaInativa = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FFFFFF")!);
@@ -25,6 +34,7 @@ public partial class TelaSegundaEtapa : Window
     private static readonly Brush BordaEtapaConcluida = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#8CC7A3")!);
     private static readonly Brush BordaEtapaInativa = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#D9E1DD")!);
 
+    // Estado local usado pelo wizard, pela mascara de CPF e pela busca de conscritos.
     private int _etapaWizardAtual = EtapaWizardIdentificacao;
     private bool _atualizandoMascara;
     private bool _atualizandoBuscaConscrito;
@@ -81,6 +91,9 @@ public partial class TelaSegundaEtapa : Window
         Close();
     }
 
+    /// <summary>
+    /// Botao principal: avanca etapas e, na confirmacao, grava a avaliacao medica.
+    /// </summary>
     private void SalvarBotao_Click(object sender, RoutedEventArgs e)
     {
         TextoFeedback.Foreground = Brushes.Firebrick;
@@ -93,7 +106,7 @@ public partial class TelaSegundaEtapa : Window
 
         if (_etapaWizardAtual != EtapaWizardConfirmacao)
         {
-            if (_etapaWizardAtual == EtapaWizardIdentificacao && !ValidarIdentificacao(nome, cpf, ra))
+            if (!ValidarEtapaAtualFormulario(nome, cpf, ra))
             {
                 return;
             }
@@ -102,7 +115,7 @@ public partial class TelaSegundaEtapa : Window
             return;
         }
 
-        if (!ValidarIdentificacao(nome, cpf, ra))
+        if (!ValidarFormularioCompleto(nome, cpf, ra))
         {
             return;
         }
@@ -135,6 +148,9 @@ public partial class TelaSegundaEtapa : Window
         CarregarResumo();
     }
 
+    /// <summary>
+    /// Garante que o conscrito foi selecionado/preenchido antes de avancar.
+    /// </summary>
     private bool ValidarIdentificacao(string nome, string cpf, string ra)
     {
         if (!string.IsNullOrWhiteSpace(nome) &&
@@ -147,6 +163,104 @@ public partial class TelaSegundaEtapa : Window
         TextoFeedback.Text = "Preencha nome, CPF e RA para avançar.";
         DefinirEtapaWizard(EtapaWizardIdentificacao);
         return false;
+    }
+
+    /// <summary>
+    /// Valida somente os campos da etapa atual do wizard.
+    /// </summary>
+    private bool ValidarEtapaAtualFormulario(string nome, string cpf, string ra)
+    {
+        if (_etapaWizardAtual == EtapaWizardIdentificacao && !ValidarIdentificacao(nome, cpf, ra))
+        {
+            return false;
+        }
+
+        var areaValidacao = ObterAreaValidacaoEtapaAtual();
+        if (FormularioEstaPreenchido(areaValidacao))
+        {
+            return true;
+        }
+
+        TextoFeedback.Text = "Preencha todos os campos desta etapa antes de avancar.";
+        return false;
+    }
+
+    /// <summary>
+    /// Valida todas as secoes antes de permitir salvar.
+    /// </summary>
+    private bool ValidarFormularioCompleto(string nome, string cpf, string ra)
+    {
+        if (!ValidarIdentificacao(nome, cpf, ra))
+        {
+            return false;
+        }
+
+        if (FormularioEstaPreenchido(PainelFormularioSegundaEtapa))
+        {
+            return true;
+        }
+
+        TextoFeedback.Text = "Preencha todos os campos do formulario antes de salvar.";
+        return false;
+    }
+
+    /// <summary>
+    /// Retorna a secao que deve ser validada de acordo com a etapa atual.
+    /// </summary>
+    private DependencyObject ObterAreaValidacaoEtapaAtual()
+    {
+        return _etapaWizardAtual switch
+        {
+            EtapaWizardIdentificacao => SecaoIdentificacao,
+            EtapaWizardAvaliacaoFisica => SecaoAvaliacaoFisica,
+            EtapaWizardVisao => SecaoVisao,
+            EtapaWizardTesteAuditivo => SecaoTesteAuditivo,
+            EtapaWizardExameGeral => SecaoExameGeral,
+            EtapaWizardHistoricoMedico => SecaoHistoricoMedico,
+            EtapaWizardSaudeMental => SecaoSaudeMental,
+            _ => PainelFormularioSegundaEtapa
+        };
+    }
+
+    /// <summary>
+    /// Percorre controles visiveis e verifica se TextBox/ComboBox estao preenchidos.
+    /// </summary>
+    private bool FormularioEstaPreenchido(DependencyObject elemento)
+    {
+        if (elemento is UIElement { Visibility: Visibility.Collapsed })
+        {
+            return true;
+        }
+
+        if (elemento == CaixaPesquisaRA ||
+            elemento == ListaResultadosPesquisaRA ||
+            elemento == TextoResultadoPesquisaRA)
+        {
+            return true;
+        }
+
+        if (elemento is TextBox caixaTexto && string.IsNullOrWhiteSpace(caixaTexto.Text))
+        {
+            caixaTexto.Focus();
+            return false;
+        }
+
+        if (elemento is ComboBox comboBox && string.IsNullOrWhiteSpace(ObterTextoSelecionado(comboBox)))
+        {
+            comboBox.Focus();
+            return false;
+        }
+
+        var quantidadeFilhos = VisualTreeHelper.GetChildrenCount(elemento);
+        for (var indice = 0; indice < quantidadeFilhos; indice++)
+        {
+            if (!FormularioEstaPreenchido(VisualTreeHelper.GetChild(elemento, indice)))
+            {
+                return false;
+            }
+        }
+
+        return true;
     }
 
     private void VoltarEtapaWizardBotao_Click(object sender, RoutedEventArgs e)
@@ -166,6 +280,9 @@ public partial class TelaSegundaEtapa : Window
         ScrollFormularioSegundaEtapa.ScrollToHome();
     }
 
+    /// <summary>
+    /// Atualiza secoes visiveis e textos de apoio conforme a etapa atual.
+    /// </summary>
     private void AtualizarWizardFormulario()
     {
         var mostrarFormularioCompleto = _etapaWizardAtual == EtapaWizardConfirmacao;
@@ -240,6 +357,9 @@ public partial class TelaSegundaEtapa : Window
         Close();
     }
 
+    /// <summary>
+    /// Recarrega conscritos salvos e atualiza o total mostrado no menu lateral.
+    /// </summary>
     private void CarregarResumo()
     {
         _conscritosCarregados = ServicoArmazenamentoConscritos.ObterTodos()
@@ -261,6 +381,9 @@ public partial class TelaSegundaEtapa : Window
         AtualizarResultadosPesquisaRA();
     }
 
+    /// <summary>
+    /// Filtra conscritos pelo RA digitado e mostra os resultados correspondentes.
+    /// </summary>
     private void AtualizarResultadosPesquisaRA()
     {
         if (CaixaPesquisaRA is null)
@@ -324,6 +447,9 @@ public partial class TelaSegundaEtapa : Window
         }
     }
 
+    /// <summary>
+    /// Preenche identificacao e campos medicos ao selecionar um conscrito da busca.
+    /// </summary>
     private void PreencherFormularioComConscrito(Conscrito conscrito)
     {
         _atualizandoBuscaConscrito = true;
@@ -397,6 +523,9 @@ public partial class TelaSegundaEtapa : Window
         indicador.BorderThickness = etapaAtiva ? new Thickness(2) : new Thickness(1);
     }
 
+    /// <summary>
+    /// Aplica mascara de CPF no campo de identificacao.
+    /// </summary>
     private void CampoComMascara_TextChanged(object sender, TextChangedEventArgs e)
     {
         if (_atualizandoMascara || sender is not TextBox caixaTexto)
@@ -437,6 +566,9 @@ public partial class TelaSegundaEtapa : Window
         return string.Concat(valor.Where(char.IsDigit).Take(limite));
     }
 
+    /// <summary>
+    /// Copia os valores da tela para o objeto Conscrito antes de salvar.
+    /// </summary>
     private void PreencherDadosMedicos(Conscrito conscrito)
     {
         conscrito.Altura = CaixaTextoAltura.Text.Trim();

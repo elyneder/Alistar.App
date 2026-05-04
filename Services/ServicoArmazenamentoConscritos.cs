@@ -4,11 +4,20 @@ using Alistar.App.Models;
 
 namespace Alistar.App.Services;
 
+/// <summary>
+/// Servico responsavel por persistir os conscritos em arquivo JSON local.
+/// </summary>
+/// <remarks>
+/// Como o projeto nao usa banco de dados, esta classe funciona como uma camada
+/// simples de repositorio: le, adiciona, atualiza e exclui registros.
+/// </remarks>
 public static class ServicoArmazenamentoConscritos
 {
+    // Pasta do usuario no Windows. Evita depender da pasta do projeto para dados reais.
     private static readonly string DiretorioArmazenamento =
         Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "Alistar");
 
+    // Arquivo atual e arquivo antigo usado para migracao simples de nome.
     private static readonly string CaminhoArmazenamento = Path.Combine(DiretorioArmazenamento, "conscritos.json");
     private static readonly string CaminhoArmazenamentoAntigo = Path.Combine(DiretorioArmazenamento, "conscripts.json");
 
@@ -17,6 +26,9 @@ public static class ServicoArmazenamentoConscritos
         WriteIndented = true
     };
 
+    /// <summary>
+    /// Carrega todos os conscritos salvos no JSON.
+    /// </summary>
     public static List<Conscrito> ObterTodos()
     {
         GarantirArmazenamentoCriado();
@@ -39,6 +51,9 @@ public static class ServicoArmazenamentoConscritos
         return conscritos;
     }
 
+    /// <summary>
+    /// Adiciona um novo conscrito e garante valores padrao obrigatorios.
+    /// </summary>
     public static void Adicionar(Conscrito conscrito)
     {
         var conscritos = ObterTodos();
@@ -56,6 +71,9 @@ public static class ServicoArmazenamentoConscritos
         SalvarTodos(conscritos);
     }
 
+    /// <summary>
+    /// Substitui um conscrito existente usando o Id como chave.
+    /// </summary>
     public static void Atualizar(Conscrito conscritoAtualizado)
     {
         var conscritos = ObterTodos();
@@ -70,6 +88,9 @@ public static class ServicoArmazenamentoConscritos
         SalvarTodos(conscritos);
     }
 
+    /// <summary>
+    /// Remove um conscrito pelo Id.
+    /// </summary>
     public static void Excluir(string id)
     {
         var conscritos = ObterTodos();
@@ -77,6 +98,9 @@ public static class ServicoArmazenamentoConscritos
         SalvarTodos(conscritos);
     }
 
+    /// <summary>
+    /// Corrige registros antigos que possam estar sem Id ou sem situacao.
+    /// </summary>
     private static bool NormalizarConscritos(List<Conscrito> conscritos)
     {
         var houveMudanca = false;
@@ -99,6 +123,9 @@ public static class ServicoArmazenamentoConscritos
         return houveMudanca;
     }
 
+    /// <summary>
+    /// Serializa a lista completa e grava no arquivo JSON.
+    /// </summary>
     private static void SalvarTodos(List<Conscrito> conscritos)
     {
         Directory.CreateDirectory(DiretorioArmazenamento);
@@ -106,6 +133,9 @@ public static class ServicoArmazenamentoConscritos
         File.WriteAllText(CaminhoArmazenamento, json);
     }
 
+    /// <summary>
+    /// Cria a pasta/arquivo de armazenamento antes de qualquer leitura.
+    /// </summary>
     private static void GarantirArmazenamentoCriado()
     {
         Directory.CreateDirectory(DiretorioArmazenamento);

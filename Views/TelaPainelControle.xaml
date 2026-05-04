@@ -8,6 +8,7 @@
         WindowStartupLocation="CenterScreen">
 
     <Window.Resources>
+        <!-- Estilos locais usados pela lista, filtros e botoes compactos do painel. -->
         <Style x:Key="CaixaPesquisaListaStyle" TargetType="TextBox">
             <Setter Property="Padding" Value="12,6" />
             <Setter Property="FontSize" Value="14" />
@@ -33,6 +34,7 @@
         </Style>
     </Window.Resources>
 
+    <!-- Estrutura principal: menu lateral fixo e conteudo dinamico a direita. -->
     <Grid Background="#F4F7F6">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="260" />

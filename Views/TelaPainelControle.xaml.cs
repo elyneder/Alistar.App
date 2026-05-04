@@ -6,8 +6,15 @@ using Alistar.App.Services;
 
 namespace Alistar.App;
 
+/// <summary>
+/// Tela principal apos o login. Centraliza acesso as etapas e a lista de conscritos.
+/// </summary>
+/// <remarks>
+/// A tela tambem possui filtros rapidos para consultar cadastros ja salvos.
+/// </remarks>
 public partial class TelaPainelControle : Window
 {
+    // Cache local dos conscritos carregados do JSON para pesquisa e filtros.
     private List<Conscrito> _conscritosCarregados = [];
 
     public TelaPainelControle()
@@ -147,6 +154,9 @@ public partial class TelaPainelControle : Window
         AplicarFiltrosLista();
     }
 
+    /// <summary>
+    /// Abre uma tela de etapa e fecha a janela anterior para manter um fluxo unico.
+    /// </summary>
     private void AbrirJanelaEtapa(Window janela, Window janelaAntiga)
     {
         janela.Show();
@@ -155,6 +165,9 @@ public partial class TelaPainelControle : Window
     }
 
 
+    /// <summary>
+    /// Recarrega a lista de conscritos e atualiza o total exibido no menu.
+    /// </summary>
     private void CarregarConscritos()
     {
         _conscritosCarregados = ServicoArmazenamentoConscritos.ObterTodos()
@@ -165,12 +178,18 @@ public partial class TelaPainelControle : Window
         AplicarFiltrosLista();
     }
 
+    /// <summary>
+    /// Exibe os cards das etapas e esconde a lista.
+    /// </summary>
     private void MostrarVisaoInicial()
     {
         VisaoInicial.Visibility = Visibility.Visible;
         VisaoListaConscritos.Visibility = Visibility.Collapsed;
     }
 
+    /// <summary>
+    /// Exibe a grade de conscritos cadastrados.
+    /// </summary>
     private void MostrarListaConscritos()
     {
         VisaoInicial.Visibility = Visibility.Collapsed;
@@ -179,6 +198,9 @@ public partial class TelaPainelControle : Window
         CarregarConscritos();
     }
 
+    /// <summary>
+    /// Aplica pesquisa textual e filtros marcados na lista de conscritos.
+    /// </summary>
     private void AplicarFiltrosLista()
     {
         IEnumerable<Conscrito> consulta = _conscritosCarregados;
@@ -244,6 +266,9 @@ public partial class TelaPainelControle : Window
         TextoResumoLista.Text = $"{listaFiltrada.Count} conscritos encontrados.";
     }
 
+    /// <summary>
+    /// Monta o conjunto de situacoes selecionadas nos checkboxes de filtro.
+    /// </summary>
     private HashSet<string> ObterSituacoesSelecionadas()
     {
         var situacoes = new HashSet<string>(StringComparer.OrdinalIgnoreCase);

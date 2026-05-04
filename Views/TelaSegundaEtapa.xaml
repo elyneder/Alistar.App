@@ -7,6 +7,7 @@
         WindowState="Maximized"
         WindowStartupLocation="CenterScreen">
     <Window.Resources>
+        <!-- Estilos locais da segunda etapa: ficha medica, campos e cards do wizard. -->
         <Style x:Key="TituloSecaoStyle" TargetType="TextBlock">
             <Setter Property="Foreground" Value="White" />
             <Setter Property="Background" Value="#111111" />
@@ -115,6 +116,7 @@
         </Style>
     </Window.Resources>
 
+    <!-- Tela da avaliacao medica: menu lateral, busca por RA e formulario dividido em wizard. -->
     <Grid Background="#F4F7F6">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="260" />

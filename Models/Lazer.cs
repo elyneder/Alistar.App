@@ -1,12 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+namespace Alistar.App.Models;
 
-namespace Alistar.App.Models
+/// <summary>
+/// Campo simples para registrar o que o conscrito faz no tempo livre.
+/// </summary>
+public class Lazer
 {
-    public class Lazer
-    {
-        public string OQueFazNasHorasDeLazer { get; set; } = string.Empty;
-
-    }
+    public string OQueFazNasHorasDeLazer { get; set; } = string.Empty;
 }

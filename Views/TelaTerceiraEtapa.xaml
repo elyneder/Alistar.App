@@ -1,11 +1,11 @@
 <Window x:Class="Alistar.App.TelaTerceiraEtapa"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="Alistar | Terceira Etapa"
+        Title="Alistar | Entrevista Técnica"
         Height="520"
         Width="860"
         WindowStartupLocation="CenterOwner">
-    <!-- Estrutura inicial da terceira etapa, reservada para testes de aptidao. -->
+    <!-- Estrutura mantida apenas como fallback; o painel abre a entrevista tecnica no wizard da primeira etapa. -->
     <Grid Background="#F4F7F6">
         <Border Margin="24"
                 Padding="28"
@@ -21,11 +21,11 @@
                 </Grid.RowDefinitions>
 
                 <StackPanel>
-                    <TextBlock Text="Terceira Etapa"
+                    <TextBlock Text="Entrevista Técnica"
                                FontSize="28"
                                FontWeight="Bold"
                                Foreground="#123322" />
-                    <TextBlock Text="Tela dedicada aos testes de aptidao."
+                    <TextBlock Text="Revisão e atualização dos dados coletados na primeira etapa."
                                Margin="0,8,0,0"
                                FontSize="14"
                                Foreground="#5A5F66" />
@@ -36,7 +36,7 @@
                         Padding="22"
                         Background="#EEF2EF"
                         CornerRadius="14">
-                    <TextBlock Text="Janela criada para isolar a logica da terceira etapa."
+                    <TextBlock Text="Abra a terceira etapa pelo painel para revisar a ficha do conscrito no mesmo wizard da primeira etapa."
                                TextWrapping="Wrap"
                                Foreground="#4B5563" />
                 </Border>
@@ -47,7 +47,7 @@
                     <Button Width="120"
                             Style="{StaticResource BotaoSecundarioStyle}"
                             Click="FecharBotao_Click"
-                            Content="Fechar" />
+                            Content="X Fechar" />
                 </StackPanel>
             </Grid>
         </Border>

@@ -65,7 +65,7 @@ public static class ServicoAutenticacao
 
         bool senhaValida = Seguranca.VerificarSenha(senha, account.Senha);
 
-        UsuarioAtual = account;
+        UsuarioAtual = senhaValida ? account : null;
 
         return senhaValida;
     }
@@ -91,11 +91,52 @@ public static class ServicoAutenticacao
     }
 
     /// <summary>
+    /// Retorna os entrevistadores cadastrados sem expor senha ou hash.
+    /// </summary>
+    public static List<EntrevistadorResumo> ObterEntrevistadores()
+    {
+        if (!UsuarioAtualEhAdministrador())
+        {
+            return [];
+        }
+
+        return Contas
+            .Where(conta => !string.Equals(conta.Email, "admin@alistar.com", StringComparison.OrdinalIgnoreCase))
+            .OrderBy(conta => conta.Nome)
+            .ThenBy(conta => conta.Email)
+            .Select(conta => new EntrevistadorResumo
+            {
+                Nome = conta.Nome,
+                Email = conta.Email
+            })
+            .ToList();
+    }
+
+    /// <summary>
     /// Remove o usuario atual da sessao.
     /// </summary>
     public static void EncerrarSessao()
     {
         UsuarioAtual = null;
+    }
+
+    public static void ConfirmarSaidaSistema(Window janelaAtual)
+    {
+        var resultado = MessageBox.Show(
+            "Tem certeza que deseja sair do sistema?",
+            "Confirmar saída",
+            MessageBoxButton.YesNo,
+            MessageBoxImage.Question);
+
+        if (resultado != MessageBoxResult.Yes)
+        {
+            return;
+        }
+
+        EncerrarSessao();
+        var telaLogin = new Alistar.App.TelaLogin();
+        telaLogin.Show();
+        janelaAtual.Close();
     }
 
     /// <summary>
@@ -143,4 +184,10 @@ public enum ResultadoCadastroUsuario
     Sucesso,
     SemPermissao,
     EmailJaCadastrado
+}
+
+public class EntrevistadorResumo
+{
+    public string Nome { get; set; } = string.Empty;
+    public string Email { get; set; } = string.Empty;
 }

@@ -3,10 +3,11 @@ using System.Windows;
 namespace Alistar.App;
 
 /// <summary>
-/// Tela reservada para a terceira etapa do fluxo de alistamento.
+/// Tela de fallback para a terceira etapa do fluxo de alistamento.
 /// </summary>
 /// <remarks>
-/// Atualmente funciona como estrutura inicial, pronta para receber campos e regras futuras.
+/// O acesso principal da Entrevista Tecnica reaproveita o wizard da primeira etapa
+/// para revisar e atualizar a ficha completa do conscrito.
 /// </remarks>
 public partial class TelaTerceiraEtapa : Window
 {

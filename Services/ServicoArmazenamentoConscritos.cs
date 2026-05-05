@@ -30,6 +30,8 @@ public static class ServicoArmazenamentoConscritos
 
     public static void CarregarLista()
     {
+        GarantirArmazenamentoCriado();
+
         if (File.Exists(caminhoCompleto))
         {
             string json = File.ReadAllText(caminhoCompleto);
@@ -45,6 +47,10 @@ public static class ServicoArmazenamentoConscritos
 
     public static List<Conscrito> ObterTodos()
     {
+        // Na pratica, este metodo e o "SELECT *" do nosso projeto.
+        // Ele le o JSON, transforma em objetos C# e devolve para as telas.
+        GarantirArmazenamentoCriado();
+
         var conteudo = File.ReadAllText(caminhoCompleto);
 
         if (string.IsNullOrWhiteSpace(conteudo))
@@ -115,6 +121,8 @@ public static class ServicoArmazenamentoConscritos
     /// </summary>
     private static bool NormalizarConscritos(List<Conscrito> conscritos)
     {
+        // Como alguns cadastros antigos podem estar incompletos, este metodo
+        // completa objetos nulos. Isso evita erro de NullReference ao abrir telas.
         var houveMudanca = false;
 
         foreach (var conscrito in conscritos)
@@ -128,6 +136,72 @@ public static class ServicoArmazenamentoConscritos
             if (string.IsNullOrWhiteSpace(conscrito.Situacao))
             {
                 conscrito.Situacao = "Indefinido";
+                houveMudanca = true;
+            }
+
+            if (conscrito.Entrevista_Vida_Pessoal is null)
+            {
+                conscrito.Entrevista_Vida_Pessoal = new();
+                houveMudanca = true;
+            }
+
+            if (conscrito.Entrevista_Arrimo_De_Familia is null)
+            {
+                conscrito.Entrevista_Arrimo_De_Familia = new();
+                houveMudanca = true;
+            }
+
+            if (conscrito.Entrevista_Cursos is null)
+            {
+                conscrito.Entrevista_Cursos = new();
+                houveMudanca = true;
+            }
+
+            if (conscrito.Entrevista_Experiencia is null)
+            {
+                conscrito.Entrevista_Experiencia = new();
+                houveMudanca = true;
+            }
+
+            if (conscrito.Entrevista_Habilitacao is null)
+            {
+                conscrito.Entrevista_Habilitacao = new();
+                houveMudanca = true;
+            }
+
+            if (conscrito.Entrevista_Pre_Qualificacao_Imediata is null)
+            {
+                conscrito.Entrevista_Pre_Qualificacao_Imediata = new();
+                houveMudanca = true;
+            }
+
+            if (conscrito.Entrevista_Esportes is null)
+            {
+                conscrito.Entrevista_Esportes = new();
+                houveMudanca = true;
+            }
+
+            if (conscrito.Entrevista_Lazer is null)
+            {
+                conscrito.Entrevista_Lazer = new();
+                houveMudanca = true;
+            }
+
+            if (conscrito.Entrevista_Saude is null)
+            {
+                conscrito.Entrevista_Saude = new();
+                houveMudanca = true;
+            }
+
+            if (conscrito.Entrevista_Infracao is null)
+            {
+                conscrito.Entrevista_Infracao = new();
+                houveMudanca = true;
+            }
+
+            if (conscrito.Entrevista_Medica is null)
+            {
+                conscrito.Entrevista_Medica = new();
                 houveMudanca = true;
             }
         }
@@ -149,16 +223,11 @@ public static class ServicoArmazenamentoConscritos
     /// </summary>
     private static void GarantirArmazenamentoCriado()
     {
-        Directory.CreateDirectory(DiretorioArmazenamento);
+        Directory.CreateDirectory(raizDoProjeto);
 
-        if (!File.Exists(CaminhoArmazenamento) && File.Exists(CaminhoArmazenamentoAntigo))
+        if (!File.Exists(caminhoCompleto))
         {
-            File.Copy(CaminhoArmazenamentoAntigo, CaminhoArmazenamento);
-        }
-
-        if (!File.Exists(CaminhoArmazenamento))
-        {
-            File.WriteAllText(CaminhoArmazenamento, "[]");
+            File.WriteAllText(caminhoCompleto, "[]");
         }
     }
 }

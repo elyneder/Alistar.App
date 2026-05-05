@@ -1,12 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+namespace Alistar.App.Models;
 
-namespace Alistar.App.Models
+/// <summary>
+/// Guarda os padroes de pre-qualificacao imediata.
+/// </summary>
+/// <remarks>
+/// Sao campos usados para registrar pontos fortes observados antes da decisao final.
+/// </remarks>
+public class PreImediata
 {
-    public class PreImediata
-    {
-        public string PrimeiroPadraoPreQualificacao { get; set; } = string.Empty;
-        public string SegundoPadraoPreQualificacao { get; set; } = string.Empty;
-    }
+    public string PrimeiroPadraoPreQualificacao { get; set; } = string.Empty;
+    public string SegundoPadraoPreQualificacao { get; set; } = string.Empty;
 }

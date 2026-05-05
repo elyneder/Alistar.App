@@ -14,6 +14,7 @@ namespace Alistar.App;
 /// Esta tela possui duas responsabilidades principais: cadastrar/editar a ficha
 /// completa do conscrito e consultar a lista de conscritos cadastrados.
 /// O formulario foi dividido em wizard para reduzir a quantidade de campos por tela.
+/// Para apresentar: pense nela como a tela da ficha geral, antes da parte medica.
 /// </remarks>
 public partial class TelaPrimeiraEtapa : Window
 {
@@ -44,27 +45,105 @@ public partial class TelaPrimeiraEtapa : Window
     // Estado da tela: edicao, etapa atual, mascara de campos e lista carregada.
     private readonly Conscrito? _conscritoInicial;
     private readonly bool _abrirListaAoIniciar;
+    private readonly bool _modoEntrevistaTecnica;
     private string? _idConscritoEmEdicao;
     private int _etapaWizardAtual = EtapaWizardInformacoesBasicas;
     private bool _atualizandoMascara;
     private List<Conscrito> _conscritosCarregados = [];
 
-    public TelaPrimeiraEtapa(Conscrito? conscrito = null, bool abrirListaAoIniciar = false)
+    public TelaPrimeiraEtapa(Conscrito? conscrito = null, bool abrirListaAoIniciar = false, bool modoEntrevistaTecnica = false)
     {
         _conscritoInicial = conscrito;
         _abrirListaAoIniciar = abrirListaAoIniciar;
+        _modoEntrevistaTecnica = modoEntrevistaTecnica;
         InitializeComponent();
+        Title = _modoEntrevistaTecnica ? "Alistar | Entrevista Técnica" : Title;
+        RegistrarEventosCamposCondicionais();
+        AtualizarCamposCondicionais();
         CarregarConscritos();
         PrepararTela();
 
         if (!ServicoAutenticacao.UsuarioAtualEhAdministrador())
         {
+            VerEntrevistadores.Visibility = Visibility.Collapsed;
+            VerEntrevistadores.IsEnabled = false;
             CadastrarEntrevistador.Visibility = Visibility.Collapsed;
             CadastrarEntrevistador.IsEnabled = false;
         }
     }
 
     private bool EmModoEdicao => !string.IsNullOrWhiteSpace(_idConscritoEmEdicao);
+    private string NomeFluxoFormulario => _modoEntrevistaTecnica ? "Entrevista Técnica" : "Primeira Etapa de Seleção";
+    private string RotuloAcaoSalvar => _modoEntrevistaTecnica ? "Salvar Entrevista" : "Salvar Ficha";
+
+    private Conscrito? ObterConscritoEmEdicao()
+    {
+        return string.IsNullOrWhiteSpace(_idConscritoEmEdicao)
+            ? null
+            : ServicoArmazenamentoConscritos.ObterTodos().FirstOrDefault(conscrito => conscrito.Id == _idConscritoEmEdicao);
+    }
+
+    /// <summary>
+    /// Liga as perguntas de Sim/Nao aos campos que so fazem sentido quando a resposta e Sim.
+    /// </summary>
+    private void RegistrarEventosCamposCondicionais()
+    {
+        ComboPossuiFilhos.SelectionChanged += CampoCondicional_SelectionChanged;
+        ComboTemCursosProfissionalizantes.SelectionChanged += CampoCondicional_SelectionChanged;
+        ComboExperienciaProfissional.SelectionChanged += CampoCondicional_SelectionChanged;
+        ComboPossuiCNH.SelectionChanged += CampoCondicional_SelectionChanged;
+        ComboPraticaEsportes.SelectionChanged += CampoCondicional_SelectionChanged;
+        ComboProblemaSaude.SelectionChanged += CampoCondicional_SelectionChanged;
+        ComboRemedioControlado.SelectionChanged += CampoCondicional_SelectionChanged;
+        ComboInternacaoPsiquiatrica.SelectionChanged += CampoCondicional_SelectionChanged;
+        ComboFuma.SelectionChanged += CampoCondicional_SelectionChanged;
+        ComboBebidaAlcoolica.SelectionChanged += CampoCondicional_SelectionChanged;
+        ComboExperimentouDrogas.SelectionChanged += CampoCondicional_SelectionChanged;
+        ComboAindaUsaDroga.SelectionChanged += CampoCondicional_SelectionChanged;
+        ComboParenteUsuarioDrogas.SelectionChanged += CampoCondicional_SelectionChanged;
+        ComboParenteTranstornoPsiquiatrico.SelectionChanged += CampoCondicional_SelectionChanged;
+        ComboDetidoPelaPolicia.SelectionChanged += CampoCondicional_SelectionChanged;
+    }
+
+    private void CampoCondicional_SelectionChanged(object sender, SelectionChangedEventArgs e)
+    {
+        AtualizarCamposCondicionais();
+    }
+
+    /// <summary>
+    /// Mostra detalhes somente para respostas afirmativas e deixa a validacao ignorar o que ficou oculto.
+    /// </summary>
+    private void AtualizarCamposCondicionais()
+    {
+        DefinirVisibilidadeCondicional(RespostaEhSim(ObterTextoSelecionado(ComboPossuiFilhos)), [PainelQuantidadeFilhos]);
+        DefinirVisibilidadeCondicional(RespostaEhSim(ObterTextoSelecionado(ComboTemCursosProfissionalizantes)), [PainelQuaisCursos, PainelComprovaCursos]);
+        DefinirVisibilidadeCondicional(RespostaEhSim(ObterTextoSelecionado(ComboExperienciaProfissional)), [PainelQuaisExperiencias, PainelComprovaExperiencia]);
+        DefinirVisibilidadeCondicional(RespostaEhSim(ObterTextoSelecionado(ComboPossuiCNH)), [PainelCategoriaCNH]);
+        DefinirVisibilidadeCondicional(RespostaEhSim(ObterTextoSelecionado(ComboPraticaEsportes)), [PainelQuaisEsportes, PainelFederado]);
+        DefinirVisibilidadeCondicional(RespostaEhSim(ObterTextoSelecionado(ComboProblemaSaude)), [PainelQualProblemaSaude]);
+        DefinirVisibilidadeCondicional(RespostaEhSim(ObterTextoSelecionado(ComboRemedioControlado)), [PainelQualRemedioControlado, PainelDetalhesRemedioControlado]);
+        DefinirVisibilidadeCondicional(RespostaEhSim(ObterTextoSelecionado(ComboInternacaoPsiquiatrica)), [PainelDetalhesInternacao]);
+        DefinirVisibilidadeCondicional(RespostaEhSim(ObterTextoSelecionado(ComboFuma)), [PainelTempoFuma]);
+        DefinirVisibilidadeCondicional(RespostaEhSim(ObterTextoSelecionado(ComboBebidaAlcoolica)), [PainelFrequenciaBebida]);
+        DefinirVisibilidadeCondicional(RespostaEhSim(ObterTextoSelecionado(ComboExperimentouDrogas)), [PainelQualDroga, PainelAindaUsaDroga, PainelDetalhesUsoDroga, PainelUltimaVezDroga]);
+        DefinirVisibilidadeCondicional(RespostaEhSim(ObterTextoSelecionado(ComboAindaUsaDroga)), [PainelFrequenciaDroga]);
+        DefinirVisibilidadeCondicional(RespostaEhSim(ObterTextoSelecionado(ComboParenteUsuarioDrogas)), [PainelQuemParenteUsuarioDrogas, PainelImpactoParenteUsuarioDrogas]);
+        DefinirVisibilidadeCondicional(RespostaEhSim(ObterTextoSelecionado(ComboParenteTranstornoPsiquiatrico)), [PainelQuemParenteTranstornoPsiquiatrico, PainelImpactoTranstornoPsiquiatrico]);
+        DefinirVisibilidadeCondicional(RespostaEhSim(ObterTextoSelecionado(ComboDetidoPelaPolicia)), [PainelQualInfracao, PainelOutrosAtosInfracionais]);
+    }
+
+    private static void DefinirVisibilidadeCondicional(bool mostrar, params UIElement[] elementos)
+    {
+        foreach (var elemento in elementos)
+        {
+            elemento.Visibility = mostrar ? Visibility.Visible : Visibility.Collapsed;
+
+            if (!mostrar)
+            {
+                LimparControles(elemento);
+            }
+        }
+    }
 
     /// <summary>
     /// Decide se a tela inicia em novo cadastro, edicao ou lista de conscritos.
@@ -113,8 +192,6 @@ public partial class TelaPrimeiraEtapa : Window
 
     private void AbrirCadastroUsuarioBotao_Click(object sender, RoutedEventArgs e)
     {
-
-
         var telaCadastroUsuario = new TelaCadastroUsuario
         {
             Owner = this
@@ -123,12 +200,19 @@ public partial class TelaPrimeiraEtapa : Window
         telaCadastroUsuario.ShowDialog();
     }
 
+    private void VerEntrevistadoresBotao_Click(object sender, RoutedEventArgs e)
+    {
+        var telaEntrevistadores = new TelaEntrevistadores
+        {
+            Owner = this
+        };
+
+        telaEntrevistadores.ShowDialog();
+    }
+
     private void SairSistemaBotao_Click(object sender, RoutedEventArgs e)
     {
-        ServicoAutenticacao.EncerrarSessao();
-        var telaLogin = new TelaLogin();
-        telaLogin.Show();
-        Close();
+        ServicoAutenticacao.ConfirmarSaidaSistema(this);
     }
 
     private void GradeConscritos_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -277,8 +361,45 @@ public partial class TelaPrimeiraEtapa : Window
         this.Close();
     }
 
+    private void GerarPdfCadastroBotao_Click(object sender, RoutedEventArgs e)
+    {
+        // O PDF usa o registro salvo no JSON, nao apenas o que esta digitado na tela.
+        // Assim evitamos gerar relatorio com dados ainda nao salvos.
+        var conscrito = ObterConscritoEmEdicao();
+        if (conscrito is null)
+        {
+            return;
+        }
+
+        if (ServicoRelatorioPdf.GerarRelatorioCadastro(conscrito))
+        {
+            MessageBox.Show("Relatório de cadastro gerado com sucesso.", "Alistar", MessageBoxButton.OK, MessageBoxImage.Information);
+        }
+    }
+
+    private void GerarPdfMedicoBotao_Click(object sender, RoutedEventArgs e)
+    {
+        var conscrito = ObterConscritoEmEdicao();
+        if (conscrito is null)
+        {
+            return;
+        }
+
+        if (!ServicoRelatorioPdf.PossuiRelatorioMedico(conscrito))
+        {
+            MessageBox.Show("Este conscrito ainda não possui avaliação médica salva.", "Alistar", MessageBoxButton.OK, MessageBoxImage.Information);
+            return;
+        }
+
+        if (ServicoRelatorioPdf.GerarRelatorioMedico(conscrito))
+        {
+            MessageBox.Show("Relatório médico gerado com sucesso.", "Alistar", MessageBoxButton.OK, MessageBoxImage.Information);
+        }
+    }
+
     private void CarregarConscritos()
     {
+        // Sempre que a lista abre, recarregamos do JSON para pegar cadastros recentes.
         _conscritosCarregados = ServicoArmazenamentoConscritos.ObterTodos()
             .OrderBy(conscrito => conscrito.Nome)
             .ToList();
@@ -320,6 +441,8 @@ public partial class TelaPrimeiraEtapa : Window
     /// </summary>
     private void CarregarConscritoParaEdicao(Conscrito conscrito)
     {
+        // Ao clicar em alguem da lista, copiamos os dados do objeto para os campos da tela.
+        // O Id fica guardado para o salvar saber que e edicao, nao novo cadastro.
         _idConscritoEmEdicao = conscrito.Id;
         LimparCamposFormulario();
         TextoFeedbackCadastroConscrito.Text = string.Empty;
@@ -395,9 +518,10 @@ public partial class TelaPrimeiraEtapa : Window
         CaixaTextoQualInfracao.Text = conscrito.Entrevista_Infracao.QualFoiAInfracao;
         CaixaTextoOutrosAtosInfracionais.Text = conscrito.Entrevista_Infracao.OutrosAtosInfracionais;
         SelecionarComboPorTexto(ComboDesejaServir, conscrito.DesejaServir);
+        AtualizarCamposCondicionais();
 
         MostrarCadastroConscrito();
-        DefinirEtapaWizard(EtapaWizardConfirmacao);
+        DefinirEtapaWizard(_modoEntrevistaTecnica ? EtapaWizardInformacoesBasicas : EtapaWizardConfirmacao);
     }
 
     private void VoltarEtapaWizardBotao_Click(object sender, RoutedEventArgs e)
@@ -460,6 +584,10 @@ public partial class TelaPrimeiraEtapa : Window
             ? Visibility.Collapsed
             : Visibility.Visible;
         BotaoExcluirConscrito.Visibility = EmModoEdicao ? Visibility.Visible : Visibility.Collapsed;
+        BotaoPdfCadastro.Visibility = EmModoEdicao ? Visibility.Visible : Visibility.Collapsed;
+        BotaoPdfMedico.Visibility = EmModoEdicao && ObterConscritoEmEdicao() is { } conscrito && ServicoRelatorioPdf.PossuiRelatorioMedico(conscrito)
+            ? Visibility.Visible
+            : Visibility.Collapsed;
         TextoBotaoLimpar.Text = EmModoEdicao ? "Fechar" : "Limpar";
         IconeAvancarBotaoSalvar.Visibility = _etapaWizardAtual == EtapaWizardConfirmacao ? Visibility.Collapsed : Visibility.Visible;
         IconeSalvarBotaoSalvar.Visibility = _etapaWizardAtual == EtapaWizardConfirmacao ? Visibility.Visible : Visibility.Collapsed;
@@ -467,7 +595,7 @@ public partial class TelaPrimeiraEtapa : Window
         switch (_etapaWizardAtual)
         {
             case EtapaWizardInformacoesBasicas:
-                TextoTituloFormulario.Text = EmModoEdicao ? "Editar Conscrito" : "Primeira Etapa de Seleção";
+                TextoTituloFormulario.Text = EmModoEdicao ? (_modoEntrevistaTecnica ? "Entrevista Técnica" : "Editar Conscrito") : NomeFluxoFormulario;
                 TextoDescricaoFormulario.Text = "Comece pelas informações básicas obrigatórias. Depois você seguirá bloco por bloco até chegar na revisão final.";
                 TextoEtapaWizard.Text = $"Etapa 1 de {TotalEtapasWizard} · Informações básicas";
                 TextoResumoEtapaWizard.Text = "Preencha os dados essenciais do conscrito para iniciar o cadastro.";
@@ -476,7 +604,7 @@ public partial class TelaPrimeiraEtapa : Window
 
             case >= EtapaWizardBlocoA and <= EtapaWizardBlocoJ:
                 var nomeBloco = ObterNomeBlocoWizard(_etapaWizardAtual);
-                TextoTituloFormulario.Text = EmModoEdicao ? "Editar Conscrito" : "Primeira Etapa de Seleção";
+                TextoTituloFormulario.Text = EmModoEdicao ? (_modoEntrevistaTecnica ? "Entrevista Técnica" : "Editar Conscrito") : NomeFluxoFormulario;
                 TextoDescricaoFormulario.Text = "Preencha este bloco e avance pela seta para continuar o formulário em partes menores.";
                 TextoEtapaWizard.Text = $"Etapa {_etapaWizardAtual + 1} de {TotalEtapasWizard} · {nomeBloco}";
                 TextoResumoEtapaWizard.Text = "Ao avançar, o próximo bloco será exibido separadamente. No final, tudo aparecerá junto para conferência.";
@@ -484,7 +612,7 @@ public partial class TelaPrimeiraEtapa : Window
                 break;
 
             case EtapaWizardManifestacao:
-                TextoTituloFormulario.Text = EmModoEdicao ? "Editar Conscrito" : "Primeira Etapa de Seleção";
+                TextoTituloFormulario.Text = EmModoEdicao ? (_modoEntrevistaTecnica ? "Entrevista Técnica" : "Editar Conscrito") : NomeFluxoFormulario;
                 TextoDescricaoFormulario.Text = "Preencha o bloco K e depois avance para revisar o formulário completo antes de salvar.";
                 TextoEtapaWizard.Text = $"Etapa 12 de {TotalEtapasWizard} · Bloco K";
                 TextoResumoEtapaWizard.Text = "Registre a manifestação do desejo de servir para concluir o preenchimento.";
@@ -492,11 +620,11 @@ public partial class TelaPrimeiraEtapa : Window
                 break;
 
             default:
-                TextoTituloFormulario.Text = EmModoEdicao ? "Detalhes do Conscrito" : "Confirmar Dados do Conscrito";
+                TextoTituloFormulario.Text = _modoEntrevistaTecnica ? "Confirmar Entrevista Técnica" : EmModoEdicao ? "Detalhes do Conscrito" : "Confirmar Dados do Conscrito";
                 TextoDescricaoFormulario.Text = "Confira o formulário completo abaixo. Se precisar, altere qualquer campo antes de salvar a ficha.";
                 TextoEtapaWizard.Text = $"Etapa 13 de {TotalEtapasWizard} · Confirmação final";
                 TextoResumoEtapaWizard.Text = "Toda a ficha aparece completa para revisão e ajustes finais antes do salvamento.";
-                TextoBotaoSalvar.Text = EmModoEdicao ? "Salvar Alterações" : "Salvar Ficha";
+                TextoBotaoSalvar.Text = EmModoEdicao ? (_modoEntrevistaTecnica ? RotuloAcaoSalvar : "Salvar Alterações") : RotuloAcaoSalvar;
                 break;
         }
     }
@@ -552,7 +680,7 @@ public partial class TelaPrimeiraEtapa : Window
     }
 
     /// <summary>
-    /// Aplica mascara nos campos de CPF, data, CEP e telefone enquanto o usuario digita.
+    /// Aplica mascara e filtros nos campos com formato definido enquanto o usuario digita.
     /// </summary>
     private void CampoComMascara_TextChanged(object sender, TextChangedEventArgs e)
     {
@@ -561,15 +689,7 @@ public partial class TelaPrimeiraEtapa : Window
             return;
         }
 
-        var textoFormatado = caixaTexto == CaixaTextoCPF
-            ? FormatarCpf(caixaTexto.Text)
-            : caixaTexto == CaixaTextoDataNascimento
-                ? FormatarData(caixaTexto.Text)
-                : caixaTexto == CaixaTextoCEP
-                    ? FormatarCep(caixaTexto.Text)
-                    : caixaTexto == CaixaTextoTelefone
-                        ? FormatarTelefone(caixaTexto.Text)
-                        : caixaTexto.Text;
+        var textoFormatado = FormatarTextoCampo(caixaTexto, caixaTexto.Text);
 
         if (caixaTexto.Text == textoFormatado)
         {
@@ -582,6 +702,65 @@ public partial class TelaPrimeiraEtapa : Window
         _atualizandoMascara = false;
     }
 
+    private string FormatarTextoCampo(TextBox caixaTexto, string valor)
+    {
+        if (caixaTexto == CaixaTextoCPF)
+        {
+            return FormatarCpf(valor);
+        }
+
+        if (caixaTexto == CaixaTextoRA)
+        {
+            return FormatarRa(valor);
+        }
+
+        if (caixaTexto == CaixaTextoDataNascimento)
+        {
+            return FormatarData(valor);
+        }
+
+        if (caixaTexto == CaixaTextoCEP)
+        {
+            return FormatarCep(valor);
+        }
+
+        if (caixaTexto == CaixaTextoTelefone)
+        {
+            return FormatarTelefone(valor);
+        }
+
+        if (caixaTexto == CaixaTextoQuantidadeFilhos)
+        {
+            return ObterApenasDigitos(valor, 2);
+        }
+
+        if (caixaTexto == CaixaTextoCategoriaCNH)
+        {
+            return FormatarCategoriaCnh(valor);
+        }
+
+        if (caixaTexto == CaixaTextoEmail)
+        {
+            return valor.Trim().Replace(" ", string.Empty).ToLowerInvariant();
+        }
+
+        if (CampoAceitaSomenteLetras(caixaTexto))
+        {
+            return ObterApenasLetras(valor);
+        }
+
+        return valor;
+    }
+
+    private bool CampoAceitaSomenteLetras(TextBox caixaTexto)
+    {
+        return caixaTexto == CaixaTextoNomeConscrito ||
+               caixaTexto == CaixaTextoNomeMae ||
+               caixaTexto == CaixaTextoPaisResidencia ||
+               caixaTexto == CaixaTextoMunicipioResidencia ||
+               caixaTexto == CaixaTextoMunicipio;
+    }
+
     private static string FormatarCpf(string valor)
     {
         var digitos = ObterApenasDigitos(valor, 11);
@@ -591,6 +770,20 @@ public partial class TelaPrimeiraEtapa : Window
             > 9 => $"{digitos[..3]}.{digitos[3..6]}.{digitos[6..9]}-{digitos[9..]}",
             > 6 => $"{digitos[..3]}.{digitos[3..6]}.{digitos[6..]}",
             > 3 => $"{digitos[..3]}.{digitos[3..]}",
+            _ => digitos
+        };
+    }
+
+    private static string FormatarRa(string valor)
+    {
+        var digitos = ObterApenasDigitos(valor, 12);
+
+        return digitos.Length switch
+        {
+            > 11 => $"{digitos[..2]}.{digitos[2..5]}.{digitos[5..8]}.{digitos[8..11]}-{digitos[11..]}",
+            > 8 => $"{digitos[..2]}.{digitos[2..5]}.{digitos[5..8]}.{digitos[8..]}",
+            > 5 => $"{digitos[..2]}.{digitos[2..5]}.{digitos[5..]}",
+            > 2 => $"{digitos[..2]}.{digitos[2..]}",
             _ => digitos
         };
     }
@@ -631,6 +824,27 @@ public partial class TelaPrimeiraEtapa : Window
         return string.Concat(valor.Where(char.IsDigit).Take(limite));
     }
 
+    private static string ObterApenasLetras(string valor)
+    {
+        return string.Concat(valor.Where(caractere =>
+            char.IsLetter(caractere) ||
+            char.IsWhiteSpace(caractere) ||
+            caractere == '-' ||
+            caractere == '\''));
+    }
+
+    private static string FormatarCategoriaCnh(string valor)
+    {
+        var letras = string.Concat(valor
+            .ToUpperInvariant()
+            .Where(caractere => caractere is >= 'A' and <= 'E')
+            .Take(2));
+
+        return letras.Length == 2 && letras[0] != 'A'
+            ? letras[..1]
+            : letras;
+    }
+
     private bool ValidarInformacoesBasicas(Conscrito conscrito)
     {
         if (string.IsNullOrWhiteSpace(conscrito.Nome) ||
@@ -647,7 +861,44 @@ public partial class TelaPrimeiraEtapa : Window
             return false;
         }
 
+        if (!RaValido(conscrito.RA))
+        {
+            TextoFeedbackCadastroConscrito.Text = "O RA deve conter exatamente 12 dígitos.";
+            DefinirEtapaWizard(EtapaWizardInformacoesBasicas);
+            return false;
+        }
+
+        if (!CpfValido(conscrito.CPF))
+        {
+            TextoFeedbackCadastroConscrito.Text = "O CPF deve conter 11 dígitos.";
+            DefinirEtapaWizard(EtapaWizardInformacoesBasicas);
+            return false;
+        }
+
         return true;
+    }
+
+    private static bool RaValido(string valor)
+    {
+        return ObterApenasDigitos(valor, 20).Length == 12;
+    }
+
+    private static bool CpfValido(string valor)
+    {
+        return ObterApenasDigitos(valor, 20).Length == 11;
+    }
+
+    private static bool EmailValido(string valor)
+    {
+        var email = valor.Trim();
+        var indiceArroba = email.IndexOf('@');
+        return indiceArroba > 0 && indiceArroba == email.LastIndexOf('@') && indiceArroba < email.Length - 1;
+    }
+
+    private static bool CategoriaCnhValida(string valor)
+    {
+        var categoria = valor.Trim().ToUpperInvariant();
+        return categoria is "A" or "B" or "C" or "D" or "E" or "AB" or "AC" or "AD" or "AE";
     }
 
     /// <summary>
@@ -1012,6 +1263,7 @@ public partial class TelaPrimeiraEtapa : Window
     private void LimparCamposFormulario()
     {
         LimparControles(PainelFormularioCadastro);
+        AtualizarCamposCondicionais();
     }
 
     private static void LimparControles(DependencyObject elemento)
@@ -1088,12 +1340,12 @@ public partial class TelaPrimeiraEtapa : Window
                !string.IsNullOrWhiteSpace(vp.CEP) &&
                !string.IsNullOrWhiteSpace(vp.Telefone) &&
                !string.IsNullOrWhiteSpace(vp.Municipio) &&
-               !string.IsNullOrWhiteSpace(vp.Email) &&
+               EmailValido(vp.Email) &&
                !string.IsNullOrWhiteSpace(vp.Ocupacao) &&
                !string.IsNullOrWhiteSpace(vp.MoraCom) &&
                !string.IsNullOrWhiteSpace(vp.EstadoCivil) &&
                !string.IsNullOrWhiteSpace(vp.PossuiFilhos) &&
-               !string.IsNullOrWhiteSpace(vp.QuantidadeFilhos) &&
+               RespostaCondicionalPreenchida(vp.PossuiFilhos, vp.QuantidadeFilhos) &&
                !string.IsNullOrWhiteSpace(vp.QuemTrabalhaNaFamilia) &&
                !string.IsNullOrWhiteSpace(vp.QuemSustentaAFamilia) &&
                !string.IsNullOrWhiteSpace(vp.RecebeAuxilioGovernamental);
@@ -1112,18 +1364,20 @@ public partial class TelaPrimeiraEtapa : Window
     {
         var cursos = c.Entrevista_Cursos;
 
-        return !string.IsNullOrWhiteSpace(cursos.TemCursosProfissionalizantes) &&
-               !string.IsNullOrWhiteSpace(cursos.QuaisCursosProfissionalizantes) &&
-               !string.IsNullOrWhiteSpace(cursos.ComprovaCursosProfissionalizantes);
+        return RespostaCondicionalPreenchida(
+            cursos.TemCursosProfissionalizantes,
+            cursos.QuaisCursosProfissionalizantes,
+            cursos.ComprovaCursosProfissionalizantes);
     }
 
     private bool ValidarBlocoD(Conscrito c)
     {
         var exp = c.Entrevista_Experiencia;
 
-        return !string.IsNullOrWhiteSpace(exp.ExperienciaProfissional) &&
-               !string.IsNullOrWhiteSpace(exp.QuaisExperienciasProfissionais) &&
-               !string.IsNullOrWhiteSpace(exp.ComprovaExperienciaProfissional);
+        return RespostaCondicionalPreenchida(
+            exp.ExperienciaProfissional,
+            exp.QuaisExperienciasProfissionais,
+            exp.ComprovaExperienciaProfissional);
     }
 
     private bool ValidarBlocoE(Conscrito c)
@@ -1132,7 +1386,8 @@ public partial class TelaPrimeiraEtapa : Window
 
         return !string.IsNullOrWhiteSpace(h.PossuiCNH) &&
                !string.IsNullOrWhiteSpace(h.RealizandoCursoParaHabilitacao) &&
-               !string.IsNullOrWhiteSpace(h.CategoriaCNH);
+               RespostaCondicionalPreenchida(h.PossuiCNH, h.CategoriaCNH) &&
+               (!RespostaEhSim(h.PossuiCNH) || CategoriaCnhValida(h.CategoriaCNH));
     }
 
     private bool ValidarBlocoF(Conscrito c)
@@ -1147,9 +1402,7 @@ public partial class TelaPrimeiraEtapa : Window
     {
         var e = c.Entrevista_Esportes;
 
-        return !string.IsNullOrWhiteSpace(e.PraticaEsportes) &&
-               !string.IsNullOrWhiteSpace(e.QuaisEsportes) &&
-               !string.IsNullOrWhiteSpace(e.EhOuJaFoiFederado) &&
+        return RespostaCondicionalPreenchida(e.PraticaEsportes, e.QuaisEsportes, e.EhOuJaFoiFederado) &&
                !string.IsNullOrWhiteSpace(e.SabeNadar);
     }
 
@@ -1162,40 +1415,59 @@ public partial class TelaPrimeiraEtapa : Window
     {
         var s = c.Entrevista_Saude;
 
-        return !string.IsNullOrWhiteSpace(s.JaTeveProblemaSaude) &&
-               !string.IsNullOrWhiteSpace(s.QualProblemaSaude) &&
-               !string.IsNullOrWhiteSpace(s.UsaRemedioControlado) &&
-               !string.IsNullOrWhiteSpace(s.QualRemedioControlado) &&
-               !string.IsNullOrWhiteSpace(s.ParaQueUsaRemedioControlado) &&
-               !string.IsNullOrWhiteSpace(s.HaQuantoTempoUsaRemedioControlado) &&
-               !string.IsNullOrWhiteSpace(s.PorQuantoTempoAindaUsaraRemedio) &&
-               !string.IsNullOrWhiteSpace(s.JaEsteveInternadoHospitalOuClinicaPsiquiatrica) &&
-               !string.IsNullOrWhiteSpace(s.MotivoInternacao) &&
-               !string.IsNullOrWhiteSpace(s.TempoInternacao) &&
-               !string.IsNullOrWhiteSpace(s.Fuma) &&
-               !string.IsNullOrWhiteSpace(s.HaQuantoTempoFuma) &&
-               !string.IsNullOrWhiteSpace(s.FazUsoBebidaAlcoolica) &&
-               !string.IsNullOrWhiteSpace(s.FrequenciaBebidaAlcoolica) &&
-               !string.IsNullOrWhiteSpace(s.JaExperimentouDrogas) &&
-               !string.IsNullOrWhiteSpace(s.QualDroga) &&
-               !string.IsNullOrWhiteSpace(s.AindaFazUsoDroga) &&
-               !string.IsNullOrWhiteSpace(s.FrequenciaUsoDroga) &&
-               !string.IsNullOrWhiteSpace(s.QuandoFoiUltimaVezQueUtilizouDroga) &&
-               !string.IsNullOrWhiteSpace(s.PossuiParenteUsuarioDrogas) &&
-               !string.IsNullOrWhiteSpace(s.QuemParenteUsuarioDrogas) &&
-               !string.IsNullOrWhiteSpace(s.ComoParenteUsuarioDrogasAfetaSuaVida) &&
-               !string.IsNullOrWhiteSpace(s.PossuiParenteComHistoricoTranstornoPsiquiatrico) &&
-               !string.IsNullOrWhiteSpace(s.QuemParenteComHistoricoTranstornoPsiquiatrico) &&
-               !string.IsNullOrWhiteSpace(s.ComoTranstornoPsiquiatricoAfetaSuaVida);
+        return RespostaCondicionalPreenchida(s.JaTeveProblemaSaude, s.QualProblemaSaude) &&
+               RespostaCondicionalPreenchida(
+                   s.UsaRemedioControlado,
+                   s.QualRemedioControlado,
+                   s.ParaQueUsaRemedioControlado,
+                   s.HaQuantoTempoUsaRemedioControlado,
+                   s.PorQuantoTempoAindaUsaraRemedio) &&
+               RespostaCondicionalPreenchida(s.JaEsteveInternadoHospitalOuClinicaPsiquiatrica, s.MotivoInternacao, s.TempoInternacao) &&
+               RespostaCondicionalPreenchida(s.Fuma, s.HaQuantoTempoFuma) &&
+               RespostaCondicionalPreenchida(s.FazUsoBebidaAlcoolica, s.FrequenciaBebidaAlcoolica) &&
+               RespostaCondicionalPreenchida(s.JaExperimentouDrogas, s.QualDroga, s.AindaFazUsoDroga, s.QuandoFoiUltimaVezQueUtilizouDroga) &&
+               (!RespostaEhSim(s.JaExperimentouDrogas) || RespostaCondicionalPreenchida(s.AindaFazUsoDroga, s.FrequenciaUsoDroga)) &&
+               RespostaCondicionalPreenchida(
+                   s.PossuiParenteUsuarioDrogas,
+                   s.QuemParenteUsuarioDrogas,
+                   s.ComoParenteUsuarioDrogasAfetaSuaVida) &&
+               RespostaCondicionalPreenchida(
+                   s.PossuiParenteComHistoricoTranstornoPsiquiatrico,
+                   s.QuemParenteComHistoricoTranstornoPsiquiatrico,
+                   s.ComoTranstornoPsiquiatricoAfetaSuaVida);
     }
 
     private bool ValidarBlocoJ(Conscrito c)
     {
         var i = c.Entrevista_Infracao;
 
-        return !string.IsNullOrWhiteSpace(i.JaFoiDetidoPelaPolicia) &&
-               !string.IsNullOrWhiteSpace(i.QualFoiAInfracao) &&
-               !string.IsNullOrWhiteSpace(i.OutrosAtosInfracionais);
+        return RespostaCondicionalPreenchida(
+            i.JaFoiDetidoPelaPolicia,
+            i.QualFoiAInfracao,
+            i.OutrosAtosInfracionais);
+    }
+
+    private static bool RespostaCondicionalPreenchida(string resposta, params string[] detalhesObrigatorios)
+    {
+        if (string.IsNullOrWhiteSpace(resposta))
+        {
+            return false;
+        }
+
+        if (!RespostaEhSim(resposta))
+        {
+            return true;
+        }
+
+        foreach (var detalhe in detalhesObrigatorios)
+        {
+            if (string.IsNullOrWhiteSpace(detalhe))
+            {
+                return false;
+            }
+        }
+
+        return true;
     }
 
     private bool ValidarFichaCompleta(Conscrito c)

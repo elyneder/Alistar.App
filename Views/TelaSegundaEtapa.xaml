@@ -157,6 +157,10 @@
                             Style="{StaticResource BotaoBarraLateralStyle}"
                             Click="MostrarListaConscritosBotao_Click" />
 
+                    <Button x:Name="VerEntrevistadores" Content=" 👥 Ver Entrevistadores"
+                            Style="{StaticResource BotaoBarraLateralStyle}"
+                            Click="VerEntrevistadoresBotao_Click" />
+
                     <Border Margin="0,30,0,0"
                             Padding="16"
                             CornerRadius="12"
@@ -210,11 +214,13 @@
                         <TextBlock Text="Voltar ao Painel"/>
                     </StackPanel>
                 </Button>
-                <TextBlock Text="Segunda Etapa"
+                <TextBlock x:Name="TextoTituloPagina"
+                           Text="Segunda Etapa"
                            FontSize="32"
                            FontWeight="Bold"
                            Foreground="#123322" />
-                <TextBlock Text="Avaliacao medica do conscrito."
+                <TextBlock x:Name="TextoDescricaoPagina"
+                           Text="Avaliacao medica do conscrito."
                            FontSize="15"
                            Foreground="#688077"
                            Margin="0,4,0,0" />
@@ -307,6 +313,7 @@
                                     <TextBlock Text="Pesquisar por RA:" Style="{StaticResource RotuloCampoStyle}" />
                                     <Border Style="{StaticResource LinhaCampoStyle}">
                                         <TextBox x:Name="CaixaPesquisaRA"
+                                                 MaxLength="16"
                                                  Style="{StaticResource CampoTextoStyle}"
                                                  TextChanged="CaixaPesquisaRA_TextChanged" />
                                     </Border>
@@ -425,7 +432,7 @@
                                     </StackPanel>
                                 </Grid>
 
-                                <StackPanel Style="{StaticResource PainelVerticalStyle}">
+                                <StackPanel x:Name="PainelObservacaoPostura" Style="{StaticResource PainelVerticalStyle}">
                                     <TextBlock Text="Observação do médico:" Style="{StaticResource RotuloCampoStyle}" />
                                     <Border Style="{StaticResource LinhaCampoStyle}">
                                         <TextBox x:Name="CaixaTextoObservacaoPostura" Style="{StaticResource CampoTextoMultilinhaStyle}" />
@@ -474,7 +481,7 @@
                                         </Border>
                                     </StackPanel>
 
-                                    <StackPanel Grid.Column="1">
+                                    <StackPanel x:Name="PainelObservacaoAuditiva" Grid.Column="1">
                                         <TextBlock Text="Observação:" Style="{StaticResource RotuloCampoStyle}" />
                                         <Border Style="{StaticResource LinhaCampoStyle}">
                                             <TextBox x:Name="CaixaTextoObservacaoAuditiva" Style="{StaticResource CampoTextoMultilinhaStyle}" />
@@ -621,12 +628,15 @@
                                 Style="{StaticResource BotaoPrimarioStyle}"
                                 Click="SalvarBotao_Click">
                                 <StackPanel Orientation="Horizontal">
-                                    <TextBlock x:Name="IconeAvancarBotaoSalvar"
-                                               Text="->"
-                                               FontWeight="Bold"
-                                               FontSize="14"
-                                               Margin="0,0,6,0"
-                                               VerticalAlignment="Center" />
+                                    <Canvas x:Name="IconeAvancarBotaoSalvar"
+                                            Width="14"
+                                            Height="14"
+                                            Margin="0,0,6,0"
+                                            VerticalAlignment="Center">
+                                        <Line X1="2" Y1="7" X2="12" Y2="7" Stroke="White" StrokeThickness="1.6" StrokeStartLineCap="Round" StrokeEndLineCap="Round"/>
+                                        <Line X1="8" Y1="3" X2="12" Y2="7" Stroke="White" StrokeThickness="1.6" StrokeStartLineCap="Round" StrokeEndLineCap="Round"/>
+                                        <Line X1="8" Y1="11" X2="12" Y2="7" Stroke="White" StrokeThickness="1.6" StrokeStartLineCap="Round" StrokeEndLineCap="Round"/>
+                                    </Canvas>
                                     <Canvas x:Name="IconeSalvarBotaoSalvar" Width="14" Height="14" Margin="0,0,6,0" Visibility="Collapsed">
                                         <Polyline Points="2,7 6,11 12,3"
                                           Stroke="White" StrokeThickness="1.5"
@@ -642,8 +652,12 @@
                                 Click="LimparBotao_Click">
                                 <StackPanel Orientation="Horizontal">
                                     <Canvas Width="14" Height="14" Margin="0,0,6,0">
-                                        <Line X1="2" Y1="2" X2="12" Y2="12" Stroke="#196743" StrokeThickness="1.5" StrokeStartLineCap="Round" StrokeEndLineCap="Round"/>
-                                        <Line X1="12" Y1="2" X2="2" Y2="12" Stroke="#196743" StrokeThickness="1.5" StrokeStartLineCap="Round" StrokeEndLineCap="Round"/>
+                                        <Path Data="M3,10 L9,4 L12,7 L6,13 Z"
+                                              Stroke="#196743"
+                                              StrokeThickness="1.4"
+                                              Fill="Transparent"
+                                              StrokeLineJoin="Round" />
+                                        <Line X1="6" Y1="13" X2="12" Y2="13" Stroke="#196743" StrokeThickness="1.4" StrokeStartLineCap="Round"/>
                                     </Canvas>
                                     <TextBlock Text="Limpar"/>
                                 </StackPanel>

@@ -25,6 +25,8 @@ public partial class TelaPainelControle : Window
 
         if (!ServicoAutenticacao.UsuarioAtualEhAdministrador())
         {
+            VerEntrevistadores.Visibility = Visibility.Collapsed;
+            VerEntrevistadores.IsEnabled = false;
             CadastrarEntrevistador.Visibility = Visibility.Collapsed;
             CadastrarEntrevistador.IsEnabled = false;
         }
@@ -46,13 +48,13 @@ public partial class TelaPainelControle : Window
     private void TerceiraEtapaBotao_Click(object sender, RoutedEventArgs e)
     {
         Window janelaAtual = Window.GetWindow(sender as DependencyObject);
-        AbrirJanelaEtapa(new TelaTerceiraEtapa(), janelaAtual);
+        AbrirJanelaEtapa(new TelaPrimeiraEtapa(abrirListaAoIniciar: true, modoEntrevistaTecnica: true), janelaAtual);
     }
 
     private void QuartaEtapaBotao_Click(object sender, RoutedEventArgs e)
     {
         Window janelaAtual = Window.GetWindow(sender as DependencyObject);
-        AbrirJanelaEtapa(new TelaQuartaEtapa(), janelaAtual);
+        AbrirJanelaEtapa(new TelaSegundaEtapa(modoReavaliacaoMedica: true), janelaAtual);
     }
 
     private void QuintaEtapaBotao_Click(object sender, RoutedEventArgs e)
@@ -73,8 +75,6 @@ public partial class TelaPainelControle : Window
 
     private void AbrirCadastroUsuarioBotao_Click(object sender, RoutedEventArgs e)
     {
-
-
         var telaCadastroUsuario = new TelaCadastroUsuario
         {
             Owner = this
@@ -83,12 +83,19 @@ public partial class TelaPainelControle : Window
         telaCadastroUsuario.ShowDialog();
     }
 
+    private void VerEntrevistadoresBotao_Click(object sender, RoutedEventArgs e)
+    {
+        var telaEntrevistadores = new TelaEntrevistadores
+        {
+            Owner = this
+        };
+
+        telaEntrevistadores.ShowDialog();
+    }
+
     private void SairSistemaBotao_Click(object sender, RoutedEventArgs e)
     {
-        ServicoAutenticacao.EncerrarSessao();
-        var telaLogin = new TelaLogin();
-        telaLogin.Show();
-        Close();
+        ServicoAutenticacao.ConfirmarSaidaSistema(this);
     }
 
     private void GradeConscritos_SelectionChanged(object sender, SelectionChangedEventArgs e)

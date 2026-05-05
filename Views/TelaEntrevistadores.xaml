@@ -1,35 +1,11 @@
-<Window x:Class="Alistar.App.TelaQuintaEtapa"
+<Window x:Class="Alistar.App.TelaEntrevistadores"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="Alistar | Quinta Etapa"
+        Title="Alistar | Entrevistadores"
         Height="760"
         Width="1280"
         WindowState="Maximized"
         WindowStartupLocation="CenterScreen">
-    <Window.Resources>
-        <Style x:Key="ResumoCardStyle" TargetType="Border">
-            <Setter Property="Background" Value="White" />
-            <Setter Property="BorderBrush" Value="#DFE7E2" />
-            <Setter Property="BorderThickness" Value="1" />
-            <Setter Property="CornerRadius" Value="8" />
-            <Setter Property="Padding" Value="18" />
-            <Setter Property="Margin" Value="0,0,14,0" />
-        </Style>
-
-        <Style x:Key="RotuloResumoStyle" TargetType="TextBlock">
-            <Setter Property="Foreground" Value="#688077" />
-            <Setter Property="FontSize" Value="12" />
-            <Setter Property="FontWeight" Value="SemiBold" />
-        </Style>
-
-        <Style x:Key="ValorResumoStyle" TargetType="TextBlock">
-            <Setter Property="Foreground" Value="#123322" />
-            <Setter Property="FontSize" Value="30" />
-            <Setter Property="FontWeight" Value="Bold" />
-            <Setter Property="Margin" Value="0,4,0,0" />
-        </Style>
-    </Window.Resources>
-
     <Grid Background="#F4F7F6">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="260" />
@@ -64,15 +40,19 @@
                             Style="{StaticResource BotaoBarraLateralStyle}"
                             Click="MostrarTelaInicialBotao_Click" />
 
+                    <Button Content="Cadastrar Entrevistador"
+                            Style="{StaticResource BotaoBarraLateralStyle}"
+                            Click="AbrirCadastroUsuarioBotao_Click" />
+
                     <Border Margin="0,30,0,0"
                             Padding="16"
                             CornerRadius="12"
                             Background="#163626">
                         <StackPanel>
-                            <TextBlock Text="Elegíveis para ranking"
+                            <TextBlock Text="Entrevistadores Cadastrados"
                                        Foreground="#8BA698"
                                        FontSize="12" />
-                            <TextBlock x:Name="TextoTotalElegiveisLateral"
+                            <TextBlock x:Name="TextoTotalEntrevistadores"
                                        Text="0"
                                        Foreground="White"
                                        FontSize="28"
@@ -94,13 +74,11 @@
               Margin="32">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" />
-                <RowDefinition Height="Auto" />
                 <RowDefinition Height="*" />
-                <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
 
             <StackPanel Grid.Row="0"
-                        Margin="0,0,0,22">
+                        Margin="0,0,0,24">
                 <Button HorizontalAlignment="Left"
                         Margin="0,0,0,12"
                         Style="{StaticResource BotaoSecundarioStyle}"
@@ -114,55 +92,24 @@
                         <TextBlock Text="Voltar ao Painel"/>
                     </StackPanel>
                 </Button>
-                <TextBlock Text="Quinta Etapa"
+                <TextBlock Text="Entrevistadores"
                            FontSize="32"
                            FontWeight="Bold"
                            Foreground="#123322" />
-                <TextBlock Text="Ranking final dos conscritos elegíveis para TG e substitutos."
+                <TextBlock x:Name="TextoResumoEntrevistadores"
+                           Text="Usuários cadastrados pelo administrador."
                            FontSize="15"
                            Foreground="#688077"
                            Margin="0,4,0,0" />
             </StackPanel>
 
-            <UniformGrid Grid.Row="1"
-                         Columns="4"
-                         Margin="0,0,0,20">
-                <Border Style="{StaticResource ResumoCardStyle}">
-                    <StackPanel>
-                        <TextBlock Text="TOP 50" Style="{StaticResource RotuloResumoStyle}" />
-                        <TextBlock x:Name="TextoTotalTop50" Text="0" Style="{StaticResource ValorResumoStyle}" />
-                    </StackPanel>
-                </Border>
-
-                <Border Style="{StaticResource ResumoCardStyle}">
-                    <StackPanel>
-                        <TextBlock Text="SUBSTITUTOS" Style="{StaticResource RotuloResumoStyle}" />
-                        <TextBlock x:Name="TextoTotalSubstitutos" Text="0" Style="{StaticResource ValorResumoStyle}" />
-                    </StackPanel>
-                </Border>
-
-                <Border Style="{StaticResource ResumoCardStyle}">
-                    <StackPanel>
-                        <TextBlock Text="ELEGÍVEIS" Style="{StaticResource RotuloResumoStyle}" />
-                        <TextBlock x:Name="TextoTotalElegiveis" Text="0" Style="{StaticResource ValorResumoStyle}" />
-                    </StackPanel>
-                </Border>
-
-                <Border Style="{StaticResource ResumoCardStyle}">
-                    <StackPanel>
-                        <TextBlock Text="FORA DO RANKING" Style="{StaticResource RotuloResumoStyle}" />
-                        <TextBlock x:Name="TextoTotalExcluidos" Text="0" Style="{StaticResource ValorResumoStyle}" />
-                    </StackPanel>
-                </Border>
-            </UniformGrid>
-
-            <Border Grid.Row="2"
+            <Border Grid.Row="1"
                     Background="White"
                     BorderBrush="#DFE7E2"
                     BorderThickness="1"
                     CornerRadius="8"
                     Padding="14">
-                <DataGrid x:Name="GradeRanking"
+                <DataGrid x:Name="GradeEntrevistadores"
                           AutoGenerateColumns="False"
                           CanUserAddRows="False"
                           IsReadOnly="True"
@@ -173,24 +120,11 @@
                           AlternatingRowBackground="#F8FBF9"
                           BorderThickness="0">
                     <DataGrid.Columns>
-                        <DataGridTextColumn Header="#" Binding="{Binding Posicao}" Width="58" />
-                        <DataGridTextColumn Header="Classificação" Binding="{Binding Classificacao}" Width="130" />
-                        <DataGridTextColumn Header="Situação" Binding="{Binding Situacao}" Width="110" />
-                        <DataGridTextColumn Header="RA" Binding="{Binding RA}" Width="150" />
                         <DataGridTextColumn Header="Nome" Binding="{Binding Nome}" Width="2*" />
-                        <DataGridTextColumn Header="Pontuação" Binding="{Binding Pontuacao}" Width="100" />
-                        <DataGridTextColumn Header="Ficha" Binding="{Binding StatusFicha}" Width="150" />
-                        <DataGridTextColumn Header="Critérios principais" Binding="{Binding Criterios}" Width="3*" />
+                        <DataGridTextColumn Header="E-mail" Binding="{Binding Email}" Width="2*" />
                     </DataGrid.Columns>
                 </DataGrid>
             </Border>
-
-            <TextBlock x:Name="TextoFeedbackRanking"
-                       Grid.Row="3"
-                       Margin="0,12,0,0"
-                       Foreground="#63756E"
-                       FontWeight="SemiBold"
-                       TextWrapping="Wrap" />
         </Grid>
     </Grid>
 </Window>

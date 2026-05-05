@@ -73,6 +73,6 @@ public partial class TelaLogin : Window
     /// </summary>
     private void EsqueceuSenhaBotao_Click(object sender, RoutedEventArgs e)
     {
-        // sua lógica aqui
+        
     }
 }

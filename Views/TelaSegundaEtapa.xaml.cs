@@ -52,13 +52,12 @@ public partial class TelaSegundaEtapa : Window
         CarregarResumo();
         DefinirEtapaWizard(EtapaWizardIdentificacao);
 
-        if (!ServicoAutenticacao.UsuarioAtualEhAdministrador())
-        {
-            VerEntrevistadores.Visibility = Visibility.Collapsed;
-            VerEntrevistadores.IsEnabled = false;
-            CadastrarEntrevistador.Visibility = Visibility.Collapsed;
-            CadastrarEntrevistador.IsEnabled = false;
-        }
+        VerEntrevistadores.Visibility = Visibility.Collapsed;
+        VerEntrevistadores.IsEnabled = false;
+        CadastrarEntrevistador.Visibility = Visibility.Collapsed;
+        CadastrarEntrevistador.IsEnabled = false;
+        BotaoListaConscritos.Visibility = Visibility.Collapsed;
+        BotaoListaConscritos.IsEnabled = false;
     }
 
     private void AplicarModoTela()
@@ -360,7 +359,7 @@ public partial class TelaSegundaEtapa : Window
     private void AtualizarWizardFormulario()
     {
         var mostrarFormularioCompleto = _etapaWizardAtual == EtapaWizardConfirmacao;
-        var tituloFormulario = _modoReavaliacaoMedica ? "Reavaliação Médica" : "Segunda Etapa - Avaliação Médica";
+        var tituloFormulario = _modoReavaliacaoMedica ? "Reavaliação Médica" : "Segunda Etapa";
 
         SecaoIdentificacao.Visibility = (_etapaWizardAtual == EtapaWizardIdentificacao || mostrarFormularioCompleto) ? Visibility.Visible : Visibility.Collapsed;
         SecaoAvaliacaoFisica.Visibility = (_etapaWizardAtual == EtapaWizardAvaliacaoFisica || mostrarFormularioCompleto) ? Visibility.Visible : Visibility.Collapsed;

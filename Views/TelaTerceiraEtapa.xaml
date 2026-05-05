@@ -4,7 +4,8 @@
         Title="Alistar | Entrevista Técnica"
         Height="520"
         Width="860"
-        WindowStartupLocation="CenterOwner">
+        WindowStartupLocation="CenterOwner"
+        Icon="/Views/Assets/alistar_icone.ico">
     <!-- Estrutura mantida apenas como fallback; o painel abre a entrevista tecnica no wizard da primeira etapa. -->
     <Grid Background="#F4F7F6">
         <Border Margin="24"

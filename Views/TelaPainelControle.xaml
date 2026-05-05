@@ -5,7 +5,8 @@
         Height="760"
         Width="1280"
         WindowState="Maximized"
-        WindowStartupLocation="CenterScreen">
+        WindowStartupLocation="CenterScreen"
+        Icon="/Views/Assets/alistar_icone.ico">
 
     <Window.Resources>
         <!-- Estilos locais usados pela lista, filtros e botoes compactos do painel. -->
@@ -153,8 +154,8 @@
                                                FontSize="24"
                                                Foreground="#123322"
                                                Margin="0,4,0,0" />
-                                    <TextBlock Text="Registro completo de dados pessoais e perfil do candidato"
-                                               FontSize="14"
+                                    <TextBlock Text="Registro completo dos dados pessoais do conscrito"
+                                               FontSize="12"
                                                Foreground="#688077" />
                                 </StackPanel>
                             </Button>
@@ -172,7 +173,7 @@
                                                Foreground="#123322"
                                                Margin="0,4,0,0" />
                                     <TextBlock Text="Avaliação clínica e laudos de aptidão física"
-                                               FontSize="14"
+                                               FontSize="12"
                                                Foreground="#688077" />
                                 </StackPanel>
                             </Button>
@@ -190,7 +191,7 @@
                                                Foreground="#123322"
                                                Margin="0,4,0,0" />
                                     <TextBlock Text="Revisão e atualização da ficha da primeira etapa"
-                                               FontSize="14"
+                                               FontSize="12"
                                                Foreground="#688077" />
                                 </StackPanel>
                             </Button>
@@ -207,8 +208,8 @@
                                                FontSize="24"
                                                Foreground="#123322"
                                                Margin="0,4,0,0" />
-                                    <TextBlock Text="Confirmação e edição dos exames médicos"
-                                               FontSize="14"
+                                    <TextBlock Text="Reavaliação médica do conscrito"
+                                               FontSize="12"
                                                Foreground="#688077" />
                                 </StackPanel>
                             </Button>
@@ -225,8 +226,8 @@
                                                FontSize="24"
                                                Foreground="#123322"
                                                Margin="0,4,0,0" />
-                                    <TextBlock Text="Classificação e atribuição de função ao conscrito"
-                                               FontSize="14"
+                                    <TextBlock Text="Ranking final dos conscritos elegíveis para TG e substitutos"
+                                               FontSize="10.8"
                                                Foreground="#688077" />
                                 </StackPanel>
                             </Button>

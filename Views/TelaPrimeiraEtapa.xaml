@@ -6,7 +6,7 @@
         Width="1280"
         WindowState="Maximized"
         WindowStartupLocation="CenterScreen"
-        Icon="./Assets/1.png">
+        Icon="/Views/Assets/alistar_icone.ico">
 
     <Window.Resources>
         <!-- Estilos do formulario em formato de ficha e dos controles do wizard. -->
@@ -237,22 +237,21 @@
                     Style="{StaticResource BotaoSecundarioStyle}"
                     Click="MostrarTelaInicialBotao_Click">
                     <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                        <Canvas Width="14" Height="14" Margin="0,0,8,0" VerticalAlignment="Center">
-                            <Line X1="8" Y1="1" X2="1" Y2="7" Stroke="#196743" StrokeThickness="1.5" StrokeStartLineCap="Round" StrokeEndLineCap="Round"/>
-                            <Line X1="1" Y1="7" X2="8" Y2="13" Stroke="#196743" StrokeThickness="1.5" StrokeStartLineCap="Round" StrokeEndLineCap="Round"/>
-                            <Line X1="1" Y1="7" X2="13" Y2="7" Stroke="#196743" StrokeThickness="1.5" StrokeStartLineCap="Round" StrokeEndLineCap="Round"/>
-                        </Canvas>
-                        <TextBlock Text="Voltar ao Painel" VerticalAlignment="Center"/>
+
+                        <TextBlock Text="  🡸  Voltar     " VerticalAlignment="Center"/>
                     </StackPanel>
                 </Button>
-                <TextBlock Text="Painel de Controle"
-                           FontSize="32"
-                           FontWeight="Bold"
-                           Foreground="#123322" />
-                <TextBlock Text="Gerencie as etapas de alistamento e consulte a base de dados."
-                           FontSize="15"
-                           Foreground="#688077"
-                           Margin="0,4,0,0" />
+                <TextBlock x:Name="TextoTituloCabecalho"
+           Text="Primeira Etapa"
+           FontSize="32"
+           FontWeight="Bold"
+           Foreground="#123322" />
+
+                <TextBlock x:Name="TextoDescricaoCabecalho"
+           Text="Registro completo de dados pessoais e perfil"
+           FontSize="15"
+           Foreground="#688077"
+           Margin="0,4,0,0" />
             </StackPanel>
 
             <Grid Grid.Row="1">

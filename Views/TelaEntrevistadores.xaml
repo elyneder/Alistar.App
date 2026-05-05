@@ -5,7 +5,8 @@
         Height="760"
         Width="1280"
         WindowState="Maximized"
-        WindowStartupLocation="CenterScreen">
+        WindowStartupLocation="CenterScreen"
+        Icon="/Views/Assets/alistar_icone.ico">
     <Grid Background="#F4F7F6">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="260" />
@@ -36,14 +37,10 @@
                 </StackPanel>
 
                 <StackPanel Grid.Row="1">
-                    <Button Content="Tela Inicial"
+                    <Button Content=" 🏠︎ Tela Inicial"
                             Style="{StaticResource BotaoBarraLateralStyle}"
                             Click="MostrarTelaInicialBotao_Click" />
-
-                    <Button Content="Cadastrar Entrevistador"
-                            Style="{StaticResource BotaoBarraLateralStyle}"
-                            Click="AbrirCadastroUsuarioBotao_Click" />
-
+                    
                     <Border Margin="0,30,0,0"
                             Padding="16"
                             CornerRadius="12"
@@ -63,7 +60,13 @@
                 </StackPanel>
 
                 <StackPanel Grid.Row="2">
-                    <Button Content="Sair do Sistema"
+                    
+                    <Button Content=" 👤 Cadastrar Entrevistador"
+                    Style="{StaticResource BotaoBarraLateralStyle}"
+                    Margin="0,0,0,12"
+                    Click="AbrirCadastroUsuarioBotao_Click" />
+                    
+                    <Button Content=" ➜] Sair do Sistema"
                             Style="{StaticResource BotaoPerigoTextoStyle}"
                             Click="SairSistemaBotao_Click" />
                 </StackPanel>
@@ -84,12 +87,7 @@
                         Style="{StaticResource BotaoSecundarioStyle}"
                         Click="MostrarTelaInicialBotao_Click">
                     <StackPanel Orientation="Horizontal">
-                        <Canvas Width="14" Height="14" Margin="0,0,6,0">
-                            <Line X1="8" Y1="1" X2="1" Y2="7" Stroke="#196743" StrokeThickness="1.5" StrokeStartLineCap="Round" StrokeEndLineCap="Round"/>
-                            <Line X1="1" Y1="7" X2="8" Y2="13" Stroke="#196743" StrokeThickness="1.5" StrokeStartLineCap="Round" StrokeEndLineCap="Round"/>
-                            <Line X1="1" Y1="7" X2="13" Y2="7" Stroke="#196743" StrokeThickness="1.5" StrokeStartLineCap="Round" StrokeEndLineCap="Round"/>
-                        </Canvas>
-                        <TextBlock Text="Voltar ao Painel"/>
+                        <TextBlock Text="  🡸  Voltar     "/>
                     </StackPanel>
                 </Button>
                 <TextBlock Text="Entrevistadores"
@@ -110,19 +108,63 @@
                     CornerRadius="8"
                     Padding="14">
                 <DataGrid x:Name="GradeEntrevistadores"
-                          AutoGenerateColumns="False"
-                          CanUserAddRows="False"
-                          IsReadOnly="True"
-                          HeadersVisibility="Column"
-                          GridLinesVisibility="Horizontal"
-                          HorizontalGridLinesBrush="#EEF2EF"
-                          RowHeight="42"
-                          AlternatingRowBackground="#F8FBF9"
-                          BorderThickness="0">
+          AutoGenerateColumns="False"
+          CanUserAddRows="False"
+          IsReadOnly="True"
+          HeadersVisibility="Column"
+          GridLinesVisibility="Horizontal"
+          HorizontalGridLinesBrush="#F0F4F2"
+          RowBackground="White"
+          AlternatingRowBackground="#FAFCFB"
+          RowHeight="40"
+          BorderThickness="1"
+          BorderBrush="#DFE7E2">
+
+                    <DataGrid.Resources>
+                        <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}" Color="#E3F5EA"/>
+                        <SolidColorBrush x:Key="{x:Static SystemColors.HighlightTextBrushKey}" Color="#123322"/>
+                        <SolidColorBrush x:Key="{x:Static SystemColors.InactiveSelectionHighlightBrushKey}" Color="#E3F5EA"/>
+                        <SolidColorBrush x:Key="{x:Static SystemColors.InactiveSelectionHighlightTextBrushKey}" Color="#123322"/>
+                        <Style TargetType="DataGridRow">
+                            <Setter Property="Background" Value="White" />
+                            <Style.Triggers>
+                                <Trigger Property="IsSelected" Value="True">
+                                    <Setter Property="Background" Value="#E3F5EA"/>
+                                    <Setter Property="Foreground" Value="#123322"/>
+                                </Trigger>
+                            </Style.Triggers>
+                        </Style>
+
+                        <Style TargetType="DataGridColumnHeader">
+                            <Setter Property="Background" Value="#F3F7F5" />
+                            <Setter Property="Foreground" Value="#123322" />
+                            <Setter Property="FontWeight" Value="SemiBold" />
+                            <Setter Property="Padding" Value="12,10" />
+                            <Setter Property="BorderThickness" Value="0,0,0,1" />
+                            <Setter Property="BorderBrush" Value="#DFE7E2" />
+                        </Style>
+
+                        <Style TargetType="DataGridCell">
+                            <Setter Property="Padding" Value="12,0" />
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="DataGridCell">
+                                        <Border Padding="{TemplateBinding Padding}"
+                                Background="Transparent">
+                                            <ContentPresenter VerticalAlignment="Center" />
+                                        </Border>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+
+                    </DataGrid.Resources>
+
                     <DataGrid.Columns>
                         <DataGridTextColumn Header="Nome" Binding="{Binding Nome}" Width="2*" />
                         <DataGridTextColumn Header="E-mail" Binding="{Binding Email}" Width="2*" />
                     </DataGrid.Columns>
+
                 </DataGrid>
             </Border>
         </Grid>

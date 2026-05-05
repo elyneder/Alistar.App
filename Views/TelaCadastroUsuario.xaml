@@ -6,9 +6,10 @@
         Width="1220"
         WindowState="Maximized"
         WindowStartupLocation="CenterOwner"
-        ResizeMode="NoResize"
-        FontFamily="Segoe UI">
-
+        ResizeMode="CanResize"
+        FontFamily="Segoe UI"
+        Icon="/Views/Assets/alistar_icone.ico">
+    
     <!-- Tela modal de cadastro: identidade visual a esquerda e campos do entrevistador a direita. -->
     <Grid Background="#0F291D">
         <Grid.ColumnDefinitions>

@@ -57,19 +57,26 @@ public partial class TelaPrimeiraEtapa : Window
         _abrirListaAoIniciar = abrirListaAoIniciar;
         _modoEntrevistaTecnica = modoEntrevistaTecnica;
         InitializeComponent();
+        TextoTituloCabecalho.Text = _modoEntrevistaTecnica
+    ? "Terceira Etapa"
+    : "Primeira Etapa";
+
+        TextoDescricaoCabecalho.Text = _modoEntrevistaTecnica
+    ? "Revisão e atualização da ficha da primeira etapa"
+    : "Registro completo dos dados pessoais do conscrito";
         Title = _modoEntrevistaTecnica ? "Alistar | Entrevista Técnica" : Title;
         RegistrarEventosCamposCondicionais();
         AtualizarCamposCondicionais();
         CarregarConscritos();
         PrepararTela();
 
-        if (!ServicoAutenticacao.UsuarioAtualEhAdministrador())
-        {
             VerEntrevistadores.Visibility = Visibility.Collapsed;
             VerEntrevistadores.IsEnabled = false;
             CadastrarEntrevistador.Visibility = Visibility.Collapsed;
             CadastrarEntrevistador.IsEnabled = false;
-        }
+            BotaoListaConscritos.Visibility = Visibility.Collapsed;
+            BotaoListaConscritos.IsEnabled = false;
+
     }
 
     private bool EmModoEdicao => !string.IsNullOrWhiteSpace(_idConscritoEmEdicao);
@@ -577,8 +584,17 @@ public partial class TelaPrimeiraEtapa : Window
         switch (_etapaWizardAtual)
         {
             case EtapaWizardInformacoesBasicas:
-                TextoTituloFormulario.Text = EmModoEdicao ? (_modoEntrevistaTecnica ? "Entrevista Técnica" : "Editar Conscrito") : NomeFluxoFormulario;
-                TextoDescricaoFormulario.Text = "Comece pelas informações básicas obrigatórias. Depois você seguirá bloco por bloco até chegar na revisão final.";
+                if (_modoEntrevistaTecnica)
+                {
+                    TextoTituloFormulario.Text = "Terceira Etapa";
+                    TextoDescricaoFormulario.Text = "Testes de aptidão";
+                }
+                else
+                {
+                    TextoTituloFormulario.Text = EmModoEdicao ? "Editar Conscrito" : "Primeira Etapa";
+                    TextoDescricaoFormulario.Text = "Registro completo de dados pessoais e perfil";
+                }
+                
                 TextoEtapaWizard.Text = $"Etapa 1 de {TotalEtapasWizard} · Informações básicas";
                 TextoResumoEtapaWizard.Text = "Preencha os dados essenciais do conscrito para iniciar o cadastro.";
                 TextoBotaoSalvar.Text = "Próximo";

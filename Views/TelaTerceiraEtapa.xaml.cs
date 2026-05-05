@@ -15,6 +15,8 @@ public partial class TelaTerceiraEtapa : Window
     public TelaTerceiraEtapa()
     {
         InitializeComponent();
+
+        ServicoNavegacao.Trocar(this, new TelaPrimeiraEtapa(null, true, true));
     }
 
     /// <summary>

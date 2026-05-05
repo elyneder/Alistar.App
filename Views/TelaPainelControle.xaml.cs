@@ -44,7 +44,7 @@ public partial class TelaPainelControle : Window
 
     private void TerceiraEtapaBotao_Click(object sender, RoutedEventArgs e)
     {
-        AbrirJanelaEtapa(new TelaPrimeiraEtapa(abrirListaAoIniciar: true, modoEntrevistaTecnica: true));
+        ServicoNavegacao.Trocar(this, new TelaPrimeiraEtapa(null, true, true));
     }
 
     private void QuartaEtapaBotao_Click(object sender, RoutedEventArgs e)

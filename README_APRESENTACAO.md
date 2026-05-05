@@ -54,7 +54,3 @@ Essa divisao ajuda porque cada parte do formulario fica em uma classe separada, 
 - `Views/TelaPrimeiraEtapa.xaml.cs`: cadastro geral, consulta e PDF.
 - `Views/TelaSegundaEtapa.xaml.cs`: avaliacao medica e reavaliacao quando aberta pela quarta etapa.
 - `Views/TelaQuintaEtapa.xaml.cs`: ranking dos melhores conscritos.
-
-## Resumo para falar em sala
-
-"Nosso sistema foi feito em C# com WPF. A gente separou o projeto em modelos, servicos e telas. Os modelos representam os dados do conscrito, os servicos fazem as regras principais, como salvar JSON, autenticar usuario e gerar PDF, e as telas cuidam da interacao com o usuario. O sistema tem controle de administrador e entrevistador, gera relatorios e monta um ranking final com base nas informacoes cadastradas."

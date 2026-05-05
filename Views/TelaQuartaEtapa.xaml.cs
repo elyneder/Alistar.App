@@ -1,4 +1,5 @@
 using System.Windows;
+using Alistar.App.Services;
 
 namespace Alistar.App;
 
@@ -20,6 +21,6 @@ public partial class TelaQuartaEtapa : Window
     /// </summary>
     private void FecharBotao_Click(object sender, RoutedEventArgs e)
     {
-        Close();
+        ServicoNavegacao.Trocar(this, new TelaPainelControle());
     }
 }

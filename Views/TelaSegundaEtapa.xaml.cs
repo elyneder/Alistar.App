@@ -125,40 +125,22 @@ public partial class TelaSegundaEtapa : Window
 
     private void MostrarTelaInicialBotao_Click(object sender, RoutedEventArgs e)
     {
-        TelaPainelControle janela = new TelaPainelControle();
-        janela.Show();
-        this.Close();
+        ServicoNavegacao.Trocar(this, new TelaPainelControle());
     }
 
     private void MostrarListaConscritosBotao_Click(object sender, RoutedEventArgs e)
     {
-        var telaPrimeiraEtapa = new TelaPrimeiraEtapa(abrirListaAoIniciar: true)
-        {
-            Owner = this
-        };
-
-        telaPrimeiraEtapa.ShowDialog();
-        CarregarResumo();
+        ServicoNavegacao.Trocar(this, new TelaPrimeiraEtapa(abrirListaAoIniciar: true));
     }
 
     private void AbrirCadastroUsuarioBotao_Click(object sender, RoutedEventArgs e)
     {
-        var telaCadastroUsuario = new TelaCadastroUsuario
-        {
-            Owner = this
-        };
-
-        telaCadastroUsuario.ShowDialog();
+        ServicoNavegacao.Trocar(this, new TelaCadastroUsuario());
     }
 
     private void VerEntrevistadoresBotao_Click(object sender, RoutedEventArgs e)
     {
-        var telaEntrevistadores = new TelaEntrevistadores
-        {
-            Owner = this
-        };
-
-        telaEntrevistadores.ShowDialog();
+        ServicoNavegacao.Trocar(this, new TelaEntrevistadores());
     }
 
     private void SairSistemaBotao_Click(object sender, RoutedEventArgs e)
@@ -237,9 +219,7 @@ public partial class TelaSegundaEtapa : Window
             ServicoArmazenamentoConscritos.Atualizar(conscrito);
         }
 
-        var painel = new TelaPainelControle();
-        painel.Show();
-        Close();
+        ServicoNavegacao.Trocar(this, new TelaPainelControle());
     }
 
     /// <summary>
@@ -458,7 +438,7 @@ public partial class TelaSegundaEtapa : Window
 
     private void FecharBotao_Click(object sender, RoutedEventArgs e)
     {
-        Close();
+        ServicoNavegacao.Trocar(this, new TelaPainelControle());
     }
 
     /// <summary>
@@ -847,8 +827,6 @@ public partial class TelaSegundaEtapa : Window
 
     private void MostrarTelaInicial(object sender, RoutedEventArgs e)
     {
-        TelaPainelControle janela = new TelaPainelControle();
-        janela.Show();
-        this.Close();
+        ServicoNavegacao.Trocar(this, new TelaPainelControle());
     }
 }

@@ -5,7 +5,8 @@
         Height="760"
         Width="1280"
         WindowState="Maximized"
-        WindowStartupLocation="CenterScreen">
+        WindowStartupLocation="CenterScreen"
+        Icon="/Views/Assets/alistar_icone.ico">
     <Window.Resources>
         <!-- Estilos locais da segunda etapa: ficha medica, campos e cards do wizard. -->
         <Style x:Key="TituloSecaoStyle" TargetType="TextBlock">
@@ -206,12 +207,7 @@
                     Style="{StaticResource BotaoSecundarioStyle}"
                     Click="MostrarTelaInicialBotao_Click">
                     <StackPanel Orientation="Horizontal">
-                        <Canvas Width="14" Height="14" Margin="0,0,6,0">
-                            <Line X1="8" Y1="1" X2="1" Y2="7" Stroke="#196743" StrokeThickness="1.5" StrokeStartLineCap="Round" StrokeEndLineCap="Round"/>
-                            <Line X1="1" Y1="7" X2="8" Y2="13" Stroke="#196743" StrokeThickness="1.5" StrokeStartLineCap="Round" StrokeEndLineCap="Round"/>
-                            <Line X1="1" Y1="7" X2="13" Y2="7" Stroke="#196743" StrokeThickness="1.5" StrokeStartLineCap="Round" StrokeEndLineCap="Round"/>
-                        </Canvas>
-                        <TextBlock Text="Voltar ao Painel"/>
+                        <TextBlock Text="  🡸  Voltar     "/>
                     </StackPanel>
                 </Button>
                 <TextBlock x:Name="TextoTituloPagina"
@@ -220,7 +216,7 @@
                            FontWeight="Bold"
                            Foreground="#123322" />
                 <TextBlock x:Name="TextoDescricaoPagina"
-                           Text="Avaliacao medica do conscrito."
+                           Text="Avaliação clínica e laudos de aptidão física"
                            FontSize="15"
                            Foreground="#688077"
                            Margin="0,4,0,0" />
@@ -238,7 +234,7 @@
                                 MaxWidth="980"
                                 HorizontalAlignment="Center">
                         <TextBlock x:Name="TextoTituloFormulario"
-                                   Text="Segunda Etapa - Avaliação Médica"
+                                   Text="Segunda Etapa"
                                    Style="{StaticResource TituloBlocoStyle}" 
                                    TextAlignment="Center"/>
                         <TextBlock x:Name="TextoDescricaoFormulario"
@@ -663,19 +659,6 @@
                                 </StackPanel>
                             </Button>
 
-                            <Button Width="120"
-                                Margin="16,8,0,0"
-                                Style="{StaticResource BotaoSecundarioStyle}"
-                                Click="MostrarTelaInicialBotao_Click">
-                                <StackPanel Orientation="Horizontal">
-                                    <Canvas Width="14" Height="14" Margin="0,0,6,0">
-                                        <Line X1="7" Y1="1" X2="7" Y2="13" Stroke="#196743" StrokeThickness="1.5" StrokeStartLineCap="Round" StrokeEndLineCap="Round"/>
-                                        <Line X1="1" Y1="7" X2="7" Y2="13" Stroke="#196743" StrokeThickness="1.5" StrokeStartLineCap="Round" StrokeEndLineCap="Round"/>
-                                        <Line X1="13" Y1="7" X2="7" Y2="13" Stroke="#196743" StrokeThickness="1.5" StrokeStartLineCap="Round" StrokeEndLineCap="Round"/>
-                                    </Canvas>
-                                    <TextBlock Text="Fechar"/>
-                                </StackPanel>
-                            </Button>
                         </StackPanel>
                     </StackPanel>
                 </ScrollViewer>

@@ -291,4 +291,9 @@ public partial class TelaQuintaEtapa : Window
         public string StatusFicha { get; set; } = string.Empty;
         public string Criterios { get; set; } = string.Empty;
     }
+
+    private void GradeRanking_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
+    {
+
+    }
 }

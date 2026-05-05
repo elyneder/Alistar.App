@@ -99,7 +99,7 @@
                                          FontSize="13"
                                          BorderThickness="0"
                                          Background="Transparent"
-                                         Foreground="#1F2D26" />
+                                         Foreground="#1F2D26" MaxLength="40" />
                             </Border>
 
                             <TextBlock Text="E-mail"
@@ -117,7 +117,7 @@
                                          FontSize="13"
                                          BorderThickness="0"
                                          Background="Transparent"
-                                         Foreground="#1F2D26" />
+                                         Foreground="#1F2D26" MaxLength="30" />
                             </Border>
 
                             <TextBlock Text="Senha"
@@ -134,7 +134,7 @@
                                                  Padding="10"
                                                  FontSize="13"
                                                  BorderThickness="0"
-                                                 Background="Transparent" />
+                                                 Background="Transparent" MaxLength="30" />
                                 </Border>
 
                                 <Border x:Name="BordaSenhaVisivelUsuario"

@@ -92,7 +92,7 @@
                                          FontSize="14"
                                          BorderThickness="0"
                                          Background="Transparent"
-                                         Foreground="#1F2D26" />
+                                         Foreground="#1F2D26" MaxLength="30" />
                             </Border>
 
                             <TextBlock Text="Senha"
@@ -109,7 +109,7 @@
                                                  Padding="12"
                                                  FontSize="14"
                                                  BorderThickness="0"
-                                                 Background="Transparent" />
+                                                 Background="Transparent" MaxLength="30" />
                                 </Border>
 
                                 <Border x:Name="BordaSenhaVisivel"

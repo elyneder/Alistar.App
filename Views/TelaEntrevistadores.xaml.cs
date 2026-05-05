@@ -31,20 +31,12 @@ public partial class TelaEntrevistadores : Window
 
     private void MostrarTelaInicialBotao_Click(object sender, RoutedEventArgs e)
     {
-        var painel = new TelaPainelControle();
-        painel.Show();
-        Close();
+        ServicoNavegacao.Trocar(this, new TelaPainelControle());
     }
 
     private void AbrirCadastroUsuarioBotao_Click(object sender, RoutedEventArgs e)
     {
-        var telaCadastroUsuario = new TelaCadastroUsuario
-        {
-            Owner = this
-        };
-
-        telaCadastroUsuario.ShowDialog();
-        CarregarEntrevistadores();
+        ServicoNavegacao.Trocar(this, new TelaCadastroUsuario());
     }
 
     private void SairSistemaBotao_Click(object sender, RoutedEventArgs e)

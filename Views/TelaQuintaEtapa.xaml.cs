@@ -272,9 +272,7 @@ public partial class TelaQuintaEtapa : Window
 
     private void MostrarTelaInicialBotao_Click(object sender, RoutedEventArgs e)
     {
-        var painel = new TelaPainelControle();
-        painel.Show();
-        Close();
+        ServicoNavegacao.Trocar(this, new TelaPainelControle());
     }
 
     private void SairSistemaBotao_Click(object sender, RoutedEventArgs e)

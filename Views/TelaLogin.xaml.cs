@@ -40,9 +40,7 @@ public partial class TelaLogin : Window
             return;
         }
 
-        var telaPainelControle = new TelaPainelControle();
-        telaPainelControle.Show();
-        Close();
+        ServicoNavegacao.Trocar(this, new TelaPainelControle());
     }
 
     /// <summary>

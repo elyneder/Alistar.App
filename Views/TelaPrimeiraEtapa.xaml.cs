@@ -180,9 +180,7 @@ public partial class TelaPrimeiraEtapa : Window
 
     private void MostrarTelaInicialBotao_Click(object sender, RoutedEventArgs e)
     {
-        TelaPainelControle janela = new TelaPainelControle();
-        janela.Show();
-        this.Close();
+        ServicoNavegacao.Trocar(this, new TelaPainelControle());
     }
 
     private void MostrarListaConscritosBotao_Click(object sender, RoutedEventArgs e)
@@ -192,22 +190,12 @@ public partial class TelaPrimeiraEtapa : Window
 
     private void AbrirCadastroUsuarioBotao_Click(object sender, RoutedEventArgs e)
     {
-        var telaCadastroUsuario = new TelaCadastroUsuario
-        {
-            Owner = this
-        };
-
-        telaCadastroUsuario.ShowDialog();
+        ServicoNavegacao.Trocar(this, new TelaCadastroUsuario());
     }
 
     private void VerEntrevistadoresBotao_Click(object sender, RoutedEventArgs e)
     {
-        var telaEntrevistadores = new TelaEntrevistadores
-        {
-            Owner = this
-        };
-
-        telaEntrevistadores.ShowDialog();
+        ServicoNavegacao.Trocar(this, new TelaEntrevistadores());
     }
 
     private void SairSistemaBotao_Click(object sender, RoutedEventArgs e)
@@ -317,18 +305,14 @@ public partial class TelaPrimeiraEtapa : Window
             ServicoArmazenamentoConscritos.Adicionar(conscrito);
         }
 
-        TelaPainelControle janela = new TelaPainelControle();
-        janela.Show();
-        this.Close();
+        ServicoNavegacao.Trocar(this, new TelaPainelControle());
     }
 
     private void LimparFormularioBotao_Click(object sender, RoutedEventArgs e)
     {
         if (EmModoEdicao)
         {
-            TelaPainelControle janela = new TelaPainelControle();
-            janela.Show();
-            this.Close();
+            ServicoNavegacao.Trocar(this, new TelaPainelControle());
             return;
         }
 
@@ -356,9 +340,7 @@ public partial class TelaPrimeiraEtapa : Window
         }
 
         ServicoArmazenamentoConscritos.Excluir(_idConscritoEmEdicao);
-        TelaPainelControle janela = new TelaPainelControle();
-        janela.Show();
-        this.Close();
+        ServicoNavegacao.Trocar(this, new TelaPainelControle());
     }
 
     private void GerarPdfCadastroBotao_Click(object sender, RoutedEventArgs e)

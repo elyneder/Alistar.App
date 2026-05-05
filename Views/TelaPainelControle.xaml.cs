@@ -34,33 +34,27 @@ public partial class TelaPainelControle : Window
 
     private void PrimeiraEtapaBotao_Click(object sender, RoutedEventArgs e)
     {
-        Window janelaAtual = Window.GetWindow(sender as DependencyObject);
-        AbrirJanelaEtapa(new TelaPrimeiraEtapa(), janelaAtual);
-
+        AbrirJanelaEtapa(new TelaPrimeiraEtapa());
     }
 
     private void SegundaEtapaBotao_Click(object sender, RoutedEventArgs e)
     {
-        Window janelaAtual = Window.GetWindow(sender as DependencyObject);
-        AbrirJanelaEtapa(new TelaSegundaEtapa(), janelaAtual);
+        AbrirJanelaEtapa(new TelaSegundaEtapa());
     }
 
     private void TerceiraEtapaBotao_Click(object sender, RoutedEventArgs e)
     {
-        Window janelaAtual = Window.GetWindow(sender as DependencyObject);
-        AbrirJanelaEtapa(new TelaPrimeiraEtapa(abrirListaAoIniciar: true, modoEntrevistaTecnica: true), janelaAtual);
+        AbrirJanelaEtapa(new TelaPrimeiraEtapa(abrirListaAoIniciar: true, modoEntrevistaTecnica: true));
     }
 
     private void QuartaEtapaBotao_Click(object sender, RoutedEventArgs e)
     {
-        Window janelaAtual = Window.GetWindow(sender as DependencyObject);
-        AbrirJanelaEtapa(new TelaSegundaEtapa(modoReavaliacaoMedica: true), janelaAtual);
+        AbrirJanelaEtapa(new TelaSegundaEtapa(modoReavaliacaoMedica: true));
     }
 
     private void QuintaEtapaBotao_Click(object sender, RoutedEventArgs e)
     {
-        Window janelaAtual = Window.GetWindow(sender as DependencyObject);
-        AbrirJanelaEtapa(new TelaQuintaEtapa(), janelaAtual);
+        AbrirJanelaEtapa(new TelaQuintaEtapa());
     }
 
     private void MostrarTelaInicialBotao_Click(object sender, RoutedEventArgs e)
@@ -75,22 +69,12 @@ public partial class TelaPainelControle : Window
 
     private void AbrirCadastroUsuarioBotao_Click(object sender, RoutedEventArgs e)
     {
-        var telaCadastroUsuario = new TelaCadastroUsuario
-        {
-            Owner = this
-        };
-
-        telaCadastroUsuario.ShowDialog();
+        AbrirJanelaEtapa(new TelaCadastroUsuario());
     }
 
     private void VerEntrevistadoresBotao_Click(object sender, RoutedEventArgs e)
     {
-        var telaEntrevistadores = new TelaEntrevistadores
-        {
-            Owner = this
-        };
-
-        telaEntrevistadores.ShowDialog();
+        AbrirJanelaEtapa(new TelaEntrevistadores());
     }
 
     private void SairSistemaBotao_Click(object sender, RoutedEventArgs e)
@@ -106,8 +90,7 @@ public partial class TelaPainelControle : Window
         }
 
         GradeConscritos.SelectedItem = null;
-        Window janelaAtual = Window.GetWindow(sender as DependencyObject);
-        AbrirJanelaEtapa(new TelaPrimeiraEtapa(conscritoSelecionado), janelaAtual);
+        AbrirJanelaEtapa(new TelaPrimeiraEtapa(conscritoSelecionado));
     }
 
     private void CaixaPesquisaConscrito_KeyDown(object sender, KeyEventArgs e)
@@ -164,11 +147,9 @@ public partial class TelaPainelControle : Window
     /// <summary>
     /// Abre uma tela de etapa e fecha a janela anterior para manter um fluxo unico.
     /// </summary>
-    private void AbrirJanelaEtapa(Window janela, Window janelaAntiga)
+    private void AbrirJanelaEtapa(Window janela)
     {
-        janela.Show();
-        CarregarConscritos();
-        janelaAntiga?.Close();
+        ServicoNavegacao.Trocar(this, janela);
     }
 
 

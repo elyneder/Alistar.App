@@ -75,7 +75,7 @@ public partial class TelaCadastroUsuario : Window
         }
 
         MessageBox.Show("Entrevistador cadastrado com sucesso.", "Alistar", MessageBoxButton.OK, MessageBoxImage.Information);
-        Close();
+        ServicoNavegacao.Trocar(this, new TelaPainelControle());
     }
 
     /// <summary>
@@ -83,6 +83,6 @@ public partial class TelaCadastroUsuario : Window
     /// </summary>
     private void CancelarBotao_Click(object sender, RoutedEventArgs e)
     {
-        Close();
+        ServicoNavegacao.Trocar(this, new TelaPainelControle());
     }
 }

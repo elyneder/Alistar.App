@@ -34,7 +34,12 @@ public class Conscrito
     public string PaisResidencia { get; set; } = string.Empty;
     public string MunicipioResidencia { get; set; } = string.Empty;
     public string ZonaResidencia { get; set; } = string.Empty;
+    public string Peso { get; set; } = string.Empty;
+    public string Altura { get; set; } = string.Empty;
+    public string TamanhoCabeca { get; set; } = string.Empty;
+    public string TamanhoCalcado { get; set; } = string.Empty;
     public string DesejaServir { get; set; } = string.Empty;
+    public string Observacao { get; set; } = string.Empty;
 
     /// <summary>Blocos da entrevista da primeira etapa.</summary>
     public VidaPessoal Entrevista_Vida_Pessoal { get; set; } = new();

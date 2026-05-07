@@ -26,6 +26,7 @@ namespace Alistar.App.Models
         public string QuemTrabalhaNaFamilia { get; set; } = string.Empty;
         public string QuemSustentaAFamilia { get; set; } = string.Empty;
         public string RecebeAuxilioGovernamental { get; set; } = string.Empty;
+        public string QualAuxilioGovernamental { get; set; } = string.Empty;
 
        
     }

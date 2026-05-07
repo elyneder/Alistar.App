@@ -449,7 +449,6 @@ public partial class TelaPrimeiraEtapa : Window
         CaixaTextoBairro.Text = conscrito.Entrevista_Vida_Pessoal.Bairro;
         CaixaTextoCEP.Text = conscrito.Entrevista_Vida_Pessoal.CEP;
         CaixaTextoTelefone.Text = conscrito.Entrevista_Vida_Pessoal.Telefone;
-        CaixaTextoMunicipio.Text = conscrito.Entrevista_Vida_Pessoal.Municipio;
         CaixaTextoEmail.Text = conscrito.Entrevista_Vida_Pessoal.Email;
         CaixaTextoOcupacao.Text = conscrito.Entrevista_Vida_Pessoal.Ocupacao;
         CaixaTextoMoraCom.Text = conscrito.Entrevista_Vida_Pessoal.MoraCom;
@@ -755,8 +754,7 @@ public partial class TelaPrimeiraEtapa : Window
         return caixaTexto == CaixaTextoNomeConscrito ||
                caixaTexto == CaixaTextoNomeMae ||
                caixaTexto == CaixaTextoPaisResidencia ||
-               caixaTexto == CaixaTextoMunicipioResidencia ||
-               caixaTexto == CaixaTextoMunicipio;
+               caixaTexto == CaixaTextoMunicipioResidencia;
     }
 
     private static string FormatarCpf(string valor)
@@ -993,7 +991,6 @@ public partial class TelaPrimeiraEtapa : Window
             Bairro = CaixaTextoBairro.Text.Trim(),
             CEP = CaixaTextoCEP.Text.Trim(),
             Telefone = CaixaTextoTelefone.Text.Trim(),
-            Municipio = CaixaTextoMunicipio.Text.Trim(),
             Email = CaixaTextoEmail.Text.Trim(),
             Ocupacao = CaixaTextoOcupacao.Text.Trim(),
             MoraCom = CaixaTextoMoraCom.Text.Trim(),

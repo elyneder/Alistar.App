@@ -7,6 +7,7 @@ namespace Alistar.App.Models
 {
     public class VidaPessoal
     {
+        
         [JsonPropertyName("Address")]
         public string Endereco { get; set; } = string.Empty;
 
@@ -15,8 +16,7 @@ namespace Alistar.App.Models
         public string Telefone { get; set; } = string.Empty;
 
         [JsonPropertyName("City")]
-        public string Municipio { get; set; } = string.Empty;
-
+        public string Municipio { get; set; } = string.Empty;    
         public string Email { get; set; } = string.Empty;
         public string Ocupacao { get; set; } = string.Empty;
         public string MoraCom { get; set; } = string.Empty;

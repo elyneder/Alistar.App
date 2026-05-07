@@ -25,14 +25,13 @@ public partial class TelaPrimeiraEtapa : Window
     private const int EtapaWizardBlocoC = 3;
     private const int EtapaWizardBlocoD = 4;
     private const int EtapaWizardBlocoE = 5;
-    private const int EtapaWizardBlocoF = 6;
-    private const int EtapaWizardBlocoG = 7;
-    private const int EtapaWizardBlocoH = 8;
-    private const int EtapaWizardBlocoI = 9;
-    private const int EtapaWizardBlocoJ = 10;
-    private const int EtapaWizardManifestacao = 11;
-    private const int EtapaWizardConfirmacao = 12;
-    private const int TotalEtapasWizard = 13;
+    private const int EtapaWizardBlocoG = 6;
+    private const int EtapaWizardBlocoH = 7;
+    private const int EtapaWizardBlocoI = 8;
+    private const int EtapaWizardBlocoJ = 9;
+    private const int EtapaWizardManifestacao = 10;
+    private const int EtapaWizardConfirmacao = 11;
+    private const int TotalEtapasWizard = 12;
 
     // Cores usadas para destacar a etapa atual e as etapas ja concluidas.
     private static readonly Brush FundoEtapaAtiva = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#E3F5EA")!);
@@ -470,8 +469,6 @@ public partial class TelaPrimeiraEtapa : Window
         SelecionarComboPorTexto(ComboPossuiCNH, conscrito.Entrevista_Habilitacao.PossuiCNH);
         SelecionarComboPorTexto(ComboCursoHabilitacao, conscrito.Entrevista_Habilitacao.RealizandoCursoParaHabilitacao);
         CaixaTextoCategoriaCNH.Text = conscrito.Entrevista_Habilitacao.CategoriaCNH;
-        CaixaTextoPrimeiroPadraoPreQualificacao.Text = conscrito.Entrevista_Pre_Qualificacao_Imediata.PrimeiroPadraoPreQualificacao;
-        CaixaTextoSegundoPadraoPreQualificacao.Text = conscrito.Entrevista_Pre_Qualificacao_Imediata.SegundoPadraoPreQualificacao;
         SelecionarComboPorTexto(ComboPraticaEsportes, conscrito.Entrevista_Esportes.PraticaEsportes);
         CaixaTextoQuaisEsportes.Text = conscrito.Entrevista_Esportes.QuaisEsportes;
         SelecionarComboPorTexto(ComboFederado, conscrito.Entrevista_Esportes.EhOuJaFoiFederado);
@@ -554,7 +551,6 @@ public partial class TelaPrimeiraEtapa : Window
         SecaoBlocoC.Visibility = (_etapaWizardAtual == EtapaWizardBlocoC || mostrarFormularioCompleto) ? Visibility.Visible : Visibility.Collapsed;
         SecaoBlocoD.Visibility = (_etapaWizardAtual == EtapaWizardBlocoD || mostrarFormularioCompleto) ? Visibility.Visible : Visibility.Collapsed;
         SecaoBlocoE.Visibility = (_etapaWizardAtual == EtapaWizardBlocoE || mostrarFormularioCompleto) ? Visibility.Visible : Visibility.Collapsed;
-        SecaoBlocoF.Visibility = (_etapaWizardAtual == EtapaWizardBlocoF || mostrarFormularioCompleto) ? Visibility.Visible : Visibility.Collapsed;
         SecaoBlocoG.Visibility = (_etapaWizardAtual == EtapaWizardBlocoG || mostrarFormularioCompleto) ? Visibility.Visible : Visibility.Collapsed;
         SecaoBlocoH.Visibility = (_etapaWizardAtual == EtapaWizardBlocoH || mostrarFormularioCompleto) ? Visibility.Visible : Visibility.Collapsed;
         SecaoBlocoI.Visibility = (_etapaWizardAtual == EtapaWizardBlocoI || mostrarFormularioCompleto) ? Visibility.Visible : Visibility.Collapsed;
@@ -635,7 +631,6 @@ public partial class TelaPrimeiraEtapa : Window
             EtapaWizardBlocoC => "Bloco C · Cursos",
             EtapaWizardBlocoD => "Bloco D · Experiência",
             EtapaWizardBlocoE => "Bloco E · Habilitação",
-            EtapaWizardBlocoF => "Bloco F · Pré-qualificação",
             EtapaWizardBlocoG => "Bloco G · Prática de esportes",
             EtapaWizardBlocoH => "Bloco H · Lazer",
             EtapaWizardBlocoI => "Bloco I · Saúde",
@@ -936,7 +931,6 @@ public partial class TelaPrimeiraEtapa : Window
             EtapaWizardBlocoC => SecaoBlocoC,
             EtapaWizardBlocoD => SecaoBlocoD,
             EtapaWizardBlocoE => SecaoBlocoE,
-            EtapaWizardBlocoF => SecaoBlocoF,
             EtapaWizardBlocoG => SecaoBlocoG,
             EtapaWizardBlocoH => SecaoBlocoH,
             EtapaWizardBlocoI => SecaoBlocoI,
@@ -1030,11 +1024,6 @@ public partial class TelaPrimeiraEtapa : Window
             CategoriaCNH = CaixaTextoCategoriaCNH.Text.Trim()
         };
 
-        PreImediata preImediata = new PreImediata()
-        {
-            PrimeiroPadraoPreQualificacao = CaixaTextoPrimeiroPadraoPreQualificacao.Text.Trim(),
-            SegundoPadraoPreQualificacao = CaixaTextoSegundoPadraoPreQualificacao.Text.Trim()
-        };
 
         Esportes esportes = new Esportes()
         {
@@ -1103,7 +1092,6 @@ public partial class TelaPrimeiraEtapa : Window
             Entrevista_Cursos = cursos,
             Entrevista_Experiencia = experiencia,
             Entrevista_Habilitacao = habilitacao,
-            Entrevista_Pre_Qualificacao_Imediata = preImediata,
             Entrevista_Esportes = esportes,
             Entrevista_Lazer = lazer,
             Entrevista_Saude = saude,
@@ -1302,9 +1290,6 @@ public partial class TelaPrimeiraEtapa : Window
             case EtapaWizardBlocoE:
                 return ValidarBlocoE(c);
 
-            case EtapaWizardBlocoF:
-                return ValidarBlocoF(c);
-
             case EtapaWizardBlocoG:
                 return ValidarBlocoG(c);
 
@@ -1334,7 +1319,6 @@ public partial class TelaPrimeiraEtapa : Window
                !string.IsNullOrWhiteSpace(vp.Bairro) &&
                !string.IsNullOrWhiteSpace(vp.CEP) &&
                !string.IsNullOrWhiteSpace(vp.Telefone) &&
-               !string.IsNullOrWhiteSpace(vp.Municipio) &&
                EmailValido(vp.Email) &&
                !string.IsNullOrWhiteSpace(vp.Ocupacao) &&
                !string.IsNullOrWhiteSpace(vp.MoraCom) &&
@@ -1383,14 +1367,6 @@ public partial class TelaPrimeiraEtapa : Window
                !string.IsNullOrWhiteSpace(h.RealizandoCursoParaHabilitacao) &&
                RespostaCondicionalPreenchida(h.PossuiCNH, h.CategoriaCNH) &&
                (!RespostaEhSim(h.PossuiCNH) || CategoriaCnhValida(h.CategoriaCNH));
-    }
-
-    private bool ValidarBlocoF(Conscrito c)
-    {
-        var p = c.Entrevista_Pre_Qualificacao_Imediata;
-
-        return !string.IsNullOrWhiteSpace(p.PrimeiroPadraoPreQualificacao) &&
-               !string.IsNullOrWhiteSpace(p.SegundoPadraoPreQualificacao);
     }
 
     private bool ValidarBlocoG(Conscrito c)
@@ -1473,7 +1449,6 @@ public partial class TelaPrimeiraEtapa : Window
                ValidarBlocoC(c) &&
                ValidarBlocoD(c) &&
                ValidarBlocoE(c) &&
-               ValidarBlocoF(c) &&
                ValidarBlocoG(c) &&
                ValidarBlocoH(c) &&
                ValidarBlocoI(c) &&

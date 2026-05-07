@@ -823,75 +823,54 @@
                                 </StackPanel>
                             </Border>
 
-                            <Border x:Name="SecaoBlocoE" Style="{StaticResource CaixaSecaoDocumentoStyle}">
-                                <StackPanel>
-                                    <TextBlock Text="E. HABILITAÇÃO"
+                                <Border x:Name="SecaoBlocoE" Style="{StaticResource CaixaSecaoDocumentoStyle}">
+                                    <StackPanel>
+                                        <TextBlock Text="E. HABILITAÇÃO"
                                                Style="{StaticResource TituloSecaoPapelStyle}" />
 
-                                    <Grid Style="{StaticResource LinhaCamposAgrupadosStyle}">
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="300" />
-                                            <ColumnDefinition Width="300" />
-                                            <ColumnDefinition Width="140" />
-                                        </Grid.ColumnDefinitions>
+                                        <Grid Style="{StaticResource LinhaCamposAgrupadosStyle}">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="300" />
+                                                <ColumnDefinition Width="300" />
+                                                <ColumnDefinition Width="140" />
+                                            </Grid.ColumnDefinitions>
 
-                                        <StackPanel Grid.Column="0" Margin="0,0,24,0">
-                                            <TextBlock Text="Carteira Nacional de Habilitação (CNH):" Style="{StaticResource RotuloCampoDocumentoStyle}" />
-                                            <Border Style="{StaticResource LinhaCampoDocumentoStyle}">
-                                                <ComboBox x:Name="ComboPossuiCNH" Style="{StaticResource CampoComboDocumentoStyle}">
-                                                    <ComboBoxItem Content="Selecione" />
-                                                    <ComboBoxItem Content="Sim" />
-                                                    <ComboBoxItem Content="Não" />
-                                                </ComboBox>
-                                            </Border>
-                                        </StackPanel>
+                                            <StackPanel Grid.Column="0" Margin="0,0,24,0">
+                                                <TextBlock Text="Carteira Nacional de Habilitação (CNH):" Style="{StaticResource RotuloCampoDocumentoStyle}" />
+                                                <Border Style="{StaticResource LinhaCampoDocumentoStyle}">
+                                                    <ComboBox x:Name="ComboPossuiCNH" Style="{StaticResource CampoComboDocumentoStyle}">
+                                                        <ComboBoxItem Content="Selecione" />
+                                                        <ComboBoxItem Content="Sim" />
+                                                        <ComboBoxItem Content="Não" />
+                                                    </ComboBox>
+                                                </Border>
+                                            </StackPanel>
 
-                                        <StackPanel Grid.Column="1" Margin="0,0,24,0">
-                                            <TextBlock Text="Realizando curso para a habilitação:" Style="{StaticResource RotuloCampoDocumentoStyle}" />
-                                            <Border Style="{StaticResource LinhaCampoDocumentoStyle}">
-                                                <ComboBox x:Name="ComboCursoHabilitacao" Style="{StaticResource CampoComboDocumentoStyle}">
-                                                    <ComboBoxItem Content="Selecione" />
-                                                    <ComboBoxItem Content="Sim" />
-                                                    <ComboBoxItem Content="Não" />
-                                                </ComboBox>
-                                            </Border>
-                                        </StackPanel>
+                                            <StackPanel Grid.Column="1" Margin="0,0,24,0">
+                                                <TextBlock Text="Realizando curso para a habilitação:" Style="{StaticResource RotuloCampoDocumentoStyle}" />
+                                                <Border Style="{StaticResource LinhaCampoDocumentoStyle}">
+                                                    <ComboBox x:Name="ComboCursoHabilitacao" Style="{StaticResource CampoComboDocumentoStyle}">
+                                                        <ComboBoxItem Content="Selecione" />
+                                                        <ComboBoxItem Content="Sim" />
+                                                        <ComboBoxItem Content="Não" />
+                                                    </ComboBox>
+                                                </Border>
+                                            </StackPanel>
 
-                                        <StackPanel x:Name="PainelCategoriaCNH" Grid.Column="2">
-                                            <TextBlock Text="Categoria:" Style="{StaticResource RotuloCampoDocumentoStyle}" />
-                                            <Border Style="{StaticResource LinhaCampoDocumentoStyle}">
-                                                <TextBox x:Name="CaixaTextoCategoriaCNH"
+                                            <StackPanel x:Name="PainelCategoriaCNH" Grid.Column="2">
+                                                <TextBlock Text="Categoria:" Style="{StaticResource RotuloCampoDocumentoStyle}" />
+                                                <Border Style="{StaticResource LinhaCampoDocumentoStyle}">
+                                                    <TextBox x:Name="CaixaTextoCategoriaCNH"
                                                          MaxLength="2"
                                                          TextChanged="CampoComMascara_TextChanged"
                                                          Style="{StaticResource CampoTextoDocumentoStyle}" />
-                                            </Border>
-                                        </StackPanel>
-                                    </Grid>
-                                </StackPanel>
-                            </Border>
-
-                            <Border x:Name="SecaoBlocoF" Style="{StaticResource CaixaSecaoDocumentoStyle}">
-                                <StackPanel>
-                                    <TextBlock Text="F. PRE-QUALIFICAÇÃO IMEDIATA"
-                                               Style="{StaticResource TituloSecaoPapelStyle}" />
-
-                                    <StackPanel Style="{StaticResource PainelCampoVerticalStyle}">
-                                        <TextBlock Text="Primeiro padrão de pré-qualificação:" Style="{StaticResource RotuloCampoDocumentoStyle}" />
-                                        <Border Style="{StaticResource LinhaCampoDocumentoStyle}">
-                                            <TextBox x:Name="CaixaTextoPrimeiroPadraoPreQualificacao" Style="{StaticResource CampoTextoDocumentoStyle}" />
-                                        </Border>
+                                                </Border>
+                                            </StackPanel>
+                                        </Grid>
                                     </StackPanel>
+                                </Border>
 
-                                    <StackPanel Style="{StaticResource PainelCampoVerticalStyle}">
-                                        <TextBlock Text="Segundo padrão de pré-qualificação:" Style="{StaticResource RotuloCampoDocumentoStyle}" />
-                                        <Border Style="{StaticResource LinhaCampoDocumentoStyle}">
-                                            <TextBox x:Name="CaixaTextoSegundoPadraoPreQualificacao" Style="{StaticResource CampoTextoDocumentoStyle}" />
-                                        </Border>
-                                    </StackPanel>
-                                </StackPanel>
-                            </Border>
-
-                            <Border x:Name="SecaoBlocoG" Style="{StaticResource CaixaSecaoDocumentoStyle}">
+                                <Border x:Name="SecaoBlocoG" Style="{StaticResource CaixaSecaoDocumentoStyle}">
                                 <StackPanel>
                                     <TextBlock Text="G. PRÁTICA DE ESPORTES"
                                                Style="{StaticResource TituloSecaoPapelStyle}" />

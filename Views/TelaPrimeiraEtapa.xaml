@@ -519,7 +519,8 @@
                                             <Border Style="{StaticResource LinhaCampoDocumentoStyle}">
                                                 <TextBox x:Name="CaixaTextoMunicipioResidencia"
                                                          TextChanged="CampoComMascara_TextChanged"
-                                                         Style="{StaticResource CampoTextoDocumentoStyle}" />
+                                                         Style="{StaticResource CampoTextoDocumentoStyle}"
+                                                         />
                                             </Border>
                                         </StackPanel>
 
@@ -564,52 +565,43 @@
                                         </Border>
                                     </StackPanel>
 
-                                    <Grid Style="{StaticResource LinhaCamposAgrupadosStyle}">
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="*" />
-                                            <ColumnDefinition Width="180" />
-                                            <ColumnDefinition Width="200" />
-                                        </Grid.ColumnDefinitions>
+                                        <Grid Style="{StaticResource LinhaCamposAgrupadosStyle}">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="*" />
+                                                <ColumnDefinition Width="180" />
+                                                <ColumnDefinition Width="200" />
+                                            </Grid.ColumnDefinitions>
 
-                                        <StackPanel Grid.Column="0" Margin="0,0,24,0">
-                                            <TextBlock Text="2. Bairro:" Style="{StaticResource RotuloCampoDocumentoStyle}" />
-                                            <Border Style="{StaticResource LinhaCampoDocumentoStyle}">
-                                                <TextBox x:Name="CaixaTextoBairro" Style="{StaticResource CampoTextoDocumentoStyle}" />
-                                            </Border>
-                                        </StackPanel>
+                                            <StackPanel Grid.Column="0" Margin="0,0,24,0">
+                                                <TextBlock Text="2. Bairro:" Style="{StaticResource RotuloCampoDocumentoStyle}" />
+                                                <Border Style="{StaticResource LinhaCampoDocumentoStyle}">
+                                                    <TextBox x:Name="CaixaTextoBairro" Style="{StaticResource CampoTextoDocumentoStyle}" />
+                                                </Border>
+                                            </StackPanel>
 
-                                        <StackPanel Grid.Column="1" Margin="0,0,24,0">
-                                            <TextBlock Text="CEP:" Style="{StaticResource RotuloCampoDocumentoStyle}" />
-                                            <Border Style="{StaticResource LinhaCampoDocumentoStyle}">
-                                                <TextBox x:Name="CaixaTextoCEP"
+                                            <StackPanel Grid.Column="1" Margin="0,0,24,0">
+                                                <TextBlock Text="CEP:" Style="{StaticResource RotuloCampoDocumentoStyle}" />
+                                                <Border Style="{StaticResource LinhaCampoDocumentoStyle}">
+                                                    <TextBox x:Name="CaixaTextoCEP"
                                                          MaxLength="9"
                                                          TextChanged="CampoComMascara_TextChanged"
                                                          Style="{StaticResource CampoTextoDocumentoStyle}" />
-                                            </Border>
-                                        </StackPanel>
+                                                </Border>
+                                            </StackPanel>
 
-                                        <StackPanel Grid.Column="2">
-                                            <TextBlock Text="Telefone:" Style="{StaticResource RotuloCampoDocumentoStyle}" />
-                                            <Border Style="{StaticResource LinhaCampoDocumentoStyle}">
-                                                <TextBox x:Name="CaixaTextoTelefone"
+                                            <StackPanel Grid.Column="2">
+                                                <TextBlock Text="Telefone:" Style="{StaticResource RotuloCampoDocumentoStyle}" />
+                                                <Border Style="{StaticResource LinhaCampoDocumentoStyle}">
+                                                    <TextBox x:Name="CaixaTextoTelefone"
                                                          MaxLength="15"
                                                          TextChanged="CampoComMascara_TextChanged"
                                                          Style="{StaticResource CampoTextoDocumentoStyle}" />
-                                            </Border>
-                                        </StackPanel>
-                                    </Grid>
+                                                </Border>
+                                            </StackPanel>
+                                        </Grid>
 
-                                    <StackPanel Style="{StaticResource PainelCampoVerticalStyle}">
-                                        <TextBlock Text="3. Município:" Style="{StaticResource RotuloCampoDocumentoStyle}" />
-                                        <Border Style="{StaticResource LinhaCampoDocumentoStyle}">
-                                            <TextBox x:Name="CaixaTextoMunicipio"
-                                                     TextChanged="CampoComMascara_TextChanged"
-                                                     Style="{StaticResource CampoTextoDocumentoStyle}" />
-                                        </Border>
-                                    </StackPanel>
-
-                                    <StackPanel Style="{StaticResource PainelCampoVerticalStyle}">
-                                        <TextBlock Text="4. E-mail:" Style="{StaticResource RotuloCampoDocumentoStyle}" />
+                                        <StackPanel Style="{StaticResource PainelCampoVerticalStyle}">
+                                        <TextBlock Text="3. E-mail:" Style="{StaticResource RotuloCampoDocumentoStyle}" />
                                         <Border Style="{StaticResource LinhaCampoDocumentoStyle}">
                                             <TextBox x:Name="CaixaTextoEmail"
                                                      TextChanged="CampoComMascara_TextChanged"
@@ -618,14 +610,14 @@
                                     </StackPanel>
 
                                     <StackPanel Style="{StaticResource PainelCampoVerticalStyle}">
-                                        <TextBlock Text="5. Ocupação:" Style="{StaticResource RotuloCampoDocumentoStyle}" />
+                                        <TextBlock Text="4. Ocupação:" Style="{StaticResource RotuloCampoDocumentoStyle}" />
                                         <Border Style="{StaticResource LinhaCampoDocumentoStyle}">
                                             <TextBox x:Name="CaixaTextoOcupacao" Style="{StaticResource CampoTextoDocumentoStyle}" />
                                         </Border>
                                     </StackPanel>
 
                                     <StackPanel Style="{StaticResource PainelCampoVerticalStyle}">
-                                        <TextBlock Text="6. Mora com:" Style="{StaticResource RotuloCampoDocumentoStyle}" />
+                                        <TextBlock Text="5. Mora com:" Style="{StaticResource RotuloCampoDocumentoStyle}" />
                                         <Border Style="{StaticResource LinhaCampoDocumentoStyle}">
                                             <TextBox x:Name="CaixaTextoMoraCom" Style="{StaticResource CampoTextoDocumentoStyle}" />
                                         </Border>
@@ -639,7 +631,7 @@
                                         </Grid.ColumnDefinitions>
 
                                         <StackPanel Grid.Column="0" Margin="0,0,24,0">
-                                            <TextBlock Text="7. Estado civil:" Style="{StaticResource RotuloCampoDocumentoStyle}" />
+                                            <TextBlock Text="6. Estado civil:" Style="{StaticResource RotuloCampoDocumentoStyle}" />
                                             <Border Style="{StaticResource LinhaCampoDocumentoStyle}">
                                                 <ComboBox x:Name="ComboEstadoCivil" Style="{StaticResource CampoComboDocumentoStyle}">
                                                     <ComboBoxItem Content="Selecione" />
@@ -653,7 +645,7 @@
                                         </StackPanel>
 
                                         <StackPanel Grid.Column="1" Margin="0,0,24,0">
-                                            <TextBlock Text="8. Possui filhos:" Style="{StaticResource RotuloCampoDocumentoStyle}" />
+                                            <TextBlock Text="7. Possui filhos:" Style="{StaticResource RotuloCampoDocumentoStyle}" />
                                             <Border Style="{StaticResource LinhaCampoDocumentoStyle}">
                                                 <ComboBox x:Name="ComboPossuiFilhos" Style="{StaticResource CampoComboDocumentoStyle}">
                                                     <ComboBoxItem Content="Selecione" />
@@ -664,7 +656,7 @@
                                         </StackPanel>
 
                                         <StackPanel x:Name="PainelQuantidadeFilhos" Grid.Column="2">
-                                            <TextBlock Text="8.1. Se sim, quantos:" Style="{StaticResource RotuloCampoDocumentoStyle}" />
+                                            <TextBlock Text="7.1. Se sim, quantos:" Style="{StaticResource RotuloCampoDocumentoStyle}" />
                                             <Border Style="{StaticResource LinhaCampoDocumentoStyle}">
                                                 <TextBox x:Name="CaixaTextoQuantidadeFilhos"
                                                          TextChanged="CampoComMascara_TextChanged"
@@ -674,14 +666,14 @@
                                     </Grid>
 
                                     <StackPanel Style="{StaticResource PainelCampoVerticalStyle}">
-                                        <TextBlock Text="9. Quem trabalha na família:" Style="{StaticResource RotuloCampoDocumentoStyle}" />
+                                        <TextBlock Text="8. Quem trabalha na família:" Style="{StaticResource RotuloCampoDocumentoStyle}" />
                                         <Border Style="{StaticResource LinhaCampoDocumentoStyle}">
                                             <TextBox x:Name="CaixaTextoQuemTrabalhaFamilia" Style="{StaticResource CampoTextoDocumentoStyle}" />
                                         </Border>
                                     </StackPanel>
 
                                     <StackPanel Style="{StaticResource PainelCampoVerticalStyle}">
-                                        <TextBlock Text="10. Quem sustenta a família:" Style="{StaticResource RotuloCampoDocumentoStyle}" />
+                                        <TextBlock Text="9. Quem sustenta a família:" Style="{StaticResource RotuloCampoDocumentoStyle}" />
                                         <Border Style="{StaticResource LinhaCampoDocumentoStyle}">
                                             <TextBox x:Name="CaixaTextoQuemSustentaFamilia" Style="{StaticResource CampoTextoDocumentoStyle}" />
                                         </Border>

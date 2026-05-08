@@ -132,7 +132,11 @@ public partial class TelaPainelControle : Window
         FiltroSituacaoApto.IsChecked = false;
         FiltroSituacaoInapto.IsChecked = false;
         FiltroSituacaoDispensado.IsChecked = false;
+        FiltroSituacaoRefratario.IsChecked = false;
         FiltroSituacaoIndefinido.IsChecked = false;
+        FiltroAndamentoEmAndamento.IsChecked = false;
+        FiltroAndamentoFinalizado.IsChecked = false;
+        FiltroAndamentoFaltoso.IsChecked = false;
         FiltroTrabalha.IsChecked = false;
         FiltroRecebeAuxilio.IsChecked = false;
         FiltroEstuda.IsChecked = false;
@@ -208,6 +212,12 @@ public partial class TelaPainelControle : Window
             consulta = consulta.Where(conscrito => situacoesSelecionadas.Contains(NormalizarSituacao(conscrito.Situacao)));
         }
 
+        var andamentosSelecionados = ObterAndamentosSelecionados();
+        if (andamentosSelecionados.Count > 0)
+        {
+            consulta = consulta.Where(conscrito => andamentosSelecionados.Contains(conscrito.AndamentoProcesso));
+        }
+
         if (FiltroTrabalha.IsChecked == true)
         {
             consulta = consulta.Where(conscrito => TemTrabalhoDeclarado(conscrito.Entrevista_Vida_Pessoal.Ocupacao));
@@ -266,9 +276,21 @@ public partial class TelaPainelControle : Window
         if (FiltroSituacaoApto.IsChecked == true) situacoes.Add("Apto");
         if (FiltroSituacaoInapto.IsChecked == true) situacoes.Add("Inapto");
         if (FiltroSituacaoDispensado.IsChecked == true) situacoes.Add("Dispensado");
+        if (FiltroSituacaoRefratario.IsChecked == true) situacoes.Add("Refratário");
         if (FiltroSituacaoIndefinido.IsChecked == true) situacoes.Add("Indefinido");
 
         return situacoes;
+    }
+
+    private HashSet<string> ObterAndamentosSelecionados()
+    {
+        var andamentos = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+
+        if (FiltroAndamentoEmAndamento.IsChecked == true) andamentos.Add("Em andamento");
+        if (FiltroAndamentoFinalizado.IsChecked == true) andamentos.Add("Finalizado");
+        if (FiltroAndamentoFaltoso.IsChecked == true) andamentos.Add("Faltoso");
+
+        return andamentos;
     }
 
     private static bool ContemTexto(string? valor, string pesquisa)

@@ -10,6 +10,15 @@ namespace Alistar.App.Models;
 /// </remarks>
 public class EntrevistaMedica
 {
+    public string TipoAnalise { get; set; } = string.Empty;
+    public string QuantidadePessoasAnalisadas { get; set; } = string.Empty;
+    public string CRM { get; set; } = string.Empty;
+    public string ResultadoAptidao { get; set; } = string.Empty;
+    public string Restricao { get; set; } = string.Empty;
+    public string QualProblema { get; set; } = string.Empty;
+    public string CID { get; set; } = string.Empty;
+    public string MotivoInaptidao { get; set; } = string.Empty;
+
     // Avaliacao fisica.
     public string Altura { get; set; } = string.Empty;
     public string Peso { get; set; } = string.Empty;

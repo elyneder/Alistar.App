@@ -39,6 +39,9 @@
             <Setter Property="FontWeight" Value="SemiBold" />
             <Setter Property="FontSize" Value="14" />
             <Setter Property="Margin" Value="0,0,0,4" />
+            <Setter Property="Height" Value="36" />
+            <Setter Property="TextWrapping" Value="Wrap" />
+            <Setter Property="VerticalAlignment" Value="Bottom" />
         </Style>
 
         <Style x:Key="PainelCampoDocumentoStyle" TargetType="StackPanel">
@@ -57,6 +60,7 @@
             <Setter Property="BorderBrush" Value="#111111" />
             <Setter Property="BorderThickness" Value="0,0,0,1.2" />
             <Setter Property="Padding" Value="2,2,2,3" />
+            <Setter Property="MinHeight" Value="30" />
         </Style>
 
         <Style x:Key="CampoTextoDocumentoStyle" TargetType="TextBox">
@@ -400,7 +404,7 @@
                                         <Border x:Name="IndicadorEtapaQuestionario" Style="{StaticResource CartaoEtapaWizardStyle}">
                                             <StackPanel>
                                                 <TextBlock Text="02" Style="{StaticResource NumeroEtapaWizardStyle}" />
-                                                <TextBlock Text="Blocos A até J" Style="{StaticResource TituloEtapaWizardStyle}" />
+                                                <TextBlock Text="Blocos A até I" Style="{StaticResource TituloEtapaWizardStyle}" />
                                                 <TextBlock Text="Questionário complementar" Style="{StaticResource DescricaoEtapaWizardStyle}" />
                                             </StackPanel>
                                         </Border>
@@ -408,7 +412,7 @@
                                         <Border x:Name="IndicadorEtapaManifestacao" Style="{StaticResource CartaoEtapaWizardStyle}">
                                             <StackPanel>
                                                 <TextBlock Text="03" Style="{StaticResource NumeroEtapaWizardStyle}" />
-                                                <TextBlock Text="Bloco K" Style="{StaticResource TituloEtapaWizardStyle}" />
+                                                <TextBlock Text="Bloco J" Style="{StaticResource TituloEtapaWizardStyle}" />
                                                 <TextBlock Text="Manifestação do desejo de servir" Style="{StaticResource DescricaoEtapaWizardStyle}" />
                                             </StackPanel>
                                         </Border>
@@ -536,19 +540,59 @@
                                         </StackPanel>
                                     </Grid>
 
-                                    <StackPanel Style="{StaticResource PainelCampoVerticalStyle}">
-                                        <TextBlock Text="Situação:" Style="{StaticResource RotuloCampoDocumentoStyle}" />
-                                        <Border Style="{StaticResource LinhaCampoDocumentoStyle}">
-                                            <ComboBox x:Name="ComboSituacaoConscrito" Style="{StaticResource CampoComboDocumentoStyle}">
-                                                <ComboBoxItem Content="Indefinido" />
-                                                <ComboBoxItem Content="TG" />
-                                                <ComboBoxItem Content="Substituto" />
-                                                <ComboBoxItem Content="Apto" />
-                                                <ComboBoxItem Content="Inapto" />
-                                                <ComboBoxItem Content="Dispensado" />
-                                            </ComboBox>
-                                        </Border>
-                                    </StackPanel>
+                                    <Grid Style="{StaticResource LinhaCamposAgrupadosStyle}">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*" />
+                                            <ColumnDefinition Width="*" />
+                                            <ColumnDefinition Width="*" />
+                                            <ColumnDefinition Width="*" />
+                                        </Grid.ColumnDefinitions>
+
+                                        <StackPanel Grid.Column="0" Margin="0,0,24,0">
+                                            <TextBlock Text="Peso:" Style="{StaticResource RotuloCampoDocumentoStyle}" />
+                                            <Border Style="{StaticResource LinhaCampoDocumentoStyle}">
+                                                <TextBox x:Name="CaixaTextoPeso"
+                                                         MaxLength="6"
+                                                         TextChanged="CampoComMascara_TextChanged"
+                                                         ToolTip="Exemplo: 70 kg"
+                                                         Style="{StaticResource CampoTextoDocumentoStyle}" />
+                                            </Border>
+                                        </StackPanel>
+
+                                        <StackPanel Grid.Column="1" Margin="0,0,24,0">
+                                            <TextBlock Text="Altura:" Style="{StaticResource RotuloCampoDocumentoStyle}" />
+                                            <Border Style="{StaticResource LinhaCampoDocumentoStyle}">
+                                                <TextBox x:Name="CaixaTextoAltura"
+                                                         MaxLength="5"
+                                                         TextChanged="CampoComMascara_TextChanged"
+                                                         ToolTip="Exemplo: 1,32m"
+                                                         Style="{StaticResource CampoTextoDocumentoStyle}" />
+                                            </Border>
+                                        </StackPanel>
+
+                                        <StackPanel Grid.Column="2" Margin="0,0,24,0">
+                                            <TextBlock Text="Tamanho da cabeça:" Style="{StaticResource RotuloCampoDocumentoStyle}" />
+                                            <Border Style="{StaticResource LinhaCampoDocumentoStyle}">
+                                                <TextBox x:Name="CaixaTextoTamanhoCabeca"
+                                                         MaxLength="5"
+                                                         TextChanged="CampoComMascara_TextChanged"
+                                                         ToolTip="Exemplo: 123cm"
+                                                         Style="{StaticResource CampoTextoDocumentoStyle}" />
+                                            </Border>
+                                        </StackPanel>
+
+                                        <StackPanel Grid.Column="3">
+                                            <TextBlock Text="Tamanho do calçado:" Style="{StaticResource RotuloCampoDocumentoStyle}" />
+                                            <Border Style="{StaticResource LinhaCampoDocumentoStyle}">
+                                                <TextBox x:Name="CaixaTextoTamanhoCalcado"
+                                                         MaxLength="2"
+                                                         TextChanged="CampoComMascara_TextChanged"
+                                                         ToolTip="Exemplo: 42"
+                                                         Style="{StaticResource CampoTextoDocumentoStyle}" />
+                                            </Border>
+                                        </StackPanel>
+                                    </Grid>
+
                                 </StackPanel>
                             </Border>
 
@@ -579,7 +623,7 @@
                                                 </Border>
                                             </StackPanel>
 
-                                            <StackPanel Grid.Column="1" Margin="0,0,24,0">
+                                            <StackPanel x:Name="PainelCursoHabilitacao" Grid.Column="1" Margin="0,0,24,0">
                                                 <TextBlock Text="CEP:" Style="{StaticResource RotuloCampoDocumentoStyle}" />
                                                 <Border Style="{StaticResource LinhaCampoDocumentoStyle}">
                                                     <TextBox x:Name="CaixaTextoCEP"
@@ -679,16 +723,30 @@
                                         </Border>
                                     </StackPanel>
 
-                                    <StackPanel Style="{StaticResource PainelCampoVerticalStyle}">
-                                        <TextBlock Text="Recebe auxílio governamental:" Style="{StaticResource RotuloCampoDocumentoStyle}" />
-                                        <Border Style="{StaticResource LinhaCampoDocumentoStyle}">
-                                            <ComboBox x:Name="ComboRecebeAuxilioGovernamental" Style="{StaticResource CampoComboDocumentoStyle}">
-                                                <ComboBoxItem Content="Selecione" />
-                                                <ComboBoxItem Content="Sim" />
-                                                <ComboBoxItem Content="Não" />
-                                            </ComboBox>
-                                        </Border>
-                                    </StackPanel>
+                                    <Grid Style="{StaticResource LinhaCamposAgrupadosStyle}">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="260" />
+                                            <ColumnDefinition Width="*" />
+                                        </Grid.ColumnDefinitions>
+
+                                        <StackPanel Grid.Column="0" Margin="0,0,24,0">
+                                            <TextBlock Text="10. Recebe auxílio governamental:" Style="{StaticResource RotuloCampoDocumentoStyle}" />
+                                            <Border Style="{StaticResource LinhaCampoDocumentoStyle}">
+                                                <ComboBox x:Name="ComboRecebeAuxilioGovernamental" Style="{StaticResource CampoComboDocumentoStyle}">
+                                                    <ComboBoxItem Content="Selecione" />
+                                                    <ComboBoxItem Content="Sim" />
+                                                    <ComboBoxItem Content="Não" />
+                                                </ComboBox>
+                                            </Border>
+                                        </StackPanel>
+
+                                        <StackPanel x:Name="PainelQualAuxilioGovernamental" Grid.Column="1">
+                                            <TextBlock Text="10.1. Qual auxílio governamental:" Style="{StaticResource RotuloCampoDocumentoStyle}" />
+                                            <Border Style="{StaticResource LinhaCampoDocumentoStyle}">
+                                                <TextBox x:Name="CaixaTextoQualAuxilioGovernamental" Style="{StaticResource CampoTextoDocumentoStyle}" />
+                                            </Border>
+                                        </StackPanel>
+                                    </Grid>
                                 </StackPanel>
                             </Border>
 
@@ -728,7 +786,11 @@
                                         <StackPanel Grid.Column="1">
                                             <TextBlock Text="O ano que está cursando ou último ano que cursou:" Style="{StaticResource RotuloCampoDocumentoStyle}" />
                                             <Border Style="{StaticResource LinhaCampoDocumentoStyle}">
-                                                <TextBox x:Name="CaixaTextoAnoEscolar" Style="{StaticResource CampoTextoDocumentoStyle}" />
+                                                <TextBox x:Name="CaixaTextoAnoEscolar"
+                                                         MaxLength="4"
+                                                         TextChanged="CampoComMascara_TextChanged"
+                                                         ToolTip="Exemplo: 2000"
+                                                         Style="{StaticResource CampoTextoDocumentoStyle}" />
                                             </Border>
                                         </StackPanel>
                                     </Grid>
@@ -872,7 +934,7 @@
 
                                 <Border x:Name="SecaoBlocoG" Style="{StaticResource CaixaSecaoDocumentoStyle}">
                                 <StackPanel>
-                                    <TextBlock Text="G. PRÁTICA DE ESPORTES"
+                                    <TextBlock Text="F. PRÁTICA DE ESPORTES"
                                                Style="{StaticResource TituloSecaoPapelStyle}" />
 
                                     <Grid Style="{StaticResource LinhaCamposAgrupadosStyle}">
@@ -928,7 +990,7 @@
 
                             <Border x:Name="SecaoBlocoH" Style="{StaticResource CaixaSecaoDocumentoStyle}">
                                 <StackPanel>
-                                    <TextBlock Text="H. LAZER"
+                                    <TextBlock Text="G. LAZER"
                                                Style="{StaticResource TituloSecaoPapelStyle}" />
 
                                     <StackPanel Style="{StaticResource PainelCampoVerticalStyle}">
@@ -942,7 +1004,7 @@
 
                             <Border x:Name="SecaoBlocoI" Style="{StaticResource CaixaSecaoDocumentoStyle}">
                                 <StackPanel>
-                                    <TextBlock Text="I. SAÚDE"
+                                    <TextBlock Text="H. SAÚDE"
                                                Style="{StaticResource TituloSecaoPapelStyle}" />
 
                                     <Grid Style="{StaticResource LinhaCamposAgrupadosStyle}">
@@ -1232,7 +1294,7 @@
 
                             <Border x:Name="SecaoBlocoJ" Style="{StaticResource CaixaSecaoDocumentoStyle}">
                                 <StackPanel>
-                                    <TextBlock Text="J. ATO INFRACIONAL"
+                                    <TextBlock Text="I. ATO INFRACIONAL"
                                                Style="{StaticResource TituloSecaoPapelStyle}" />
 
                                     <Grid Style="{StaticResource LinhaCamposAgrupadosStyle}">
@@ -1272,17 +1334,47 @@
 
                             <Border x:Name="SecaoManifestacaoDesejoServir" Style="{StaticResource CaixaSecaoDocumentoStyle}">
                                 <StackPanel>
-                                    <TextBlock Text="K. MANIFESTAÇÃO DO DESEJO DE SERVIR"
+                                    <TextBlock Text="J. MANIFESTAÇÃO DO DESEJO DE SERVIR"
                                                Style="{StaticResource TituloSecaoPapelStyle}" />
 
+                                    <Grid Style="{StaticResource LinhaCamposAgrupadosStyle}">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*" />
+                                            <ColumnDefinition Width="*" />
+                                        </Grid.ColumnDefinitions>
+
+                                        <StackPanel Grid.Column="0" Margin="0,0,24,0">
+                                            <TextBlock Text="Situação:" Style="{StaticResource RotuloCampoDocumentoStyle}" />
+                                            <Border Style="{StaticResource LinhaCampoDocumentoStyle}">
+                                                <ComboBox x:Name="ComboSituacaoConscrito" Style="{StaticResource CampoComboDocumentoStyle}">
+                                                    <ComboBoxItem Content="Indefinido" />
+                                                    <ComboBoxItem Content="TG" />
+                                                    <ComboBoxItem Content="Substituto" />
+                                                    <ComboBoxItem Content="Apto" />
+                                                    <ComboBoxItem Content="Inapto" />
+                                                    <ComboBoxItem Content="Dispensado" />
+                                                    <ComboBoxItem Content="Refratário" />
+                                                </ComboBox>
+                                            </Border>
+                                        </StackPanel>
+
+                                        <StackPanel Grid.Column="1">
+                                            <TextBlock Text="Deseja servir:" Style="{StaticResource RotuloCampoDocumentoStyle}" />
+                                            <Border Style="{StaticResource LinhaCampoDocumentoStyle}">
+                                                <ComboBox x:Name="ComboDesejaServir" Style="{StaticResource CampoComboDocumentoStyle}">
+                                                    <ComboBoxItem Content="Selecione" />
+                                                    <ComboBoxItem Content="Sim" />
+                                                    <ComboBoxItem Content="Não" />
+                                                </ComboBox>
+                                            </Border>
+                                        </StackPanel>
+                                    </Grid>
+
                                     <StackPanel Style="{StaticResource PainelCampoVerticalStyle}">
-                                        <TextBlock Text="Deseja servir:" Style="{StaticResource RotuloCampoDocumentoStyle}" />
+                                        <TextBlock Text="Observação obrigatória:" Style="{StaticResource RotuloCampoDocumentoStyle}" />
                                         <Border Style="{StaticResource LinhaCampoDocumentoStyle}">
-                                            <ComboBox x:Name="ComboDesejaServir" Style="{StaticResource CampoComboDocumentoStyle}">
-                                                <ComboBoxItem Content="Selecione" />
-                                                <ComboBoxItem Content="Sim" />
-                                                <ComboBoxItem Content="Não" />
-                                            </ComboBox>
+                                            <TextBox x:Name="CaixaTextoObservacaoManifestacao"
+                                                     Style="{StaticResource CampoTextoMultilinhaDocumentoStyle}" />
                                         </Border>
                                     </StackPanel>
                                 </StackPanel>
@@ -1333,6 +1425,22 @@
                                               StrokeLineJoin="Round" StrokeStartLineCap="Round" StrokeEndLineCap="Round"/>
                                         </Canvas>
                                         <TextBlock x:Name="TextoBotaoSalvar" Text="Próximo"/>
+                                    </StackPanel>
+                                </Button>
+
+                                <Button x:Name="BotaoMarcarFalta"
+                                    Width="120"
+                                    Margin="16,8,0,0"
+                                    Visibility="Collapsed"
+                                    Style="{StaticResource BotaoSecundarioStyle}"
+                                    Click="MarcarFaltaBotao_Click">
+                                    <StackPanel Orientation="Horizontal">
+                                        <Ellipse Width="10"
+                                                 Height="10"
+                                                 Fill="#2563EB"
+                                                 Margin="0,0,8,0"
+                                                 VerticalAlignment="Center" />
+                                        <TextBlock Text="Faltou"/>
                                     </StackPanel>
                                 </Button>
 
@@ -1501,73 +1609,48 @@
                                         BorderBrush="#E1E7E3"
                                         BorderThickness="1"
                                         CornerRadius="12">
-                                    <WrapPanel>
-                                        <CheckBox x:Name="FiltroSituacaoTG"
-                                                  Content="TG"
-                                                  Style="{StaticResource CheckBoxFiltroStyle}"
-                                                  Checked="FiltroRapido_Changed"
-                                                  Unchecked="FiltroRapido_Changed" />
-                                        <CheckBox x:Name="FiltroSituacaoSubstituto"
-                                                  Content="Substituto"
-                                                  Style="{StaticResource CheckBoxFiltroStyle}"
-                                                  Checked="FiltroRapido_Changed"
-                                                  Unchecked="FiltroRapido_Changed" />
-                                        <CheckBox x:Name="FiltroSituacaoApto"
-                                                  Content="Apto"
-                                                  Style="{StaticResource CheckBoxFiltroStyle}"
-                                                  Checked="FiltroRapido_Changed"
-                                                  Unchecked="FiltroRapido_Changed" />
-                                        <CheckBox x:Name="FiltroSituacaoInapto"
-                                                  Content="Inapto"
-                                                  Style="{StaticResource CheckBoxFiltroStyle}"
-                                                  Checked="FiltroRapido_Changed"
-                                                  Unchecked="FiltroRapido_Changed" />
-                                        <CheckBox x:Name="FiltroSituacaoDispensado"
-                                                  Content="Dispensado"
-                                                  Style="{StaticResource CheckBoxFiltroStyle}"
-                                                  Checked="FiltroRapido_Changed"
-                                                  Unchecked="FiltroRapido_Changed" />
-                                        <CheckBox x:Name="FiltroSituacaoIndefinido"
-                                                  Content="Indefinido"
-                                                  Style="{StaticResource CheckBoxFiltroStyle}"
-                                                  Checked="FiltroRapido_Changed"
-                                                  Unchecked="FiltroRapido_Changed" />
-                                        <CheckBox x:Name="FiltroTrabalha"
-                                                  Content="Trabalha"
-                                                  Style="{StaticResource CheckBoxFiltroStyle}"
-                                                  Checked="FiltroRapido_Changed"
-                                                  Unchecked="FiltroRapido_Changed" />
-                                        <CheckBox x:Name="FiltroRecebeAuxilio"
-                                                  Content="Recebe auxílio governamental"
-                                                  Style="{StaticResource CheckBoxFiltroStyle}"
-                                                  Checked="FiltroRapido_Changed"
-                                                  Unchecked="FiltroRapido_Changed" />
-                                        <CheckBox x:Name="FiltroEstuda"
-                                                  Content="Estuda"
-                                                  Style="{StaticResource CheckBoxFiltroStyle}"
-                                                  Checked="FiltroRapido_Changed"
-                                                  Unchecked="FiltroRapido_Changed" />
-                                        <CheckBox x:Name="FiltroExperiencia"
-                                                  Content="Tem experiência profissional"
-                                                  Style="{StaticResource CheckBoxFiltroStyle}"
-                                                  Checked="FiltroRapido_Changed"
-                                                  Unchecked="FiltroRapido_Changed" />
-                                        <CheckBox x:Name="FiltroProblemaSaude"
-                                                  Content="Tem problema de saúde"
-                                                  Style="{StaticResource CheckBoxFiltroStyle}"
-                                                  Checked="FiltroRapido_Changed"
-                                                  Unchecked="FiltroRapido_Changed" />
-                                        <CheckBox x:Name="FiltroDesejaServirSim"
-                                                  Content="Deseja servir"
-                                                  Style="{StaticResource CheckBoxFiltroStyle}"
-                                                  Checked="FiltroRapido_Changed"
-                                                  Unchecked="FiltroRapido_Changed" />
-                                        <CheckBox x:Name="FiltroDesejaServirNao"
-                                                  Content="Não deseja servir"
-                                                  Style="{StaticResource CheckBoxFiltroStyle}"
-                                                  Checked="FiltroRapido_Changed"
-                                                  Unchecked="FiltroRapido_Changed" />
-                                    </WrapPanel>
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="1.1*" />
+                                            <ColumnDefinition Width="1.2*" />
+                                            <ColumnDefinition Width="1*" />
+                                        </Grid.ColumnDefinitions>
+
+                                        <StackPanel Grid.Column="0">
+                                            <TextBlock Text="Situação" FontWeight="SemiBold" Foreground="#123322" Margin="0,0,0,8" />
+                                            <WrapPanel>
+                                                <CheckBox x:Name="FiltroSituacaoTG" Content="TG" Style="{StaticResource CheckBoxFiltroStyle}" Checked="FiltroRapido_Changed" Unchecked="FiltroRapido_Changed" />
+                                                <CheckBox x:Name="FiltroSituacaoSubstituto" Content="Substituto" Style="{StaticResource CheckBoxFiltroStyle}" Checked="FiltroRapido_Changed" Unchecked="FiltroRapido_Changed" />
+                                                <CheckBox x:Name="FiltroSituacaoApto" Content="Apto" Style="{StaticResource CheckBoxFiltroStyle}" Checked="FiltroRapido_Changed" Unchecked="FiltroRapido_Changed" />
+                                                <CheckBox x:Name="FiltroSituacaoInapto" Content="Inapto" Style="{StaticResource CheckBoxFiltroStyle}" Checked="FiltroRapido_Changed" Unchecked="FiltroRapido_Changed" />
+                                                <CheckBox x:Name="FiltroSituacaoDispensado" Content="Dispensado" Style="{StaticResource CheckBoxFiltroStyle}" Checked="FiltroRapido_Changed" Unchecked="FiltroRapido_Changed" />
+                                                <CheckBox x:Name="FiltroSituacaoRefratario" Content="Refratário" Style="{StaticResource CheckBoxFiltroStyle}" Checked="FiltroRapido_Changed" Unchecked="FiltroRapido_Changed" />
+                                                <CheckBox x:Name="FiltroSituacaoIndefinido" Content="Indefinido" Style="{StaticResource CheckBoxFiltroStyle}" Checked="FiltroRapido_Changed" Unchecked="FiltroRapido_Changed" />
+                                            </WrapPanel>
+                                        </StackPanel>
+
+                                        <StackPanel Grid.Column="1" Margin="18,0,0,0">
+                                            <TextBlock Text="Perguntas pessoais" FontWeight="SemiBold" Foreground="#123322" Margin="0,0,0,8" />
+                                            <WrapPanel>
+                                                <CheckBox x:Name="FiltroTrabalha" Content="Trabalha" Style="{StaticResource CheckBoxFiltroStyle}" Checked="FiltroRapido_Changed" Unchecked="FiltroRapido_Changed" />
+                                                <CheckBox x:Name="FiltroRecebeAuxilio" Content="Recebe auxílio governamental" Style="{StaticResource CheckBoxFiltroStyle}" Checked="FiltroRapido_Changed" Unchecked="FiltroRapido_Changed" />
+                                                <CheckBox x:Name="FiltroEstuda" Content="Estuda" Style="{StaticResource CheckBoxFiltroStyle}" Checked="FiltroRapido_Changed" Unchecked="FiltroRapido_Changed" />
+                                                <CheckBox x:Name="FiltroExperiencia" Content="Tem experiência profissional" Style="{StaticResource CheckBoxFiltroStyle}" Checked="FiltroRapido_Changed" Unchecked="FiltroRapido_Changed" />
+                                                <CheckBox x:Name="FiltroProblemaSaude" Content="Tem problema de saúde" Style="{StaticResource CheckBoxFiltroStyle}" Checked="FiltroRapido_Changed" Unchecked="FiltroRapido_Changed" />
+                                                <CheckBox x:Name="FiltroDesejaServirSim" Content="Deseja servir" Style="{StaticResource CheckBoxFiltroStyle}" Checked="FiltroRapido_Changed" Unchecked="FiltroRapido_Changed" />
+                                                <CheckBox x:Name="FiltroDesejaServirNao" Content="Não deseja servir" Style="{StaticResource CheckBoxFiltroStyle}" Checked="FiltroRapido_Changed" Unchecked="FiltroRapido_Changed" />
+                                            </WrapPanel>
+                                        </StackPanel>
+
+                                        <StackPanel Grid.Column="2" Margin="18,0,0,0">
+                                            <TextBlock Text="Andamento" FontWeight="SemiBold" Foreground="#123322" Margin="0,0,0,8" />
+                                            <WrapPanel>
+                                                <CheckBox x:Name="FiltroAndamentoEmAndamento" Content="Em andamento" Style="{StaticResource CheckBoxFiltroStyle}" Checked="FiltroRapido_Changed" Unchecked="FiltroRapido_Changed" />
+                                                <CheckBox x:Name="FiltroAndamentoFinalizado" Content="Finalizado" Style="{StaticResource CheckBoxFiltroStyle}" Checked="FiltroRapido_Changed" Unchecked="FiltroRapido_Changed" />
+                                                <CheckBox x:Name="FiltroAndamentoFaltoso" Content="Faltoso" Style="{StaticResource CheckBoxFiltroStyle}" Checked="FiltroRapido_Changed" Unchecked="FiltroRapido_Changed" />
+                                            </WrapPanel>
+                                        </StackPanel>
+                                    </Grid>
                                 </Border>
                             </StackPanel>
                         </Border>
@@ -1619,6 +1702,37 @@
                                 <DataGridTextColumn Header="RA"
                                                     Width="0.9*"
                                                     Binding="{Binding RA}" />
+                                <DataGridTemplateColumn Header="Andamento"
+                                                        Width="1.15*"
+                                                        SortMemberPath="AndamentoProcesso">
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <StackPanel Orientation="Horizontal"
+                                                        VerticalAlignment="Center">
+                                                <Ellipse Width="10"
+                                                         Height="10"
+                                                         Margin="0,0,8,0">
+                                                    <Ellipse.Style>
+                                                        <Style TargetType="Ellipse">
+                                                            <Setter Property="Fill" Value="#FACC15" />
+                                                            <Style.Triggers>
+                                                                <DataTrigger Binding="{Binding AndamentoProcesso}" Value="Finalizado">
+                                                                    <Setter Property="Fill" Value="#16A34A" />
+                                                                </DataTrigger>
+                                                                <DataTrigger Binding="{Binding AndamentoProcesso}" Value="Faltoso">
+                                                                    <Setter Property="Fill" Value="#2563EB" />
+                                                                </DataTrigger>
+                                                            </Style.Triggers>
+                                                        </Style>
+                                                    </Ellipse.Style>
+                                                </Ellipse>
+                                                <TextBlock Text="{Binding AndamentoProcesso}"
+                                                           FontWeight="SemiBold"
+                                                           Foreground="#1F2937" />
+                                            </StackPanel>
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                </DataGridTemplateColumn>
                                 <DataGridTemplateColumn Header="Situação"
                                                         Width="1*"
                                                         SortMemberPath="Situacao">
@@ -1646,6 +1760,9 @@
                                                             <DataTrigger Binding="{Binding Situacao}" Value="Dispensado">
                                                                 <Setter Property="Background" Value="#DC2626" />
                                                             </DataTrigger>
+                                                            <DataTrigger Binding="{Binding Situacao}" Value="Refratário">
+                                                                <Setter Property="Background" Value="#7C2D12" />
+                                                            </DataTrigger>
                                                         </Style.Triggers>
                                                     </Style>
                                                 </Border.Style>
@@ -1668,6 +1785,9 @@
                                                                     <Setter Property="Foreground" Value="White" />
                                                                 </DataTrigger>
                                                                 <DataTrigger Binding="{Binding Situacao}" Value="Dispensado">
+                                                                    <Setter Property="Foreground" Value="White" />
+                                                                </DataTrigger>
+                                                                <DataTrigger Binding="{Binding Situacao}" Value="Refratário">
                                                                     <Setter Property="Foreground" Value="White" />
                                                                 </DataTrigger>
                                                             </Style.Triggers>

@@ -6,18 +6,10 @@ using Microsoft.Win32;
 namespace Alistar.App.Services;
 
 /// <summary>
-/// Gera relatorios PDF simples com os dados salvos do conscrito.
+/// Gera relatórios PDF compactos e profissionais com os dados salvos do conscrito.
 /// </summary>
-/// <remarks>
-/// Este servico foi feito sem pacote externo para deixar o projeto facil de rodar.
-/// Ele monta um PDF basico em texto, separado por secoes, o suficiente para baixar
-/// a ficha geral ou a ficha medica durante a consulta do conscrito.
-/// </remarks>
 public static class ServicoRelatorioPdf
 {
-    /// <summary>
-    /// Gera o PDF da ficha geral. Este relatorio sempre pode existir quando o conscrito ja foi salvo.
-    /// </summary>
     public static bool GerarRelatorioCadastro(Conscrito conscrito)
     {
         var caminho = EscolherCaminho(conscrito, "cadastro");
@@ -26,7 +18,7 @@ public static class ServicoRelatorioPdf
             return false;
         }
 
-        var documento = new DocumentoPdfSimples($"Cadastro do Conscrito - {Valor(conscrito.Nome)}");
+        var documento = new DocumentoPdfSimples($"Ficha de Entrevista - {Valor(conscrito.Nome)}");
         documento.AdicionarSecao("Identificação");
         documento.AdicionarCampo("Nome", conscrito.Nome);
         documento.AdicionarCampo("CPF", conscrito.CPF);
@@ -37,7 +29,12 @@ public static class ServicoRelatorioPdf
         documento.AdicionarCampo("País de residência", conscrito.PaisResidencia);
         documento.AdicionarCampo("Município de residência", conscrito.MunicipioResidencia);
         documento.AdicionarCampo("Zona de residência", conscrito.ZonaResidencia);
+        documento.AdicionarCampo("Peso", conscrito.Peso);
+        documento.AdicionarCampo("Altura", conscrito.Altura);
+        documento.AdicionarCampo("Tamanho da cabeça", conscrito.TamanhoCabeca);
+        documento.AdicionarCampo("Tamanho do calçado", conscrito.TamanhoCalcado);
         documento.AdicionarCampo("Deseja servir", conscrito.DesejaServir);
+        documento.AdicionarCampo("Observação", conscrito.Observacao);
 
         documento.AdicionarSecao("Vida pessoal");
         documento.AdicionarCampo("Endereço", conscrito.Entrevista_Vida_Pessoal?.Endereco);
@@ -54,6 +51,7 @@ public static class ServicoRelatorioPdf
         documento.AdicionarCampo("Quem trabalha na família", conscrito.Entrevista_Vida_Pessoal?.QuemTrabalhaNaFamilia);
         documento.AdicionarCampo("Quem sustenta a família", conscrito.Entrevista_Vida_Pessoal?.QuemSustentaAFamilia);
         documento.AdicionarCampo("Recebe auxílio governamental", conscrito.Entrevista_Vida_Pessoal?.RecebeAuxilioGovernamental);
+        documento.AdicionarCampo("Qual auxílio governamental", conscrito.Entrevista_Vida_Pessoal?.QualAuxilioGovernamental);
 
         documento.AdicionarSecao("Arrimo e escolaridade");
         documento.AdicionarCampo("Situação de arrimo", conscrito.Entrevista_Arrimo_De_Familia?.SituacaoArrimo);
@@ -85,11 +83,27 @@ public static class ServicoRelatorioPdf
         documento.AdicionarCampo("Qual problema", conscrito.Entrevista_Saude?.QualProblemaSaude);
         documento.AdicionarCampo("Remédio controlado", conscrito.Entrevista_Saude?.UsaRemedioControlado);
         documento.AdicionarCampo("Qual remédio", conscrito.Entrevista_Saude?.QualRemedioControlado);
+        documento.AdicionarCampo("Para que usa remédio", conscrito.Entrevista_Saude?.ParaQueUsaRemedioControlado);
+        documento.AdicionarCampo("Há quanto tempo usa remédio", conscrito.Entrevista_Saude?.HaQuantoTempoUsaRemedioControlado);
+        documento.AdicionarCampo("Por quanto tempo ainda usará", conscrito.Entrevista_Saude?.PorQuantoTempoAindaUsaraRemedio);
         documento.AdicionarCampo("Internação psiquiátrica", conscrito.Entrevista_Saude?.JaEsteveInternadoHospitalOuClinicaPsiquiatrica);
+        documento.AdicionarCampo("Motivo da internação", conscrito.Entrevista_Saude?.MotivoInternacao);
+        documento.AdicionarCampo("Tempo de internação", conscrito.Entrevista_Saude?.TempoInternacao);
         documento.AdicionarCampo("Fuma", conscrito.Entrevista_Saude?.Fuma);
+        documento.AdicionarCampo("Há quanto tempo fuma", conscrito.Entrevista_Saude?.HaQuantoTempoFuma);
         documento.AdicionarCampo("Bebida alcoólica", conscrito.Entrevista_Saude?.FazUsoBebidaAlcoolica);
+        documento.AdicionarCampo("Frequência da bebida", conscrito.Entrevista_Saude?.FrequenciaBebidaAlcoolica);
         documento.AdicionarCampo("Experimentou drogas", conscrito.Entrevista_Saude?.JaExperimentouDrogas);
+        documento.AdicionarCampo("Qual droga", conscrito.Entrevista_Saude?.QualDroga);
         documento.AdicionarCampo("Ainda usa droga", conscrito.Entrevista_Saude?.AindaFazUsoDroga);
+        documento.AdicionarCampo("Frequência de uso de droga", conscrito.Entrevista_Saude?.FrequenciaUsoDroga);
+        documento.AdicionarCampo("Última vez que utilizou droga", conscrito.Entrevista_Saude?.QuandoFoiUltimaVezQueUtilizouDroga);
+        documento.AdicionarCampo("Parente usuário de drogas", conscrito.Entrevista_Saude?.PossuiParenteUsuarioDrogas);
+        documento.AdicionarCampo("Quem é o parente usuário", conscrito.Entrevista_Saude?.QuemParenteUsuarioDrogas);
+        documento.AdicionarCampo("Impacto do uso por parente", conscrito.Entrevista_Saude?.ComoParenteUsuarioDrogasAfetaSuaVida);
+        documento.AdicionarCampo("Parente com transtorno psiquiátrico", conscrito.Entrevista_Saude?.PossuiParenteComHistoricoTranstornoPsiquiatrico);
+        documento.AdicionarCampo("Quem é o parente com transtorno", conscrito.Entrevista_Saude?.QuemParenteComHistoricoTranstornoPsiquiatrico);
+        documento.AdicionarCampo("Impacto do transtorno psiquiátrico", conscrito.Entrevista_Saude?.ComoTranstornoPsiquiatricoAfetaSuaVida);
 
         documento.AdicionarSecao("Infrações");
         documento.AdicionarCampo("Já foi detido pela polícia", conscrito.Entrevista_Infracao?.JaFoiDetidoPelaPolicia);
@@ -100,9 +114,6 @@ public static class ServicoRelatorioPdf
         return true;
     }
 
-    /// <summary>
-    /// Gera o PDF medico, mas somente quando existe algum dado medico salvo.
-    /// </summary>
     public static bool GerarRelatorioMedico(Conscrito conscrito)
     {
         if (!PossuiRelatorioMedico(conscrito))
@@ -152,9 +163,6 @@ public static class ServicoRelatorioPdf
         return true;
     }
 
-    /// <summary>
-    /// Verifica se vale mostrar o botao "PDF Medico" na tela.
-    /// </summary>
     public static bool PossuiRelatorioMedico(Conscrito conscrito)
     {
         var entrevista = conscrito.Entrevista_Medica;
@@ -203,61 +211,135 @@ public static class ServicoRelatorioPdf
 
     private sealed class DocumentoPdfSimples
     {
-        // Tamanho A4 em pontos. PDF trabalha com uma unidade propria chamada point.
         private const double LarguraPagina = 595;
         private const double AlturaPagina = 842;
-        private const double MargemEsquerda = 48;
-        private const double MargemTopo = 56;
-        private const double AlturaLinha = 14;
-        private readonly List<List<string>> _paginas = [[]];
+        private const double Margem = 36;
+        private const double TopoConteudo = 738;
+        private const double Rodape = 34;
+        private const double LarguraColuna = 252;
+        private const double EspacoColunas = 19;
+        private readonly List<SecaoPdf> _secoes = [];
         private readonly string _titulo;
-        private double _yAtual = AlturaPagina - MargemTopo;
+        private SecaoPdf? _secaoAtual;
 
         public DocumentoPdfSimples(string titulo)
         {
             _titulo = titulo;
-            AdicionarLinha(titulo.ToUpperInvariant());
-            AdicionarLinha($"Gerado em {DateTime.Now:dd/MM/yyyy HH:mm}");
-            AdicionarLinha(string.Empty);
         }
 
         public void AdicionarSecao(string titulo)
         {
-            AdicionarLinha(string.Empty);
-            AdicionarLinha(titulo.ToUpperInvariant());
+            _secaoAtual = new SecaoPdf(SanitizarTexto(titulo));
+            _secoes.Add(_secaoAtual);
         }
 
         public void AdicionarCampo(string rotulo, string? valor)
         {
-            foreach (var linha in QuebrarLinhas($"{rotulo}: {Valor(valor)}", 92))
+            _secaoAtual ??= new SecaoPdf("Dados");
+            if (!_secoes.Contains(_secaoAtual))
             {
-                AdicionarLinha(linha);
+                _secoes.Add(_secaoAtual);
             }
+
+            _secaoAtual.Campos.Add(new CampoPdf(SanitizarTexto(rotulo), Valor(valor)));
         }
 
         public void Salvar(string caminho)
         {
-            // A estrutura do PDF e uma lista de objetos: catalogo, paginas, fonte e conteudo.
-            // Aqui montamos esses objetos manualmente e escrevemos o xref no final.
+            var paginas = CriarPaginas(7.4, 9.2);
+            if (paginas.Count > 2)
+            {
+                paginas = CriarPaginas(6.6, 8.2);
+            }
+
+            if (paginas.Count > 2)
+            {
+                paginas = CriarPaginas(6.0, 7.4, truncar: true);
+            }
+
+            SalvarPaginas(caminho, paginas.Take(2).ToList());
+        }
+
+        private List<string> CriarPaginas(double tamanhoFonte, double alturaLinha, bool truncar = false)
+        {
+            var paginas = new List<StringBuilder> { new() };
+            var paginaAtual = 0;
+            var colunaAtual = 0;
+            var y = TopoConteudo;
+            var limiteCaracteres = Math.Max(44, (int)(LarguraColuna / (tamanhoFonte * 0.47)));
+
+            AdicionarCabecalho(paginas[paginaAtual], 1);
+
+            foreach (var secao in _secoes.Where(secao => secao.Campos.Count > 0))
+            {
+                GarantirEspaco(18, ref paginaAtual, ref colunaAtual, ref y, paginas);
+                AdicionarFaixaSecao(paginas[paginaAtual], ObterXColuna(colunaAtual), y, secao.Titulo, tamanhoFonte);
+                y -= 18;
+
+                foreach (var campo in secao.Campos)
+                {
+                    var linhas = QuebrarLinhas($"{campo.Rotulo}: {campo.Valor}", limiteCaracteres, truncar).ToList();
+                    var alturaCampo = Math.Max(alturaLinha, linhas.Count * alturaLinha);
+                    GarantirEspaco(alturaCampo, ref paginaAtual, ref colunaAtual, ref y, paginas);
+
+                    foreach (var linha in linhas)
+                    {
+                        AdicionarTexto(paginas[paginaAtual], ObterXColuna(colunaAtual), y, linha, tamanhoFonte, "F1", "0.09 0.10 0.11");
+                        y -= alturaLinha;
+                    }
+                }
+
+                y -= 4;
+            }
+
+            for (var indice = 0; indice < paginas.Count; indice++)
+            {
+                AdicionarRodape(paginas[indice], indice + 1, paginas.Count);
+            }
+
+            return paginas.Select(pagina => pagina.ToString()).ToList();
+
+            void GarantirEspaco(double alturaNecessaria, ref int pagina, ref int coluna, ref double posicaoY, List<StringBuilder> listaPaginas)
+            {
+                if (posicaoY - alturaNecessaria >= Rodape)
+                {
+                    return;
+                }
+
+                if (coluna == 0)
+                {
+                    coluna = 1;
+                    posicaoY = TopoConteudo;
+                    return;
+                }
+
+                coluna = 0;
+                pagina++;
+                listaPaginas.Add(new StringBuilder());
+                AdicionarCabecalho(listaPaginas[pagina], pagina + 1);
+                posicaoY = TopoConteudo;
+            }
+        }
+
+        private static void SalvarPaginas(string caminho, List<string> paginas)
+        {
             var objetos = new List<byte[]>();
             var paginasIds = new List<int>();
-            var conteudosIds = new List<int>();
 
             objetos.Add(Bytes("<< /Type /Catalog /Pages 2 0 R >>"));
             objetos.Add([]);
             objetos.Add(Bytes("<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica /Encoding /WinAnsiEncoding >>"));
+            objetos.Add(Bytes("<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica-Bold /Encoding /WinAnsiEncoding >>"));
 
-            foreach (var pagina in _paginas)
+            foreach (var pagina in paginas)
             {
-                var conteudo = CriarConteudoPagina(pagina);
-                var conteudoBytes = Encoding.Latin1.GetBytes(conteudo);
+                var conteudoBytes = Encoding.Latin1.GetBytes(pagina);
                 var paginaId = objetos.Count + 1;
                 var conteudoId = objetos.Count + 2;
 
                 paginasIds.Add(paginaId);
-                conteudosIds.Add(conteudoId);
-                objetos.Add(Bytes($"<< /Type /Page /Parent 2 0 R /MediaBox [0 0 {LarguraPagina} {AlturaPagina}] /Resources << /Font << /F1 3 0 R >> >> /Contents {conteudoId} 0 R >>"));
-                objetos.Add(Bytes($"<< /Length {conteudoBytes.Length} >>\nstream\n{conteudo}\nendstream"));
+                objetos.Add(Bytes($"<< /Type /Page /Parent 2 0 R /MediaBox [0 0 {LarguraPagina} {AlturaPagina}] /Resources << /Font << /F1 3 0 R /F2 4 0 R >> >> /Contents {conteudoId} 0 R >>"));
+                objetos.Add(Bytes($"<< /Length {conteudoBytes.Length} >>\nstream\n{pagina}\nendstream"));
             }
 
             objetos[1] = Bytes($"<< /Type /Pages /Kids [{string.Join(" ", paginasIds.Select(id => $"{id} 0 R"))}] /Count {paginasIds.Count} >>");
@@ -286,53 +368,89 @@ public static class ServicoRelatorioPdf
             Escrever(stream, $"trailer\n<< /Size {objetos.Count + 1} /Root 1 0 R >>\nstartxref\n{inicioXref}\n%%EOF");
         }
 
-        private static string CriarConteudoPagina(List<string> linhas)
+        private void AdicionarCabecalho(StringBuilder builder, int pagina)
         {
-            var builder = new StringBuilder();
-            var y = AlturaPagina - MargemTopo;
-
-            foreach (var linha in linhas)
-            {
-                builder.Append("BT /F1 10 Tf ");
-                builder.Append(FormattableString.Invariant($"{MargemEsquerda} {y} Td "));
-                builder.Append('(');
-                builder.Append(EscaparTexto(linha));
-                builder.AppendLine(") Tj ET");
-                y -= AlturaLinha;
-            }
-
-            return builder.ToString();
+            AdicionarRetangulo(builder, 0, 776, LarguraPagina, 66, "0.04 0.12 0.08");
+            AdicionarRetangulo(builder, Margem, 758, LarguraPagina - (Margem * 2), 1.4, "0.10 0.40 0.26");
+            AdicionarTexto(builder, Margem, 815, "ALISTAR", 9, "F2", "1 1 1");
+            AdicionarTexto(builder, Margem, 795, SanitizarTexto(_titulo).ToUpperInvariant(), 13, "F2", "1 1 1");
+            AdicionarTexto(builder, 420, 815, $"Página {pagina}", 7.5, "F1", "0.82 0.91 0.86");
+            AdicionarTexto(builder, 420, 797, $"Gerado em {DateTime.Now:dd/MM/yyyy HH:mm}", 7.5, "F1", "0.82 0.91 0.86");
         }
 
-        private void AdicionarLinha(string linha)
+        private static void AdicionarRodape(StringBuilder builder, int pagina, int totalPaginas)
         {
-            if (_yAtual < 48)
-            {
-                _paginas.Add([]);
-                _yAtual = AlturaPagina - MargemTopo;
-                _paginas[^1].Add(_titulo.ToUpperInvariant());
-                _paginas[^1].Add(string.Empty);
-                _yAtual -= AlturaLinha * 2;
-            }
-
-            _paginas[^1].Add(SanitizarTexto(linha));
-            _yAtual -= AlturaLinha;
+            AdicionarLinha(builder, Margem, 28, LarguraPagina - (Margem * 2), "0.76 0.80 0.78");
+            AdicionarTexto(builder, Margem, 18, $"Página {pagina} de {totalPaginas}", 7, "F1", "0.35 0.39 0.37");
+            AdicionarTexto(builder, 395, 18, "Documento gerado pelo Sistema Alistar", 7, "F1", "0.35 0.39 0.37");
         }
 
-        private static IEnumerable<string> QuebrarLinhas(string texto, int limite)
+        private static void AdicionarFaixaSecao(StringBuilder builder, double x, double y, string titulo, double tamanhoFonte)
+        {
+            AdicionarRetangulo(builder, x, y - 4, LarguraColuna, 13, "0.07 0.07 0.07");
+            AdicionarTexto(builder, x + 5, y, titulo.ToUpperInvariant(), Math.Max(6.8, tamanhoFonte), "F2", "1 1 1");
+        }
+
+        private static void AdicionarTexto(StringBuilder builder, double x, double y, string texto, double tamanho, string fonte, string cor)
+        {
+            builder.Append(cor);
+            builder.Append(" rg BT /");
+            builder.Append(fonte);
+            builder.Append(FormattableString.Invariant($" {tamanho:0.##} Tf {x:0.##} {y:0.##} Td "));
+            builder.Append('(');
+            builder.Append(EscaparTexto(SanitizarTexto(texto)));
+            builder.AppendLine(") Tj ET");
+        }
+
+        private static void AdicionarRetangulo(StringBuilder builder, double x, double y, double largura, double altura, string cor)
+        {
+            builder.Append(cor);
+            builder.Append(FormattableString.Invariant($" rg {x:0.##} {y:0.##} {largura:0.##} {altura:0.##} re f\n"));
+        }
+
+        private static void AdicionarLinha(StringBuilder builder, double x, double y, double largura, string cor)
+        {
+            builder.Append(cor);
+            builder.Append(FormattableString.Invariant($" RG {x:0.##} {y:0.##} m {x + largura:0.##} {y:0.##} l S\n"));
+        }
+
+        private static double ObterXColuna(int coluna)
+        {
+            return Margem + (coluna * (LarguraColuna + EspacoColunas));
+        }
+
+        private static IEnumerable<string> QuebrarLinhas(string texto, int limite, bool truncar)
         {
             texto = SanitizarTexto(texto);
+            if (truncar && texto.Length > limite)
+            {
+                yield return texto[..Math.Max(0, limite - 3)] + "...";
+                yield break;
+            }
+
             if (texto.Length <= limite)
             {
                 yield return texto;
                 yield break;
             }
 
-            var palavras = texto.Split(' ');
+            var palavras = texto.Split(' ', StringSplitOptions.RemoveEmptyEntries);
             var linha = string.Empty;
 
             foreach (var palavra in palavras)
             {
+                if (palavra.Length > limite)
+                {
+                    if (!string.IsNullOrWhiteSpace(linha))
+                    {
+                        yield return linha;
+                    }
+
+                    yield return palavra[..limite];
+                    linha = string.Empty;
+                    continue;
+                }
+
                 if ((linha.Length + palavra.Length + 1) > limite)
                 {
                     yield return linha;
@@ -375,5 +493,12 @@ public static class ServicoRelatorioPdf
         {
             stream.Write(Bytes(texto));
         }
+
+        private sealed record SecaoPdf(string Titulo)
+        {
+            public List<CampoPdf> Campos { get; } = [];
+        }
+
+        private sealed record CampoPdf(string Rotulo, string Valor);
     }
 }

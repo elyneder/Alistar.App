@@ -1,4 +1,5 @@
 ﻿using System.Windows;
+using System.Globalization;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
@@ -18,6 +19,8 @@ namespace Alistar.App;
 /// </remarks>
 public partial class TelaPrimeiraEtapa : Window
 {
+    private const int AnoLimiteAlistamento = 2008;
+
     // Indices usados para controlar qual parte do formulario aparece no wizard.
     private const int EtapaWizardInformacoesBasicas = 0;
     private const int EtapaWizardBlocoA = 1;
@@ -66,6 +69,7 @@ public partial class TelaPrimeiraEtapa : Window
         Title = _modoEntrevistaTecnica ? "Alistar | Entrevista Técnica" : Title;
         RegistrarEventosCamposCondicionais();
         AtualizarCamposCondicionais();
+        BotaoMarcarFalta.Visibility = _modoEntrevistaTecnica ? Visibility.Visible : Visibility.Collapsed;
         CarregarConscritos();
         PrepararTela();
 
@@ -95,9 +99,11 @@ public partial class TelaPrimeiraEtapa : Window
     private void RegistrarEventosCamposCondicionais()
     {
         ComboPossuiFilhos.SelectionChanged += CampoCondicional_SelectionChanged;
+        ComboRecebeAuxilioGovernamental.SelectionChanged += CampoCondicional_SelectionChanged;
         ComboTemCursosProfissionalizantes.SelectionChanged += CampoCondicional_SelectionChanged;
         ComboExperienciaProfissional.SelectionChanged += CampoCondicional_SelectionChanged;
         ComboPossuiCNH.SelectionChanged += CampoCondicional_SelectionChanged;
+        ComboCursoHabilitacao.SelectionChanged += CampoCondicional_SelectionChanged;
         ComboPraticaEsportes.SelectionChanged += CampoCondicional_SelectionChanged;
         ComboProblemaSaude.SelectionChanged += CampoCondicional_SelectionChanged;
         ComboRemedioControlado.SelectionChanged += CampoCondicional_SelectionChanged;
@@ -122,9 +128,23 @@ public partial class TelaPrimeiraEtapa : Window
     private void AtualizarCamposCondicionais()
     {
         DefinirVisibilidadeCondicional(RespostaEhSim(ObterTextoSelecionado(ComboPossuiFilhos)), [PainelQuantidadeFilhos]);
+        DefinirVisibilidadeCondicional(RespostaEhSim(ObterTextoSelecionado(ComboRecebeAuxilioGovernamental)), [PainelQualAuxilioGovernamental]);
         DefinirVisibilidadeCondicional(RespostaEhSim(ObterTextoSelecionado(ComboTemCursosProfissionalizantes)), [PainelQuaisCursos, PainelComprovaCursos]);
         DefinirVisibilidadeCondicional(RespostaEhSim(ObterTextoSelecionado(ComboExperienciaProfissional)), [PainelQuaisExperiencias, PainelComprovaExperiencia]);
-        DefinirVisibilidadeCondicional(RespostaEhSim(ObterTextoSelecionado(ComboPossuiCNH)), [PainelCategoriaCNH]);
+        var possuiCnh = RespostaEhSim(ObterTextoSelecionado(ComboPossuiCNH));
+        DefinirVisibilidadeCondicional(possuiCnh, [PainelCategoriaCNH]);
+
+        if (possuiCnh)
+        {
+            SelecionarComboPorTexto(ComboCursoHabilitacao, "Não");
+            PainelCursoHabilitacao.Visibility = Visibility.Collapsed;
+            ComboCursoHabilitacao.IsEnabled = false;
+        }
+        else
+        {
+            PainelCursoHabilitacao.Visibility = Visibility.Visible;
+            ComboCursoHabilitacao.IsEnabled = true;
+        }
         DefinirVisibilidadeCondicional(RespostaEhSim(ObterTextoSelecionado(ComboPraticaEsportes)), [PainelQuaisEsportes, PainelFederado]);
         DefinirVisibilidadeCondicional(RespostaEhSim(ObterTextoSelecionado(ComboProblemaSaude)), [PainelQualProblemaSaude]);
         DefinirVisibilidadeCondicional(RespostaEhSim(ObterTextoSelecionado(ComboRemedioControlado)), [PainelQualRemedioControlado, PainelDetalhesRemedioControlado]);
@@ -259,7 +279,11 @@ public partial class TelaPrimeiraEtapa : Window
         FiltroSituacaoApto.IsChecked = false;
         FiltroSituacaoInapto.IsChecked = false;
         FiltroSituacaoDispensado.IsChecked = false;
+        FiltroSituacaoRefratario.IsChecked = false;
         FiltroSituacaoIndefinido.IsChecked = false;
+        FiltroAndamentoEmAndamento.IsChecked = false;
+        FiltroAndamentoFinalizado.IsChecked = false;
+        FiltroAndamentoFaltoso.IsChecked = false;
         FiltroTrabalha.IsChecked = false;
         FiltroRecebeAuxilio.IsChecked = false;
         FiltroEstuda.IsChecked = false;
@@ -283,7 +307,11 @@ public partial class TelaPrimeiraEtapa : Window
         {    
             if (!ValidarEtapaAtual(conscrito))
             {
-                TextoFeedbackCadastroConscrito.Text = "Preencha todos os campos desta etapa antes de continuar.";
+                if (string.IsNullOrWhiteSpace(TextoFeedbackCadastroConscrito.Text))
+                {
+                    TextoFeedbackCadastroConscrito.Text = "Preencha todos os campos desta etapa antes de continuar.";
+                }
+
                 return;
             }
 
@@ -293,7 +321,11 @@ public partial class TelaPrimeiraEtapa : Window
 
         if (!ValidarFichaCompleta(conscrito))
         {
-            TextoFeedbackCadastroConscrito.Text = "Preencha todos os campos da ficha antes de salvar.";
+            if (string.IsNullOrWhiteSpace(TextoFeedbackCadastroConscrito.Text))
+            {
+                TextoFeedbackCadastroConscrito.Text = "Preencha todos os campos da ficha antes de salvar.";
+            }
+
             return;
         }
 
@@ -302,13 +334,24 @@ public partial class TelaPrimeiraEtapa : Window
             conscrito.Situacao = "Indefinido";
         }
 
-        if (EmModoEdicao)
+        try
         {
-            ServicoArmazenamentoConscritos.Atualizar(conscrito);
+            if (EmModoEdicao)
+            {
+                AplicarAndamentoDaEtapa(conscrito);
+                ServicoArmazenamentoConscritos.Atualizar(conscrito);
+            }
+            else
+            {
+                AplicarAndamentoDaEtapa(conscrito);
+                ServicoArmazenamentoConscritos.Adicionar(conscrito);
+            }
         }
-        else
+        catch (InvalidOperationException ex)
         {
-            ServicoArmazenamentoConscritos.Adicionar(conscrito);
+            TextoFeedbackCadastroConscrito.Text = ex.Message;
+            DefinirEtapaWizard(EtapaWizardInformacoesBasicas);
+            return;
         }
 
         ServicoNavegacao.Trocar(this, new TelaPainelControle());
@@ -325,6 +368,21 @@ public partial class TelaPrimeiraEtapa : Window
         LimparCamposFormulario();
         TextoFeedbackCadastroConscrito.Text = string.Empty;
         DefinirEtapaWizard(EtapaWizardInformacoesBasicas);
+    }
+
+    private void MarcarFaltaBotao_Click(object sender, RoutedEventArgs e)
+    {
+        var conscrito = ObterConscritoEmEdicao();
+        if (conscrito is null)
+        {
+            TextoFeedbackCadastroConscrito.Text = "Selecione um conscrito da lista antes de marcar falta.";
+            MostrarListaConscritos();
+            return;
+        }
+
+        conscrito.Faltoso = true;
+        ServicoArmazenamentoConscritos.Atualizar(conscrito);
+        ServicoNavegacao.Trocar(this, new TelaPainelControle());
     }
 
     private void ExcluirConscritoBotao_Click(object sender, RoutedEventArgs e)
@@ -388,7 +446,17 @@ public partial class TelaPrimeiraEtapa : Window
     private void CarregarConscritos()
     {
         // Sempre que a lista abre, recarregamos do JSON para pegar cadastros recentes.
-        _conscritosCarregados = ServicoArmazenamentoConscritos.ObterTodos()
+        var consulta = ServicoArmazenamentoConscritos.ObterTodos().AsEnumerable();
+        if (_modoEntrevistaTecnica)
+        {
+            consulta = consulta.Where(conscrito =>
+                conscrito.PrimeiraEtapaConcluida &&
+                conscrito.SegundaEtapaConcluida &&
+                !conscrito.TerceiraEtapaConcluida &&
+                !conscrito.Faltoso);
+        }
+
+        _conscritosCarregados = consulta
             .OrderBy(conscrito => conscrito.Nome)
             .ToList();
 
@@ -443,6 +511,10 @@ public partial class TelaPrimeiraEtapa : Window
         CaixaTextoPaisResidencia.Text = conscrito.PaisResidencia;
         CaixaTextoMunicipioResidencia.Text = conscrito.MunicipioResidencia;
         SelecionarComboPorTexto(ComboZonaResidencia, conscrito.ZonaResidencia);
+        CaixaTextoPeso.Text = conscrito.Peso;
+        CaixaTextoAltura.Text = conscrito.Altura;
+        CaixaTextoTamanhoCabeca.Text = conscrito.TamanhoCabeca;
+        CaixaTextoTamanhoCalcado.Text = conscrito.TamanhoCalcado;
         SelecionarComboPorTexto(ComboSituacaoConscrito, conscrito.Situacao, "Indefinido");
         CaixaTextoEndereco.Text = conscrito.Entrevista_Vida_Pessoal.Endereco;
         CaixaTextoBairro.Text = conscrito.Entrevista_Vida_Pessoal.Bairro;
@@ -457,6 +529,7 @@ public partial class TelaPrimeiraEtapa : Window
         CaixaTextoQuemTrabalhaFamilia.Text = conscrito.Entrevista_Vida_Pessoal.QuemTrabalhaNaFamilia;
         CaixaTextoQuemSustentaFamilia.Text = conscrito.Entrevista_Vida_Pessoal.QuemSustentaAFamilia;
         SelecionarComboPorTexto(ComboRecebeAuxilioGovernamental, conscrito.Entrevista_Vida_Pessoal.RecebeAuxilioGovernamental);
+        CaixaTextoQualAuxilioGovernamental.Text = conscrito.Entrevista_Vida_Pessoal.QualAuxilioGovernamental;
         SelecionarComboPorTexto(ComboSituacaoArrimo, conscrito.Entrevista_Arrimo_De_Familia.SituacaoArrimo);
         SelecionarComboPorTexto(ComboEstudaAtualmente, conscrito.Entrevista_Arrimo_De_Familia.EstudaAtualmente);
         CaixaTextoAnoEscolar.Text = conscrito.Entrevista_Arrimo_De_Familia.AnoQueEstaCursandoOuUltimoAnoQueCursou;
@@ -503,6 +576,7 @@ public partial class TelaPrimeiraEtapa : Window
         CaixaTextoQualInfracao.Text = conscrito.Entrevista_Infracao.QualFoiAInfracao;
         CaixaTextoOutrosAtosInfracionais.Text = conscrito.Entrevista_Infracao.OutrosAtosInfracionais;
         SelecionarComboPorTexto(ComboDesejaServir, conscrito.DesejaServir);
+        CaixaTextoObservacaoManifestacao.Text = conscrito.Observacao;
         AtualizarCamposCondicionais();
 
         MostrarCadastroConscrito();
@@ -606,16 +680,16 @@ public partial class TelaPrimeiraEtapa : Window
 
             case EtapaWizardManifestacao:
                 TextoTituloFormulario.Text = EmModoEdicao ? (_modoEntrevistaTecnica ? "Entrevista Técnica" : "Editar Conscrito") : NomeFluxoFormulario;
-                TextoDescricaoFormulario.Text = "Preencha o bloco K e depois avance para revisar o formulário completo antes de salvar.";
-                TextoEtapaWizard.Text = $"Etapa 12 de {TotalEtapasWizard} · Bloco K";
-                TextoResumoEtapaWizard.Text = "Registre a manifestação do desejo de servir para concluir o preenchimento.";
+                TextoDescricaoFormulario.Text = "Preencha o bloco J e depois avance para revisar o formulário completo antes de salvar.";
+                TextoEtapaWizard.Text = $"Etapa 11 de {TotalEtapasWizard} · Bloco J";
+                TextoResumoEtapaWizard.Text = "Registre a situação, a manifestação do desejo de servir e a observação para concluir o preenchimento.";
                 TextoBotaoSalvar.Text = "Ir para confirmação";
                 break;
 
             default:
                 TextoTituloFormulario.Text = _modoEntrevistaTecnica ? "Confirmar Entrevista Técnica" : EmModoEdicao ? "Detalhes do Conscrito" : "Confirmar Dados do Conscrito";
                 TextoDescricaoFormulario.Text = "Confira o formulário completo abaixo. Se precisar, altere qualquer campo antes de salvar a ficha.";
-                TextoEtapaWizard.Text = $"Etapa 13 de {TotalEtapasWizard} · Confirmação final";
+                TextoEtapaWizard.Text = $"Etapa 12 de {TotalEtapasWizard} · Confirmação final";
                 TextoResumoEtapaWizard.Text = "Toda a ficha aparece completa para revisão e ajustes finais antes do salvamento.";
                 TextoBotaoSalvar.Text = EmModoEdicao ? (_modoEntrevistaTecnica ? RotuloAcaoSalvar : "Salvar Alterações") : RotuloAcaoSalvar;
                 break;
@@ -631,10 +705,10 @@ public partial class TelaPrimeiraEtapa : Window
             EtapaWizardBlocoC => "Bloco C · Cursos",
             EtapaWizardBlocoD => "Bloco D · Experiência",
             EtapaWizardBlocoE => "Bloco E · Habilitação",
-            EtapaWizardBlocoG => "Bloco G · Prática de esportes",
-            EtapaWizardBlocoH => "Bloco H · Lazer",
-            EtapaWizardBlocoI => "Bloco I · Saúde",
-            EtapaWizardBlocoJ => "Bloco J · Ato infracional",
+            EtapaWizardBlocoG => "Bloco F · Prática de esportes",
+            EtapaWizardBlocoH => "Bloco G · Lazer",
+            EtapaWizardBlocoI => "Bloco H · Saúde",
+            EtapaWizardBlocoJ => "Bloco I · Ato infracional",
             _ => "Bloco"
         };
     }
@@ -685,6 +759,11 @@ public partial class TelaPrimeiraEtapa : Window
 
         if (caixaTexto.Text == textoFormatado)
         {
+            if (caixaTexto == CaixaTextoDataNascimento)
+            {
+                AtualizarSituacaoPeloNascimento();
+            }
+
             return;
         }
 
@@ -692,6 +771,11 @@ public partial class TelaPrimeiraEtapa : Window
         caixaTexto.Text = textoFormatado;
         caixaTexto.CaretIndex = caixaTexto.Text.Length;
         _atualizandoMascara = false;
+
+        if (caixaTexto == CaixaTextoDataNascimento)
+        {
+            AtualizarSituacaoPeloNascimento();
+        }
     }
 
     private string FormatarTextoCampo(TextBox caixaTexto, string valor)
@@ -722,6 +806,31 @@ public partial class TelaPrimeiraEtapa : Window
         }
 
         if (caixaTexto == CaixaTextoQuantidadeFilhos)
+        {
+            return ObterApenasDigitos(valor, 2);
+        }
+
+        if (caixaTexto == CaixaTextoAnoEscolar)
+        {
+            return ObterApenasDigitos(valor, 4);
+        }
+
+        if (caixaTexto == CaixaTextoPeso)
+        {
+            return FormatarPeso(valor);
+        }
+
+        if (caixaTexto == CaixaTextoAltura)
+        {
+            return FormatarAltura(valor);
+        }
+
+        if (caixaTexto == CaixaTextoTamanhoCabeca)
+        {
+            return FormatarTamanhoCabeca(valor);
+        }
+
+        if (caixaTexto == CaixaTextoTamanhoCalcado)
         {
             return ObterApenasDigitos(valor, 2);
         }
@@ -815,6 +924,30 @@ public partial class TelaPrimeiraEtapa : Window
         return string.Concat(valor.Where(char.IsDigit).Take(limite));
     }
 
+    private static string FormatarPeso(string valor)
+    {
+        var digitos = ObterApenasDigitos(valor, 3);
+        return string.IsNullOrWhiteSpace(digitos) ? string.Empty : $"{digitos} kg";
+    }
+
+    private static string FormatarAltura(string valor)
+    {
+        var digitos = ObterApenasDigitos(valor, 3);
+
+        return digitos.Length switch
+        {
+            3 => $"{digitos[..1]},{digitos[1..]}m",
+            2 => $"{digitos[..1]},{digitos[1..]}",
+            _ => digitos
+        };
+    }
+
+    private static string FormatarTamanhoCabeca(string valor)
+    {
+        var digitos = ObterApenasDigitos(valor, 3);
+        return string.IsNullOrWhiteSpace(digitos) ? string.Empty : $"{digitos}cm";
+    }
+
     private static string ObterApenasLetras(string valor)
     {
         return string.Concat(valor.Where(caractere =>
@@ -845,7 +978,11 @@ public partial class TelaPrimeiraEtapa : Window
             string.IsNullOrWhiteSpace(conscrito.DataNascimento) ||
             string.IsNullOrWhiteSpace(conscrito.PaisResidencia) ||
             string.IsNullOrWhiteSpace(conscrito.MunicipioResidencia) ||
-            string.IsNullOrWhiteSpace(conscrito.ZonaResidencia))
+            string.IsNullOrWhiteSpace(conscrito.ZonaResidencia) ||
+            string.IsNullOrWhiteSpace(conscrito.Peso) ||
+            string.IsNullOrWhiteSpace(conscrito.Altura) ||
+            string.IsNullOrWhiteSpace(conscrito.TamanhoCabeca) ||
+            string.IsNullOrWhiteSpace(conscrito.TamanhoCalcado))
         {
             TextoFeedbackCadastroConscrito.Text = "Preencha os campos obrigatórios das informações básicas para seleção.";
             DefinirEtapaWizard(EtapaWizardInformacoesBasicas);
@@ -866,6 +1003,27 @@ public partial class TelaPrimeiraEtapa : Window
             return false;
         }
 
+        if (!DataNascimentoValida(conscrito.DataNascimento, out var dataNascimento))
+        {
+            TextoFeedbackCadastroConscrito.Text = "A data de nascimento deve estar no formato dd/mm/aaaa.";
+            DefinirEtapaWizard(EtapaWizardInformacoesBasicas);
+            return false;
+        }
+
+        if (dataNascimento.Year > AnoLimiteAlistamento)
+        {
+            TextoFeedbackCadastroConscrito.Text = "Só é permitido cadastrar conscritos nascidos até 2008.";
+            DefinirEtapaWizard(EtapaWizardInformacoesBasicas);
+            return false;
+        }
+
+        if (!MedidasBasicasValidas(conscrito))
+        {
+            TextoFeedbackCadastroConscrito.Text = "Confira peso, altura, tamanho da cabeça e calçado nas informações básicas.";
+            DefinirEtapaWizard(EtapaWizardInformacoesBasicas);
+            return false;
+        }
+
         return true;
     }
 
@@ -877,6 +1035,29 @@ public partial class TelaPrimeiraEtapa : Window
     private static bool CpfValido(string valor)
     {
         return ObterApenasDigitos(valor, 20).Length == 11;
+    }
+
+    private static bool DataNascimentoValida(string valor, out DateTime dataNascimento)
+    {
+        return DateTime.TryParseExact(
+            valor.Trim(),
+            "dd/MM/yyyy",
+            CultureInfo.InvariantCulture,
+            DateTimeStyles.None,
+            out dataNascimento);
+    }
+
+    private static bool MedidasBasicasValidas(Conscrito conscrito)
+    {
+        return ObterApenasDigitos(conscrito.Peso, 10).Length is >= 2 and <= 3 &&
+               ObterApenasDigitos(conscrito.Altura, 10).Length == 3 &&
+               ObterApenasDigitos(conscrito.TamanhoCabeca, 10).Length is >= 2 and <= 3 &&
+               ObterApenasDigitos(conscrito.TamanhoCalcado, 10).Length == 2;
+    }
+
+    private static bool AnoValido(string valor)
+    {
+        return ObterApenasDigitos(valor, 10).Length == 4;
     }
 
     private static bool EmailValido(string valor)
@@ -993,7 +1174,8 @@ public partial class TelaPrimeiraEtapa : Window
             QuantidadeFilhos = CaixaTextoQuantidadeFilhos.Text.Trim(),
             QuemTrabalhaNaFamilia = CaixaTextoQuemTrabalhaFamilia.Text.Trim(),
             QuemSustentaAFamilia = CaixaTextoQuemSustentaFamilia.Text.Trim(),
-            RecebeAuxilioGovernamental = ObterTextoSelecionado(ComboRecebeAuxilioGovernamental)
+            RecebeAuxilioGovernamental = ObterTextoSelecionado(ComboRecebeAuxilioGovernamental),
+            QualAuxilioGovernamental = CaixaTextoQualAuxilioGovernamental.Text.Trim()
         };
 
         Arrimo arrimo = new Arrimo()
@@ -1020,7 +1202,9 @@ public partial class TelaPrimeiraEtapa : Window
         Habilitacao habilitacao = new Habilitacao()
         {
             PossuiCNH = ObterTextoSelecionado(ComboPossuiCNH),
-            RealizandoCursoParaHabilitacao = ObterTextoSelecionado(ComboCursoHabilitacao),
+            RealizandoCursoParaHabilitacao = RespostaEhSim(ObterTextoSelecionado(ComboPossuiCNH))
+                ? "Não"
+                : ObterTextoSelecionado(ComboCursoHabilitacao),
             CategoriaCNH = CaixaTextoCategoriaCNH.Text.Trim()
         };
 
@@ -1074,19 +1258,27 @@ public partial class TelaPrimeiraEtapa : Window
             OutrosAtosInfracionais = CaixaTextoOutrosAtosInfracionais.Text.Trim()
         };
 
-        return new Conscrito
+        var dataNascimento = CaixaTextoDataNascimento.Text.Trim();
+        var situacao = ObterSituacaoPeloNascimento(dataNascimento, ObterTextoSelecionado(ComboSituacaoConscrito));
+
+        var conscrito = new Conscrito
         {
             Id = _idConscritoEmEdicao ?? string.Empty,
             Nome = CaixaTextoNomeConscrito.Text.Trim(),
             CPF = CaixaTextoCPF.Text.Trim(),
             RA = CaixaTextoRA.Text.Trim(),
-            Situacao = ObterTextoSelecionado(ComboSituacaoConscrito),
+            Situacao = situacao,
             NomeMae = CaixaTextoNomeMae.Text.Trim(),
-            DataNascimento = CaixaTextoDataNascimento.Text.Trim(),
+            DataNascimento = dataNascimento,
             PaisResidencia = CaixaTextoPaisResidencia.Text.Trim(),
             MunicipioResidencia = CaixaTextoMunicipioResidencia.Text.Trim(),
             ZonaResidencia = ObterTextoSelecionado(ComboZonaResidencia),
+            Peso = CaixaTextoPeso.Text.Trim(),
+            Altura = CaixaTextoAltura.Text.Trim(),
+            TamanhoCabeca = CaixaTextoTamanhoCabeca.Text.Trim(),
+            TamanhoCalcado = CaixaTextoTamanhoCalcado.Text.Trim(),
             DesejaServir = ObterTextoSelecionado(ComboDesejaServir),
+            Observacao = CaixaTextoObservacaoManifestacao.Text.Trim(),
             Entrevista_Vida_Pessoal = vidaPessoal,
             Entrevista_Arrimo_De_Familia = arrimo,
             Entrevista_Cursos = cursos,
@@ -1097,12 +1289,60 @@ public partial class TelaPrimeiraEtapa : Window
             Entrevista_Saude = saude,
             Entrevista_Infracao = infracao
         };
+
+        PreservarAndamentoExistente(conscrito);
+        return conscrito;
     }
 
     private static string ObterTextoSelecionado(ComboBox comboBox)
     {
         var texto = (comboBox.SelectedItem as ComboBoxItem)?.Content?.ToString()?.Trim() ?? string.Empty;
         return texto == "Selecione" ? string.Empty : texto;
+    }
+
+    private static string ObterSituacaoPeloNascimento(string dataNascimento, string situacaoSelecionada)
+    {
+        return DataNascimentoValida(dataNascimento, out var data) && data.Year < AnoLimiteAlistamento
+            ? "Refratário"
+            : situacaoSelecionada;
+    }
+
+    private void PreservarAndamentoExistente(Conscrito conscrito)
+    {
+        var existente = ObterConscritoEmEdicao();
+        if (existente is null)
+        {
+            return;
+        }
+
+        conscrito.PrimeiraEtapaConcluida = existente.PrimeiraEtapaConcluida;
+        conscrito.SegundaEtapaConcluida = existente.SegundaEtapaConcluida;
+        conscrito.TerceiraEtapaConcluida = existente.TerceiraEtapaConcluida;
+        conscrito.QuartaEtapaConcluida = existente.QuartaEtapaConcluida;
+        conscrito.Faltoso = existente.Faltoso;
+    }
+
+    private void AplicarAndamentoDaEtapa(Conscrito conscrito)
+    {
+        if (_modoEntrevistaTecnica)
+        {
+            conscrito.TerceiraEtapaConcluida = true;
+        }
+        else
+        {
+            conscrito.PrimeiraEtapaConcluida = true;
+        }
+
+        conscrito.Faltoso = false;
+    }
+
+    private void AtualizarSituacaoPeloNascimento()
+    {
+        if (DataNascimentoValida(CaixaTextoDataNascimento.Text, out var data) &&
+            data.Year < AnoLimiteAlistamento)
+        {
+            SelecionarComboPorTexto(ComboSituacaoConscrito, "Refratário");
+        }
     }
 
     /// <summary>
@@ -1125,6 +1365,12 @@ public partial class TelaPrimeiraEtapa : Window
         if (situacoesSelecionadas.Count > 0)
         {
             consulta = consulta.Where(conscrito => situacoesSelecionadas.Contains(NormalizarSituacao(conscrito.Situacao)));
+        }
+
+        var andamentosSelecionados = ObterAndamentosSelecionados();
+        if (andamentosSelecionados.Count > 0)
+        {
+            consulta = consulta.Where(conscrito => andamentosSelecionados.Contains(conscrito.AndamentoProcesso));
         }
 
         if (FiltroTrabalha.IsChecked == true)
@@ -1182,9 +1428,21 @@ public partial class TelaPrimeiraEtapa : Window
         if (FiltroSituacaoApto.IsChecked == true) situacoes.Add("Apto");
         if (FiltroSituacaoInapto.IsChecked == true) situacoes.Add("Inapto");
         if (FiltroSituacaoDispensado.IsChecked == true) situacoes.Add("Dispensado");
+        if (FiltroSituacaoRefratario.IsChecked == true) situacoes.Add("Refratário");
         if (FiltroSituacaoIndefinido.IsChecked == true) situacoes.Add("Indefinido");
 
         return situacoes;
+    }
+
+    private HashSet<string> ObterAndamentosSelecionados()
+    {
+        var andamentos = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+
+        if (FiltroAndamentoEmAndamento.IsChecked == true) andamentos.Add("Em andamento");
+        if (FiltroAndamentoFinalizado.IsChecked == true) andamentos.Add("Finalizado");
+        if (FiltroAndamentoFaltoso.IsChecked == true) andamentos.Add("Faltoso");
+
+        return andamentos;
     }
 
     private static bool ContemTexto(string? valor, string pesquisa)
@@ -1303,7 +1561,9 @@ public partial class TelaPrimeiraEtapa : Window
                 return ValidarBlocoJ(c);
 
             case EtapaWizardManifestacao:
-                return !string.IsNullOrWhiteSpace(c.DesejaServir);
+                return !string.IsNullOrWhiteSpace(c.Situacao) &&
+                       !string.IsNullOrWhiteSpace(c.DesejaServir) &&
+                       !string.IsNullOrWhiteSpace(c.Observacao);
 
             default:
                 return true;
@@ -1327,7 +1587,7 @@ public partial class TelaPrimeiraEtapa : Window
                RespostaCondicionalPreenchida(vp.PossuiFilhos, vp.QuantidadeFilhos) &&
                !string.IsNullOrWhiteSpace(vp.QuemTrabalhaNaFamilia) &&
                !string.IsNullOrWhiteSpace(vp.QuemSustentaAFamilia) &&
-               !string.IsNullOrWhiteSpace(vp.RecebeAuxilioGovernamental);
+               RespostaCondicionalPreenchida(vp.RecebeAuxilioGovernamental, vp.QualAuxilioGovernamental);
     }
 
     private bool ValidarBlocoB(Conscrito c)
@@ -1336,7 +1596,7 @@ public partial class TelaPrimeiraEtapa : Window
 
         return !string.IsNullOrWhiteSpace(a.SituacaoArrimo) &&
                !string.IsNullOrWhiteSpace(a.EstudaAtualmente) &&
-               !string.IsNullOrWhiteSpace(a.AnoQueEstaCursandoOuUltimoAnoQueCursou);
+               AnoValido(a.AnoQueEstaCursandoOuUltimoAnoQueCursou);
     }
 
     private bool ValidarBlocoC(Conscrito c)
@@ -1363,10 +1623,18 @@ public partial class TelaPrimeiraEtapa : Window
     {
         var h = c.Entrevista_Habilitacao;
 
-        return !string.IsNullOrWhiteSpace(h.PossuiCNH) &&
-               !string.IsNullOrWhiteSpace(h.RealizandoCursoParaHabilitacao) &&
-               RespostaCondicionalPreenchida(h.PossuiCNH, h.CategoriaCNH) &&
-               (!RespostaEhSim(h.PossuiCNH) || CategoriaCnhValida(h.CategoriaCNH));
+        if (string.IsNullOrWhiteSpace(h.PossuiCNH))
+        {
+            return false;
+        }
+
+        if (RespostaEhSim(h.PossuiCNH))
+        {
+            return !string.IsNullOrWhiteSpace(h.CategoriaCNH) &&
+                   CategoriaCnhValida(h.CategoriaCNH);
+        }
+
+        return !string.IsNullOrWhiteSpace(h.RealizandoCursoParaHabilitacao);
     }
 
     private bool ValidarBlocoG(Conscrito c)
@@ -1453,7 +1721,9 @@ public partial class TelaPrimeiraEtapa : Window
                ValidarBlocoH(c) &&
                ValidarBlocoI(c) &&
                ValidarBlocoJ(c) &&
-               !string.IsNullOrWhiteSpace(c.DesejaServir);
+               !string.IsNullOrWhiteSpace(c.Situacao) &&
+               !string.IsNullOrWhiteSpace(c.DesejaServir) &&
+               !string.IsNullOrWhiteSpace(c.Observacao);
     }
 
 }

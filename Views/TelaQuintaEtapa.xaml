@@ -114,7 +114,7 @@
                            FontSize="32"
                            FontWeight="Bold"
                            Foreground="#123322" />
-                <TextBlock Text="Ranking final dos conscritos elegíveis para TG e substitutos."
+                <TextBlock Text="Designação final: entram apenas TG, Substituto e Refratário; ajuste cada conscrito para TG, Substituto ou Dispensado."
                            FontSize="15"
                            Foreground="#688077"
                            Margin="0,4,0,0" />
@@ -247,6 +247,10 @@
                                                     <DataTrigger Binding="{Binding Situacao}" Value="Dispensado">
                                                         <Setter Property="Background" Value="#DC2626" />
                                                     </DataTrigger>
+
+                                                    <DataTrigger Binding="{Binding Situacao}" Value="Refratário">
+                                                        <Setter Property="Background" Value="#7C2D12" />
+                                                    </DataTrigger>
                                                 </Style.Triggers>
                                             </Style>
                                         </Border.Style>
@@ -277,11 +281,35 @@
                                                         <DataTrigger Binding="{Binding Situacao}" Value="Dispensado">
                                                             <Setter Property="Foreground" Value="White" />
                                                         </DataTrigger>
+
+                                                        <DataTrigger Binding="{Binding Situacao}" Value="Refratário">
+                                                            <Setter Property="Foreground" Value="White" />
+                                                        </DataTrigger>
                                                     </Style.Triggers>
                                                 </Style>
                                             </TextBlock.Style>
                                         </TextBlock>
                                     </Border>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                        <DataGridTemplateColumn Header="Editar"
+                                                Width="90">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <Button Width="34"
+                                            Height="28"
+                                            Content="✎"
+                                            Style="{StaticResource BotaoSecundarioStyle}"
+                                            Click="AbrirMenuSituacao_Click">
+                                        <Button.ContextMenu>
+                                            <ContextMenu>
+                                                <MenuItem Header="TG" Click="AlterarSituacaoTG_Click" />
+                                                <MenuItem Header="Substituto" Click="AlterarSituacaoSubstituto_Click" />
+                                                <MenuItem Header="Dispensado" Click="AlterarSituacaoDispensado_Click" />
+                                            </ContextMenu>
+                                        </Button.ContextMenu>
+                                    </Button>
                                 </DataTemplate>
                             </DataGridTemplateColumn.CellTemplate>
                         </DataGridTemplateColumn>

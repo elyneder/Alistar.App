@@ -1,11 +1,12 @@
-using System.Windows;
+﻿using System.Windows;
+using System.Windows.Controls;
 using Alistar.App.Models;
 using Alistar.App.Services;
 
 namespace Alistar.App;
 
 /// <summary>
-/// Quinta etapa: classifica os conscritos elegiveis para TG e substitutos.
+/// Quinta etapa: classifica os conscritos elegiveis para TG, refratarios e substitutos.
 /// </summary>
 /// <remarks>
 /// Esta tela e tipo a "peneira final": pega todos os conscritos salvos, remove quem
@@ -24,7 +25,7 @@ public partial class TelaQuintaEtapa : Window
 
     private void CarregarRanking()
     {
-        // Primeiro buscamos todo mundo no JSON. Depois filtramos so TG/Substituto.
+        // Primeiro buscamos todo mundo no JSON. Depois filtramos somente TG/Refratario/Substituto.
         var conscritos = ServicoArmazenamentoConscritos.ObterTodos();
         var elegiveis = conscritos
             .Where(ConscritoEhElegivelParaRanking)
@@ -54,14 +55,19 @@ public partial class TelaQuintaEtapa : Window
         TextoTotalElegiveisLateral.Text = elegiveis.Count.ToString();
         TextoTotalExcluidos.Text = totalExcluidos.ToString();
         TextoFeedbackRanking.Text = elegiveis.Count == 0
-            ? "Nenhum conscrito elegível encontrado. Apenas situações TG e Substituto entram nesta etapa."
-            : $"Ranking atualizado com {elegiveis.Count} conscrito(s). Inaptos, dispensados, aptos e indefinidos ficaram fora da classificação.";
+            ? "Nenhum conscrito TG, Substituto ou Refratario encontrado para a designacao final."
+            : $"Ranking atualizado com {elegiveis.Count} conscrito(s). Use o lapis para ajustar a situacao final para TG, Substituto ou Dispensado.";
     }
 
     private static bool ConscritoEhElegivelParaRanking(Conscrito conscrito)
     {
         var situacao = NormalizarSituacao(conscrito.Situacao);
-        return situacao is "TG" or "Substituto";
+        return !conscrito.Faltoso &&
+               conscrito.PrimeiraEtapaConcluida &&
+               conscrito.SegundaEtapaConcluida &&
+               conscrito.TerceiraEtapaConcluida &&
+               conscrito.QuartaEtapaConcluida &&
+               SituacaoApareceNaEtapaFinal(situacao);
     }
 
     private static ItemRanking CriarItemRanking(Conscrito conscrito)
@@ -72,10 +78,10 @@ public partial class TelaQuintaEtapa : Window
         var pontuacao = 0;
         var situacao = NormalizarSituacao(conscrito.Situacao);
 
-        if (situacao == "TG")
+        if (situacao is "TG" or "RefratÃ¡rio")
         {
             pontuacao += 30;
-            criterios.Add("TG");
+            criterios.Add(situacao);
         }
         else
         {
@@ -90,13 +96,14 @@ public partial class TelaQuintaEtapa : Window
 
         return new ItemRanking
         {
+            Id = conscrito.Id,
             Nome = conscrito.Nome,
             RA = conscrito.RA,
             Situacao = situacao,
             Pontuacao = Math.Max(0, pontuacao),
             StatusFicha = FichaMedicaEstaPreenchida(conscrito.Entrevista_Medica)
-                ? "Médica completa"
-                : "Médica pendente",
+                ? "MÃ©dica completa"
+                : "MÃ©dica pendente",
             Criterios = string.Join(" | ", criterios)
         };
     }
@@ -134,6 +141,13 @@ public partial class TelaQuintaEtapa : Window
         }
 
         var camposPreenchidos = ContarPreenchidos(
+            entrevistaMedica.TipoAnalise,
+            entrevistaMedica.CRM,
+            entrevistaMedica.ResultadoAptidao,
+            entrevistaMedica.Restricao,
+            entrevistaMedica.QualProblema,
+            entrevistaMedica.MotivoInaptidao,
+            entrevistaMedica.CID,
             entrevistaMedica.Altura,
             entrevistaMedica.Peso,
             entrevistaMedica.ProblemaPostura,
@@ -150,7 +164,7 @@ public partial class TelaQuintaEtapa : Window
         var pontos = Math.Min(28, camposPreenchidos * 3);
         if (FichaMedicaEstaPreenchida(entrevistaMedica))
         {
-            criterios.Add("exames médicos confirmados");
+            criterios.Add("exames mÃ©dicos confirmados");
         }
 
         return pontos;
@@ -169,7 +183,7 @@ public partial class TelaQuintaEtapa : Window
         if (RespostaEhSim(conscrito.Entrevista_Experiencia?.ExperienciaProfissional))
         {
             pontos += RespostaEhSim(conscrito.Entrevista_Experiencia?.ComprovaExperienciaProfissional) ? 8 : 5;
-            criterios.Add("experiência");
+            criterios.Add("experiÃªncia");
         }
 
         if (RespostaEhSim(conscrito.Entrevista_Habilitacao?.PossuiCNH) ||
@@ -188,7 +202,7 @@ public partial class TelaQuintaEtapa : Window
         if (RespostaEhSim(conscrito.Entrevista_Esportes?.SabeNadar))
         {
             pontos += 4;
-            criterios.Add("natação");
+            criterios.Add("nataÃ§Ã£o");
         }
 
         return pontos;
@@ -201,40 +215,52 @@ public partial class TelaQuintaEtapa : Window
         if (RespostaEhSim(conscrito.Entrevista_Saude?.JaTeveProblemaSaude))
         {
             pontos += 8;
-            criterios.Add("atenção saúde");
+            criterios.Add("atenÃ§Ã£o saÃºde");
         }
 
         if (RespostaEhSim(conscrito.Entrevista_Saude?.UsaRemedioControlado))
         {
             pontos += 6;
-            criterios.Add("remédio controlado");
+            criterios.Add("remÃ©dio controlado");
         }
 
         if (RespostaEhSim(conscrito.Entrevista_Saude?.JaEsteveInternadoHospitalOuClinicaPsiquiatrica))
         {
             pontos += 8;
-            criterios.Add("histórico internação");
+            criterios.Add("histÃ³rico internaÃ§Ã£o");
         }
 
         if (RespostaEhSim(conscrito.Entrevista_Medica?.JaTeveProblemaCardiacoOuRespiratorio))
         {
             pontos += 7;
-            criterios.Add("cardiorrespiratório");
+            criterios.Add("cardiorrespiratÃ³rio");
         }
 
         if (RespostaEhSim(conscrito.Entrevista_Medica?.JaTeveAnsiedadeDepressaoOuAcompanhamentoPsicologico))
         {
             pontos += 5;
-            criterios.Add("saúde mental");
+            criterios.Add("saÃºde mental");
         }
 
         return pontos;
+    }
+
+    private static bool SituacaoApareceNaEtapaFinal(string situacao)
+    {
+        return situacao is "TG" or "Refratário" or "Substituto";
     }
 
     private static bool FichaMedicaEstaPreenchida(EntrevistaMedica? entrevistaMedica)
     {
         return entrevistaMedica is not null &&
                ContarPreenchidos(
+                   entrevistaMedica.TipoAnalise,
+                   entrevistaMedica.CRM,
+                   entrevistaMedica.ResultadoAptidao,
+                   entrevistaMedica.Restricao,
+                   entrevistaMedica.QualProblema,
+                   entrevistaMedica.MotivoInaptidao,
+                   entrevistaMedica.CID,
                    entrevistaMedica.Altura,
                    entrevistaMedica.Peso,
                    entrevistaMedica.ProblemaPostura,
@@ -246,7 +272,7 @@ public partial class TelaQuintaEtapa : Window
                    entrevistaMedica.FamiliaTemDoencasGraves,
                    entrevistaMedica.JaTeveProblemaCardiacoOuRespiratorio,
                    entrevistaMedica.JaTeveAnsiedadeDepressaoOuAcompanhamentoPsicologico,
-                   entrevistaMedica.TemDificuldadeParaDormir) >= 10;
+                   entrevistaMedica.TemDificuldadeParaDormir) >= 3;
     }
 
     private static int ContarPreenchidos(params string?[] valores)
@@ -262,12 +288,20 @@ public partial class TelaQuintaEtapa : Window
 
     private static int PrioridadeSituacao(string situacao)
     {
-        return situacao == "TG" ? 0 : 1;
+        return situacao is "TG" or "Refratário" ? 0 : 1;
     }
 
     private static string NormalizarSituacao(string? situacao)
     {
-        return string.IsNullOrWhiteSpace(situacao) ? "Indefinido" : situacao.Trim();
+        if (string.IsNullOrWhiteSpace(situacao))
+        {
+            return "Indefinido";
+        }
+
+        var valor = situacao.Trim();
+        return string.Equals(valor, "Refratario", StringComparison.OrdinalIgnoreCase)
+            ? "Refratário"
+            : valor;
     }
 
     private void MostrarTelaInicialBotao_Click(object sender, RoutedEventArgs e)
@@ -280,8 +314,72 @@ public partial class TelaQuintaEtapa : Window
         ServicoAutenticacao.ConfirmarSaidaSistema(this);
     }
 
+    private void AbrirMenuSituacao_Click(object sender, RoutedEventArgs e)
+    {
+        if (sender is Button botao && botao.ContextMenu is not null)
+        {
+            AtualizarMenuSituacao(botao);
+            botao.ContextMenu.PlacementTarget = botao;
+            botao.ContextMenu.IsOpen = true;
+        }
+    }
+
+    private void AlterarSituacaoTG_Click(object sender, RoutedEventArgs e)
+    {
+        AlterarSituacaoSelecionada(sender, "TG");
+    }
+
+    private void AlterarSituacaoSubstituto_Click(object sender, RoutedEventArgs e)
+    {
+        AlterarSituacaoSelecionada(sender, "Substituto");
+    }
+
+    private void AlterarSituacaoDispensado_Click(object sender, RoutedEventArgs e)
+    {
+        AlterarSituacaoSelecionada(sender, "Dispensado");
+    }
+
+    private void AlterarSituacaoSelecionada(object sender, string novaSituacao)
+    {
+        if (sender is not MenuItem { Parent: ContextMenu { PlacementTarget: Button botao } } ||
+            botao.DataContext is not ItemRanking item)
+        {
+            return;
+        }
+
+        var conscritos = ServicoArmazenamentoConscritos.ObterTodos();
+        var conscrito = conscritos.FirstOrDefault(c => c.Id == item.Id);
+        if (conscrito is null)
+        {
+            TextoFeedbackRanking.Text = "Nao foi possivel localizar o conscrito para alterar a situacao.";
+            return;
+        }
+
+        conscrito.Situacao = novaSituacao;
+        ServicoArmazenamentoConscritos.Atualizar(conscrito);
+        CarregarRanking();
+        TextoFeedbackRanking.Text = $"{conscrito.Nome} atualizado para {novaSituacao}.";
+    }
+
+    private static void AtualizarMenuSituacao(Button botao)
+    {
+        if (botao.ContextMenu is null || botao.DataContext is not ItemRanking item)
+        {
+            return;
+        }
+
+        foreach (var menuItem in botao.ContextMenu.Items.OfType<MenuItem>())
+        {
+            menuItem.IsEnabled = !string.Equals(
+                menuItem.Header?.ToString(),
+                item.Situacao,
+                StringComparison.OrdinalIgnoreCase);
+        }
+    }
+
     private sealed class ItemRanking
     {
+        public string Id { get; set; } = string.Empty;
         public int Posicao { get; set; }
         public string Classificacao { get; set; } = string.Empty;
         public string Situacao { get; set; } = string.Empty;
@@ -297,3 +395,4 @@ public partial class TelaQuintaEtapa : Window
 
     }
 }
+

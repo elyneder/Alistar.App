@@ -85,6 +85,11 @@ public static class ServicoArmazenamentoConscritos
             conscrito.Situacao = "Indefinido";
         }
 
+        if (RaJaExiste(conscritos, conscrito.RA, conscrito.Id))
+        {
+            throw new InvalidOperationException("Ja existe um conscrito cadastrado com este RA.");
+        }
+
         conscritos.Add(conscrito);
         SalvarTodos(conscritos);
     }
@@ -100,6 +105,11 @@ public static class ServicoArmazenamentoConscritos
         if (indice < 0)
         {
             return;
+        }
+
+        if (RaJaExiste(conscritos, conscritoAtualizado.RA, conscritoAtualizado.Id))
+        {
+            throw new InvalidOperationException("Ja existe um conscrito cadastrado com este RA.");
         }
 
         conscritos[indice] = conscritoAtualizado;
@@ -207,6 +217,24 @@ public static class ServicoArmazenamentoConscritos
         }
 
         return houveMudanca;
+    }
+
+    private static bool RaJaExiste(List<Conscrito> conscritos, string ra, string idAtual)
+    {
+        var raNormalizado = NormalizarRa(ra);
+        if (string.IsNullOrWhiteSpace(raNormalizado))
+        {
+            return false;
+        }
+
+        return conscritos.Any(conscrito =>
+            conscrito.Id != idAtual &&
+            NormalizarRa(conscrito.RA) == raNormalizado);
+    }
+
+    private static string NormalizarRa(string? ra)
+    {
+        return string.Concat((ra ?? string.Empty).Where(char.IsDigit));
     }
 
     /// <summary>

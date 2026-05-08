@@ -40,6 +40,30 @@ public class Conscrito
     public string TamanhoCalcado { get; set; } = string.Empty;
     public string DesejaServir { get; set; } = string.Empty;
     public string Observacao { get; set; } = string.Empty;
+    public bool PrimeiraEtapaConcluida { get; set; }
+    public bool SegundaEtapaConcluida { get; set; }
+    public bool TerceiraEtapaConcluida { get; set; }
+    public bool QuartaEtapaConcluida { get; set; }
+    public bool Faltoso { get; set; }
+
+    [JsonIgnore]
+    public string AndamentoProcesso
+    {
+        get
+        {
+            if (Faltoso)
+            {
+                return "Faltoso";
+            }
+
+            return PrimeiraEtapaConcluida &&
+                   SegundaEtapaConcluida &&
+                   TerceiraEtapaConcluida &&
+                   QuartaEtapaConcluida
+                ? "Finalizado"
+                : "Em andamento";
+        }
+    }
 
     /// <summary>Blocos da entrevista da primeira etapa.</summary>
     public VidaPessoal Entrevista_Vida_Pessoal { get; set; } = new();

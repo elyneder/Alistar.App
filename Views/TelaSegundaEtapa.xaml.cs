@@ -525,7 +525,7 @@ public partial class TelaSegundaEtapa : Window
     private void AtualizarWizardFormulario()
     {
         var mostrarFormularioCompleto = _etapaWizardAtual == EtapaWizardConfirmacao;
-        var tituloFormulario = _modoReavaliacaoMedica ? "Reavaliação Médica" : "Segunda Etapa";
+        var tituloFormulario = _modoReavaliacaoMedica ? "Reavaliação Médica" : "Etapa Médica";
 
         var mostrarDadosAnalise = _etapaWizardAtual == EtapaWizardIdentificacao && !_dadosAnaliseConfirmados;
         var mostrarBuscaConscrito = mostrarFormularioCompleto ||
@@ -561,10 +561,6 @@ public partial class TelaSegundaEtapa : Window
                 TextoDescricaoFormulario.Text = _modoReavaliacaoMedica
                     ? "Busque o RA do conscrito para abrir a ficha médica completa."
                     : "Comece pela identificação do conscrito. Depois avance pelos exames em blocos separados.";
-                TextoEtapaWizard.Text = $"Etapa 1 de {TotalEtapasWizard} · Identificação";
-                TextoResumoEtapaWizard.Text = _modoReavaliacaoMedica
-                    ? "Selecione o conscrito pelo RA para visualizar e editar os exames médicos."
-                    : "Preencha nome, CPF e RA para localizar ou criar a ficha médica.";
                 TextoBotaoSalvar.Text = "Próximo";
                 break;
 
@@ -573,8 +569,6 @@ public partial class TelaSegundaEtapa : Window
                 ObterSecaoBlocoWizard(_etapaWizardAtual).Visibility = Visibility.Visible;
                 TextoTituloFormulario.Text = tituloFormulario;
                 TextoDescricaoFormulario.Text = "Preencha este bloco médico e avance pela seta para continuar.";
-                TextoEtapaWizard.Text = $"Etapa {_etapaWizardAtual + 1} de {TotalEtapasWizard} · {nomeBloco}";
-                TextoResumoEtapaWizard.Text = "No final, todos os blocos aparecerão juntos para conferência antes de salvar.";
                 TextoBotaoSalvar.Text = "Próximo";
                 break;
 
@@ -582,8 +576,6 @@ public partial class TelaSegundaEtapa : Window
                 SecaoSaudeMental.Visibility = Visibility.Visible;
                 TextoTituloFormulario.Text = tituloFormulario;
                 TextoDescricaoFormulario.Text = "Preencha o último bloco médico antes da confirmação final.";
-                TextoEtapaWizard.Text = $"Etapa 7 de {TotalEtapasWizard} · Saúde mental";
-                TextoResumoEtapaWizard.Text = "Após esta etapa, a ficha completa aparecerá para revisão.";
                 TextoBotaoSalvar.Text = "Ir para confirmação";
                 break;
 
@@ -598,10 +590,6 @@ public partial class TelaSegundaEtapa : Window
                 TextoDescricaoFormulario.Text = _modoReavaliacaoMedica
                     ? "Confira a ficha médica completa. Se precisar, altere os dados e salve a reavaliação."
                     : "Confira a ficha médica completa abaixo. Se precisar, altere qualquer campo antes de salvar.";
-                TextoEtapaWizard.Text = $"Etapa 8 de {TotalEtapasWizard} · Confirmação final";
-                TextoResumoEtapaWizard.Text = _modoReavaliacaoMedica
-                    ? "Ficha completa carregada para confirmação dos exames médicos."
-                    : "Todos os blocos estão visíveis para revisão e ajustes finais.";
                 TextoBotaoSalvar.Text = _modoReavaliacaoMedica ? "Salvar Reavaliação" : "Salvar Ficha";
                 break;
         }

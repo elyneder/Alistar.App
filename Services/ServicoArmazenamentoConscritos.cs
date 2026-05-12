@@ -117,16 +117,6 @@ public static class ServicoArmazenamentoConscritos
     }
 
     /// <summary>
-    /// Remove um conscrito pelo Id.
-    /// </summary>
-    public static void Excluir(string id)
-    {
-        var conscritos = ObterTodos();
-        conscritos.RemoveAll(conscrito => conscrito.Id == id);
-        SalvarTodos(conscritos);
-    }
-
-    /// <summary>
     /// Corrige registros antigos que possam estar sem Id ou sem situacao.
     /// </summary>
     private static bool NormalizarConscritos(List<Conscrito> conscritos)

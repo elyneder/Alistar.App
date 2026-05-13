@@ -40,6 +40,12 @@ public partial class TelaLogin : Window
             return;
         }
 
+        if (ServicoAutenticacao.UsuarioAtualEhAdministrador())
+        {
+            ServicoNavegacao.Trocar(this, new TelaConfiguracaoProcesso());
+            return;
+        }
+
         ServicoNavegacao.Trocar(this, new TelaPainelControle());
     }
 

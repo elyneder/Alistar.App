@@ -6,15 +6,15 @@ using Alistar.App.Services;
 namespace Alistar.App;
 
 /// <summary>
-/// Quinta etapa: classifica os conscritos elegiveis para TG, refratarios e substitutos.
+/// Quinta etapa: classifica os conscritos elegíveis para TG, refratários e substitutos.
 /// </summary>
 /// <remarks>
-/// Esta tela e tipo a "peneira final": pega todos os conscritos salvos, remove quem
-/// nao entra no ranking e calcula uma pontuacao simples para ordenar os melhores.
+/// Esta tela é tipo a "peneira final": pega todos os conscritos salvos, remove quem
+/// não entra no ranking e calcula uma pontuação simples para ordenar os melhores.
 /// </remarks>
 public partial class TelaQuintaEtapa : Window
 {
-    // Quantidade principal pedida na regra de negocio: os 50 melhores ficam destacados.
+    // Quantidade principal pedida na regra de negócio: os 50 melhores ficam destacados.
     private const int QuantidadeSelecionados = 50;
 
     public TelaQuintaEtapa()
@@ -25,7 +25,7 @@ public partial class TelaQuintaEtapa : Window
 
     private void CarregarRanking()
     {
-        // Primeiro buscamos todo mundo no JSON. Depois filtramos somente TG/Refratario/Substituto.
+        // Primeiro buscamos todo mundo no JSON. Depois filtramos somente TG/Refratário/Substituto.
         var conscritos = ServicoArmazenamentoConscritos.ObterTodos();
         var elegiveis = conscritos
             .Where(ConscritoEhElegivelParaRanking)
@@ -37,7 +37,7 @@ public partial class TelaQuintaEtapa : Window
 
         for (var indice = 0; indice < elegiveis.Count; indice++)
         {
-            // Depois da ordenacao, a posicao vira a classificacao visual da tabela.
+            // Depois da ordenação, a posição vira a classificação visual da tabela.
             elegiveis[indice].Posicao = indice + 1;
             elegiveis[indice].Classificacao = indice < QuantidadeSelecionados
                 ? "Top 50"
@@ -55,8 +55,8 @@ public partial class TelaQuintaEtapa : Window
         TextoTotalElegiveisLateral.Text = elegiveis.Count.ToString();
         TextoTotalExcluidos.Text = totalExcluidos.ToString();
         TextoFeedbackRanking.Text = elegiveis.Count == 0
-            ? "Nenhum conscrito TG, Substituto ou Refratario encontrado para a designacao final."
-            : $"Ranking atualizado com {elegiveis.Count} conscrito(s). Use o lapis para ajustar a situacao final para TG, Substituto ou Dispensado.";
+            ? "Nenhum conscrito TG, Substituto ou Refratário encontrado para a designação final."
+            : $"Ranking atualizado com {elegiveis.Count} conscrito(s). Use o lápis para ajustar a situação final para TG, Substituto ou Dispensado.";
     }
 
     private static bool ConscritoEhElegivelParaRanking(Conscrito conscrito)
@@ -72,13 +72,13 @@ public partial class TelaQuintaEtapa : Window
 
     private static ItemRanking CriarItemRanking(Conscrito conscrito)
     {
-        // A pontuacao junta dados de situacao, cadastro, saude, cursos e experiencia.
-        // Nao e uma nota militar oficial; e uma regra simples do sistema para teste e apresentacao.
+        // A pontuação junta dados de situação, cadastro, saúde, cursos e experiência.
+        // Não é uma nota militar oficial; é uma regra simples do sistema para teste e apresentação.
         var criterios = new List<string>();
         var pontuacao = 0;
         var situacao = NormalizarSituacao(conscrito.Situacao);
 
-        if (situacao is "TG" or "RefratÃ¡rio")
+        if (situacao is "TG" or "Refratário")
         {
             pontuacao += 30;
             criterios.Add(situacao);
@@ -102,8 +102,8 @@ public partial class TelaQuintaEtapa : Window
             Situacao = situacao,
             Pontuacao = Math.Max(0, pontuacao),
             StatusFicha = FichaMedicaEstaPreenchida(conscrito.Entrevista_Medica)
-                ? "MÃ©dica completa"
-                : "MÃ©dica pendente",
+                ? "Médica completa"
+                : "Médica pendente",
             Criterios = string.Join(" | ", criterios)
         };
     }
@@ -164,7 +164,7 @@ public partial class TelaQuintaEtapa : Window
         var pontos = Math.Min(28, camposPreenchidos * 3);
         if (FichaMedicaEstaPreenchida(entrevistaMedica))
         {
-            criterios.Add("exames mÃ©dicos confirmados");
+            criterios.Add("exames médicos confirmados");
         }
 
         return pontos;
@@ -183,7 +183,7 @@ public partial class TelaQuintaEtapa : Window
         if (RespostaEhSim(conscrito.Entrevista_Experiencia?.ExperienciaProfissional))
         {
             pontos += RespostaEhSim(conscrito.Entrevista_Experiencia?.ComprovaExperienciaProfissional) ? 8 : 5;
-            criterios.Add("experiÃªncia");
+            criterios.Add("experiência");
         }
 
         if (RespostaEhSim(conscrito.Entrevista_Habilitacao?.PossuiCNH) ||
@@ -202,7 +202,7 @@ public partial class TelaQuintaEtapa : Window
         if (RespostaEhSim(conscrito.Entrevista_Esportes?.SabeNadar))
         {
             pontos += 4;
-            criterios.Add("nataÃ§Ã£o");
+            criterios.Add("natação");
         }
 
         return pontos;
@@ -215,31 +215,31 @@ public partial class TelaQuintaEtapa : Window
         if (RespostaEhSim(conscrito.Entrevista_Saude?.JaTeveProblemaSaude))
         {
             pontos += 8;
-            criterios.Add("atenÃ§Ã£o saÃºde");
+            criterios.Add("atenção saúde");
         }
 
         if (RespostaEhSim(conscrito.Entrevista_Saude?.UsaRemedioControlado))
         {
             pontos += 6;
-            criterios.Add("remÃ©dio controlado");
+            criterios.Add("remédio controlado");
         }
 
         if (RespostaEhSim(conscrito.Entrevista_Saude?.JaEsteveInternadoHospitalOuClinicaPsiquiatrica))
         {
             pontos += 8;
-            criterios.Add("histÃ³rico internaÃ§Ã£o");
+            criterios.Add("histórico internação");
         }
 
         if (RespostaEhSim(conscrito.Entrevista_Medica?.JaTeveProblemaCardiacoOuRespiratorio))
         {
             pontos += 7;
-            criterios.Add("cardiorrespiratÃ³rio");
+            criterios.Add("cardiorrespiratório");
         }
 
         if (RespostaEhSim(conscrito.Entrevista_Medica?.JaTeveAnsiedadeDepressaoOuAcompanhamentoPsicologico))
         {
             pontos += 5;
-            criterios.Add("saÃºde mental");
+            criterios.Add("saúde mental");
         }
 
         return pontos;
@@ -351,7 +351,7 @@ public partial class TelaQuintaEtapa : Window
         var conscrito = conscritos.FirstOrDefault(c => c.Id == item.Id);
         if (conscrito is null)
         {
-            TextoFeedbackRanking.Text = "Nao foi possivel localizar o conscrito para alterar a situacao.";
+            TextoFeedbackRanking.Text = "Não foi possível localizar o conscrito para alterar a situação.";
             return;
         }
 

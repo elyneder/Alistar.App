@@ -238,7 +238,7 @@
                                 MaxWidth="980"
                                 HorizontalAlignment="Center">
                         <TextBlock x:Name="TextoTituloFormulario"
-                                   Text="Segunda Etapa"
+                                   Text="Etapa Médica"
                                    Style="{StaticResource TituloBlocoStyle}" 
                                    TextAlignment="Center"/>
                         <TextBlock x:Name="TextoDescricaoFormulario"
@@ -279,20 +279,7 @@
                                         </StackPanel>
                                     </Border>
                                 </UniformGrid>
-
-                                <TextBlock x:Name="TextoEtapaWizard"
-                                           Text="Etapa 1 de 8 · Identificação"
-                                           Foreground="#123322"
-                                           FontSize="18"
-                                           FontWeight="SemiBold"
-                                           TextAlignment="Center" />
-                                <TextBlock x:Name="TextoResumoEtapaWizard"
-                                           Margin="0,6,0,0"
-                                           Text="Preencha os dados do conscrito para iniciar a avaliação médica."
-                                           Foreground="#63756E"
-                                           FontSize="13"
-                                           TextWrapping="Wrap"
-                                           TextAlignment="Center" />
+                             
                             </StackPanel>
                         </Border>
 

@@ -385,27 +385,6 @@ public partial class TelaPrimeiraEtapa : Window
         ServicoNavegacao.Trocar(this, new TelaPainelControle());
     }
 
-    private void ExcluirConscritoBotao_Click(object sender, RoutedEventArgs e)
-    {
-        if (!EmModoEdicao || string.IsNullOrWhiteSpace(_idConscritoEmEdicao))
-        {
-            return;
-        }
-
-        var confirmacao = MessageBox.Show(
-            "Deseja realmente excluir este conscrito?",
-            "Confirmar exclusão",
-            MessageBoxButton.YesNo,
-            MessageBoxImage.Warning);
-
-        if (confirmacao != MessageBoxResult.Yes)
-        {
-            return;
-        }
-
-        ServicoArmazenamentoConscritos.Excluir(_idConscritoEmEdicao);
-        ServicoNavegacao.Trocar(this, new TelaPainelControle());
-    }
 
     private void GerarPdfCadastroBotao_Click(object sender, RoutedEventArgs e)
     {
@@ -641,7 +620,6 @@ public partial class TelaPrimeiraEtapa : Window
         BotaoVoltarEtapaWizard.Visibility = _etapaWizardAtual == EtapaWizardInformacoesBasicas
             ? Visibility.Collapsed
             : Visibility.Visible;
-        BotaoExcluirConscrito.Visibility = EmModoEdicao ? Visibility.Visible : Visibility.Collapsed;
         BotaoPdfCadastro.Visibility = EmModoEdicao ? Visibility.Visible : Visibility.Collapsed;
         BotaoPdfMedico.Visibility = EmModoEdicao && ObterConscritoEmEdicao() is { } conscrito && ServicoRelatorioPdf.PossuiRelatorioMedico(conscrito)
             ? Visibility.Visible

@@ -833,7 +833,7 @@
                                                 <ComboBox x:Name="ComboComprovaCursos" Style="{StaticResource CampoComboDocumentoStyle}">
                                                     <ComboBoxItem Content="Selecione" />
                                                     <ComboBoxItem Content="Sim" />
-                                                    <ComboBoxItem Content="Nao" />
+                                                    <ComboBoxItem Content="Não" />
                                                 </ComboBox>
                                             </Border>
                                         </StackPanel>

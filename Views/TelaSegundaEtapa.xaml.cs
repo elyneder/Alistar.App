@@ -320,14 +320,14 @@ public partial class TelaSegundaEtapa : Window
 
         if (string.IsNullOrWhiteSpace(tipoAnalise))
         {
-            TextoFeedback.Text = "Selecione o tipo de analise antes de avancar.";
+            TextoFeedback.Text = "Selecione o tipo de análise antes de avançar.";
             ComboTipoAnaliseMedica.Focus();
             return false;
         }
 
         if (string.IsNullOrWhiteSpace(CaixaTextoCRM.Text))
         {
-            TextoFeedback.Text = "Informe o CRM do medico antes de avancar.";
+            TextoFeedback.Text = "Informe o CRM do médico antes de avançar.";
             CaixaTextoCRM.Focus();
             return false;
         }
@@ -352,7 +352,7 @@ public partial class TelaSegundaEtapa : Window
             return true;
         }
 
-        TextoFeedback.Text = "Informe a quantidade de pessoas da analise grupal.";
+        TextoFeedback.Text = "Informe a quantidade de pessoas da análise grupal.";
         CaixaTextoQuantidadePessoas.Focus();
         return false;
     }
@@ -409,7 +409,7 @@ public partial class TelaSegundaEtapa : Window
             return true;
         }
 
-        TextoFeedback.Text = "Preencha todos os campos desta etapa antes de avancar.";
+        TextoFeedback.Text = "Preencha todos os campos desta etapa antes de avançar.";
         return false;
     }
 
@@ -428,7 +428,7 @@ public partial class TelaSegundaEtapa : Window
             return true;
         }
 
-        TextoFeedback.Text = "Preencha todos os campos do formulario antes de salvar.";
+        TextoFeedback.Text = "Preencha todos os campos do formulário antes de salvar.";
         return false;
     }
 

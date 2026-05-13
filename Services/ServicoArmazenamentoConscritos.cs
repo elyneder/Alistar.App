@@ -1,5 +1,7 @@
 using System.IO;
+using System.Reflection;
 using System.Text.Json;
+using System.Text.Json.Serialization;
 using Alistar.App.Models;
 
 namespace Alistar.App.Services;
@@ -92,6 +94,7 @@ public static class ServicoArmazenamentoConscritos
 
         conscritos.Add(conscrito);
         SalvarTodos(conscritos);
+        ServicoAuditoria.RegistrarAcao("Cadastro", "Conscrito", $"Conscrito {conscrito.Nome} foi cadastrado.");
     }
 
     /// <summary>
@@ -112,8 +115,10 @@ public static class ServicoArmazenamentoConscritos
             throw new InvalidOperationException("Ja existe um conscrito cadastrado com este RA.");
         }
 
+        var conscritoAnterior = conscritos[indice];
         conscritos[indice] = conscritoAtualizado;
         SalvarTodos(conscritos);
+        RegistrarAlteracoesConscrito(conscritoAnterior, conscritoAtualizado);
     }
 
     /// <summary>
@@ -234,6 +239,73 @@ public static class ServicoArmazenamentoConscritos
     {
         var json = JsonSerializer.Serialize(conscritos, OpcoesJson);
         File.WriteAllText(caminhoCompleto, json);
+    }
+
+    private static void RegistrarAlteracoesConscrito(Conscrito anterior, Conscrito atual)
+    {
+        var entidade = $"Conscrito {ObterIdentificacaoConscrito(atual)}";
+
+        foreach (var alteracao in ObterAlteracoes(anterior, atual, string.Empty))
+        {
+            ServicoAuditoria.RegistrarAlteracao(entidade, alteracao.Campo, alteracao.ValorAnterior, alteracao.ValorNovo);
+        }
+    }
+
+    private static IEnumerable<(string Campo, string ValorAnterior, string ValorNovo)> ObterAlteracoes(object? anterior, object? atual, string prefixo)
+    {
+        if (anterior is null || atual is null)
+        {
+            yield break;
+        }
+
+        var propriedades = atual.GetType()
+            .GetProperties(BindingFlags.Public | BindingFlags.Instance)
+            .Where(prop => prop.CanRead && prop.GetCustomAttribute<JsonIgnoreAttribute>() is null);
+
+        foreach (var propriedade in propriedades)
+        {
+            var tipo = Nullable.GetUnderlyingType(propriedade.PropertyType) ?? propriedade.PropertyType;
+            var nomeCampo = string.IsNullOrWhiteSpace(prefixo) ? propriedade.Name : $"{prefixo}.{propriedade.Name}";
+
+            if (tipo == typeof(string) || tipo.IsPrimitive || tipo == typeof(decimal) || tipo == typeof(DateTime))
+            {
+                var valorAnterior = propriedade.GetValue(anterior)?.ToString() ?? string.Empty;
+                var valorNovo = propriedade.GetValue(atual)?.ToString() ?? string.Empty;
+
+                if (!string.Equals(valorAnterior, valorNovo, StringComparison.Ordinal))
+                {
+                    yield return (nomeCampo, valorAnterior, valorNovo);
+                }
+
+                continue;
+            }
+
+            if (tipo.Namespace == typeof(Conscrito).Namespace)
+            {
+                var objetoAnterior = propriedade.GetValue(anterior);
+                var objetoAtual = propriedade.GetValue(atual);
+
+                foreach (var alteracao in ObterAlteracoes(objetoAnterior, objetoAtual, nomeCampo))
+                {
+                    yield return alteracao;
+                }
+            }
+        }
+    }
+
+    private static string ObterIdentificacaoConscrito(Conscrito conscrito)
+    {
+        if (!string.IsNullOrWhiteSpace(conscrito.Nome))
+        {
+            return conscrito.Nome;
+        }
+
+        if (!string.IsNullOrWhiteSpace(conscrito.RA))
+        {
+            return conscrito.RA;
+        }
+
+        return conscrito.Id;
     }
 
     /// <summary>

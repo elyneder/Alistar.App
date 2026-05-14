@@ -146,14 +146,14 @@ public partial class TelaConfiguracaoProcesso : Window
         TextoEtapasConfirmacao.Text = "Percentuais por etapa:\n" +
             string.Join("\n", _configuracao.Etapas.Select(etapa => $"{etapa.Numero}. {etapa.Nome}: {etapa.PercentualEliminacao}%"));
 
-        var servidores = _servidoresSelecao
+        var entrevistadores = _servidoresSelecao
             .Where(item => item.Selecionado)
             .Select(item => item.Rotulo)
             .ToList();
 
-        TextoServidoresConfirmacao.Text = servidores.Count == 0
-            ? "Servidores autorizados: nenhum servidor selecionado."
-            : "Servidores autorizados:\n" + string.Join("\n", servidores);
+        TextoServidoresConfirmacao.Text = entrevistadores.Count == 0
+            ? "Entrevistadores autorizados: nenhum servidor selecionado."
+            : "Entrevistadores autorizados:\n" + string.Join("\n", entrevistadores);
     }
 
     private bool ValidarInteiro(string texto, string campo, out int valor)
@@ -176,6 +176,7 @@ public partial class TelaConfiguracaoProcesso : Window
         PainelServidores.Visibility = passo == PassoServidores ? Visibility.Visible : Visibility.Collapsed;
         PainelConfirmacao.Visibility = passo == PassoConfirmacao ? Visibility.Visible : Visibility.Collapsed;
 
+        BotaoAnterior.Visibility = passo > PassoDadosGerais ? Visibility.Visible : Visibility.Collapsed;
         BotaoAnterior.IsEnabled = passo > PassoDadosGerais;
         BotaoProximo.Content = passo == PassoConfirmacao ? "Concluir" : "Próximo";
 
@@ -202,7 +203,7 @@ public partial class TelaConfiguracaoProcesso : Window
         {
             PassoDadosGerais => "Dados Gerais",
             PassoEtapas => "Etapas do Processo",
-            PassoServidores => "Servidores Autorizados",
+            PassoServidores => "Entrevistadores Autorizados",
             _ => "Confirmação Final"
         };
     }
@@ -213,7 +214,7 @@ public partial class TelaConfiguracaoProcesso : Window
         {
             PassoDadosGerais => "Informe os dados principais do processo seletivo.",
             PassoEtapas => "Defina apenas a porcentagem de saída de cada etapa.",
-            PassoServidores => "Selecione os servidores que poderão atuar no processo.",
+            PassoServidores => "Selecione os entrevistadores que poderão atuar no processo.",
             _ => "Revise os dados antes de concluir a configuração."
         };
     }

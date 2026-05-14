@@ -47,7 +47,7 @@ namespace Alistar.App.Services
             using var client = new SmtpClient("sandbox.smtp.mailtrap.io", 2525)
             {
                 // Alterar as credenciaciais para as fornecidas pelo Mailtrap de cada usuário para evitar vazamento de credenciais
-                Credentials = new NetworkCredential("c4fed5e8565447", "29622df1a99279"),
+                Credentials = new NetworkCredential("username", "senha"),
                 EnableSsl = true
             };
 

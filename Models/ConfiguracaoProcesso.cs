@@ -7,9 +7,11 @@ public class ConfiguracaoProcesso
 {
     public DateTime DataAbertura { get; set; } = DateTime.Today;
 
-    public int AnoLimiteNascimento { get; set; } = DateTime.Today.Year - 18;
+    public DateTime DataFechamento { get; set; } = DateTime.Today.AddMonths(3);
 
-    public int TotalClassificados { get; set; } = 50;
+    public int AnoLimiteNascimento { get; set; }
+
+    public int TotalClassificados { get; set; }
 
     public List<string> ServidoresAutorizados { get; set; } = [];
 

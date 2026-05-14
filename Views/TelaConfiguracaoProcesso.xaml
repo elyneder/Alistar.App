@@ -237,12 +237,14 @@
                                         <ColumnDefinition Width="*" />
                                         <ColumnDefinition Width="*" />
                                         <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="*" />
                                     </Grid.ColumnDefinitions>
 
                                     <StackPanel Grid.Column="0" Style="{StaticResource PainelCampoDocumentoStyle}">
                                         <TextBlock Text="Data de abertura" Style="{StaticResource RotuloCampoDocumentoStyle}" />
                                         <Border Style="{StaticResource LinhaCampoDocumentoStyle}">
                                             <DatePicker x:Name="DataAberturaPicker"
+                                                        SelectedDateChanged="DataAberturaPicker_SelectedDateChanged"
                                                         BorderThickness="0"
                                                         Background="Transparent"
                                                         FontSize="14" />
@@ -250,17 +252,33 @@
                                     </StackPanel>
 
                                     <StackPanel Grid.Column="1" Style="{StaticResource PainelCampoDocumentoStyle}">
-                                        <TextBlock Text="Ano limite" Style="{StaticResource RotuloCampoDocumentoStyle}" />
+                                        <TextBlock Text="Data de fechamento" Style="{StaticResource RotuloCampoDocumentoStyle}" />
                                         <Border Style="{StaticResource LinhaCampoDocumentoStyle}">
-                                            <TextBox x:Name="CaixaAnoLimite"
-                                                     Style="{StaticResource CampoTextoDocumentoStyle}" />
+                                            <DatePicker x:Name="DataFechamentoPicker"
+                                                        SelectedDateChanged="DataFechamentoPicker_SelectedDateChanged"
+                                                        BorderThickness="0"
+                                                        Background="Transparent"
+                                                        FontSize="14" />
                                         </Border>
                                     </StackPanel>
 
                                     <StackPanel Grid.Column="2" Style="{StaticResource PainelCampoDocumentoStyle}">
+                                        <TextBlock Text="Data de nascimento limite" Style="{StaticResource RotuloCampoDocumentoStyle}" />
+                                        <Border Style="{StaticResource LinhaCampoDocumentoStyle}">
+                                            <TextBox x:Name="CaixaAnoLimite"
+                                                     MaxLength="4"
+                                                     PreviewTextInput="CampoNumerico_PreviewTextInput"
+                                                     DataObject.Pasting="CampoNumerico_Pasting"
+                                                     Style="{StaticResource CampoTextoDocumentoStyle}" />
+                                        </Border>
+                                    </StackPanel>
+
+                                    <StackPanel Grid.Column="3" Style="{StaticResource PainelCampoDocumentoStyle}">
                                         <TextBlock Text="Total de classificados" Style="{StaticResource RotuloCampoDocumentoStyle}" />
                                         <Border Style="{StaticResource LinhaCampoDocumentoStyle}">
                                             <TextBox x:Name="CaixaTotalClassificados"
+                                                     PreviewTextInput="CampoNumerico_PreviewTextInput"
+                                                     DataObject.Pasting="CampoNumerico_Pasting"
                                                      Style="{StaticResource CampoTextoDocumentoStyle}" />
                                         </Border>
                                     </StackPanel>
@@ -308,6 +326,9 @@
                                                                    Height="Auto" />
                                                         <Border Style="{StaticResource LinhaCampoDocumentoStyle}">
                                                             <TextBox Text="{Binding PercentualEliminacao, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                                     MaxLength="2"
+                                                                     PreviewTextInput="CampoNumerico_PreviewTextInput"
+                                                                     DataObject.Pasting="CampoNumerico_Pasting"
                                                                      Style="{StaticResource CampoTextoDocumentoStyle}" />
                                                         </Border>
                                                     </StackPanel>

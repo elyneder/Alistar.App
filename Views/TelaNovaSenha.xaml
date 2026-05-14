@@ -4,18 +4,20 @@
         Title="Alistar | Nova senha"
         Height="600"
         Width="500"
-        WindowStartupLocation="CenterOwner"
-        ResizeMode="NoResize"
+        WindowStartupLocation="CenterScreen"
+        WindowState="Maximized"
+        ResizeMode="CanResize"
         FontFamily="Segoe UI"
         Icon="/Views/Assets/alistar_icone.ico">
 
     <Grid Background="#0F291D">
-        <Border Background="#F8FAF9"
-                CornerRadius="12"
-                Padding="30"
-                Margin="34"
-                VerticalAlignment="Center">
-            <StackPanel>
+        <Viewbox Stretch="Uniform"
+                 MaxWidth="560"
+                 MaxHeight="560">
+            <Border Background="#F8FAF9"
+                    CornerRadius="18"
+                    Padding="34">
+                <StackPanel Width="400">
                 <Border Width="56"
                         Height="56"
                         CornerRadius="28"
@@ -106,7 +108,8 @@
                             Style="{StaticResource BotaoPrimarioStyle}"
                             Click="SalvarSenhaBotao_Click" />
                 </Grid>
-            </StackPanel>
-        </Border>
+                </StackPanel>
+            </Border>
+        </Viewbox>
     </Grid>
 </Window>

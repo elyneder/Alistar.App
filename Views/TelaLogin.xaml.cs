@@ -79,6 +79,11 @@ public partial class TelaLogin : Window
     /// </summary>
     private void EsqueceuSenhaBotao_Click(object sender, RoutedEventArgs e)
     {
-        
+        var telaRecuperacaoSenha = new TelaRecuperacaoSenha
+        {
+            Owner = this
+        };
+
+        telaRecuperacaoSenha.ShowDialog();
     }
 }

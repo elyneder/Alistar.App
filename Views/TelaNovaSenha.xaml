@@ -1,0 +1,112 @@
+<Window x:Class="Alistar.App.TelaNovaSenha"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Alistar | Nova senha"
+        Height="600"
+        Width="500"
+        WindowStartupLocation="CenterOwner"
+        ResizeMode="NoResize"
+        FontFamily="Segoe UI"
+        Icon="/Views/Assets/alistar_icone.ico">
+
+    <Grid Background="#0F291D">
+        <Border Background="#F8FAF9"
+                CornerRadius="12"
+                Padding="30"
+                Margin="34"
+                VerticalAlignment="Center">
+            <StackPanel>
+                <Border Width="56"
+                        Height="56"
+                        CornerRadius="28"
+                        Background="#EAF1ED"
+                        HorizontalAlignment="Center"
+                        Margin="0,0,0,16">
+                    <Path Fill="#145C3B"
+                          Width="25"
+                          Height="25"
+                          Stretch="Uniform"
+                          HorizontalAlignment="Center"
+                          VerticalAlignment="Center"
+                          Data="M18 8h-1V6A5 5 0 0 0 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-3 0H9V6a3 3 0 0 1 6 0v2zm-2 8.7V19h-2v-2.3c-.6-.3-1-1-1-1.7a2 2 0 1 1 3 1.7z" />
+                </Border>
+
+                <TextBlock Text="Definir nova senha"
+                           FontSize="27"
+                           FontWeight="SemiBold"
+                           Foreground="#1F2D26"
+                           TextAlignment="Center"
+                           Margin="0,0,0,8" />
+
+                <TextBlock Text="Crie uma nova senha para acessar novamente o sistema."
+                           FontSize="13"
+                           Foreground="#5F7D6E"
+                           TextAlignment="Center"
+                           TextWrapping="Wrap"
+                           Margin="0,0,0,24" />
+
+                <TextBlock Text="Nova senha"
+                           FontSize="12"
+                           Foreground="#4A6658"
+                           Margin="0,0,0,6" />
+
+                <Border Background="White"
+                        BorderBrush="#D5E3DC"
+                        BorderThickness="1"
+                        CornerRadius="6"
+                        Margin="0,0,0,14">
+                    <PasswordBox x:Name="CaixaNovaSenha"
+                                 Padding="12"
+                                 FontSize="14"
+                                 BorderThickness="0"
+                                 Background="Transparent"
+                                 MaxLength="30" />
+                </Border>
+
+                <TextBlock Text="Confirmar senha"
+                           FontSize="12"
+                           Foreground="#4A6658"
+                           Margin="0,0,0,6" />
+
+                <Border Background="White"
+                        BorderBrush="#D5E3DC"
+                        BorderThickness="1"
+                        CornerRadius="6"
+                        Margin="0,0,0,12">
+                    <PasswordBox x:Name="CaixaConfirmacaoNovaSenha"
+                                 Padding="12"
+                                 FontSize="14"
+                                 BorderThickness="0"
+                                 Background="Transparent"
+                                 MaxLength="30" />
+                </Border>
+
+                <TextBlock x:Name="TextoFeedbackNovaSenha"
+                           Foreground="#2E7D52"
+                           FontSize="12"
+                           TextWrapping="Wrap"
+                           TextAlignment="Center"
+                           MinHeight="18"
+                           Margin="0,0,0,8" />
+
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="12" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+
+                    <Button Grid.Column="0"
+                            Content="Cancelar"
+                            Style="{StaticResource BotaoSecundarioStyle}"
+                            Click="CancelarBotao_Click" />
+
+                    <Button Grid.Column="2"
+                            Content="Cadastrar nova senha"
+                            Style="{StaticResource BotaoPrimarioStyle}"
+                            Click="SalvarSenhaBotao_Click" />
+                </Grid>
+            </StackPanel>
+        </Border>
+    </Grid>
+</Window>

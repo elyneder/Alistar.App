@@ -1,5 +1,7 @@
 using System.IO;
+using System.Reflection;
 using System.Text.Json;
+using System.Text.Json.Serialization;
 using Alistar.App.Models;
 
 namespace Alistar.App.Services;
@@ -85,7 +87,13 @@ public static class ServicoArmazenamentoConscritos
             conscrito.Situacao = "Indefinido";
         }
 
+        if (RaJaExiste(conscritos, conscrito.RA, conscrito.Id))
+        {
+            throw new InvalidOperationException("Ja existe um conscrito cadastrado com este RA.");
+        }
+
         conscritos.Add(conscrito);
+        //SalvarTodos(conscritos);
     }
 
     /// <summary>
@@ -101,9 +109,16 @@ public static class ServicoArmazenamentoConscritos
             return;
         }
 
-        conscritos[indice] = conscritoAtualizado;
-    }
+        if (RaJaExiste(conscritos, conscritoAtualizado.RA, conscritoAtualizado.Id))
+        {
+            throw new InvalidOperationException("Ja existe um conscrito cadastrado com este RA.");
+        }
 
+        var conscritoAnterior = conscritos[indice];
+        conscritos[indice] = conscritoAtualizado;
+        //SalvarTodos(conscritos);
+        RegistrarAlteracoesConscrito(conscritoAnterior, conscritoAtualizado);
+    }
 
     /// <summary>
     /// Corrige registros antigos que possam estar sem Id ou sem situacao.
@@ -198,6 +213,24 @@ public static class ServicoArmazenamentoConscritos
         return houveMudanca;
     }
 
+    private static bool RaJaExiste(List<Conscrito> conscritos, string ra, string idAtual)
+    {
+        var raNormalizado = NormalizarRa(ra);
+        if (string.IsNullOrWhiteSpace(raNormalizado))
+        {
+            return false;
+        }
+
+        return conscritos.Any(conscrito =>
+            conscrito.Id != idAtual &&
+            NormalizarRa(conscrito.RA) == raNormalizado);
+    }
+
+    private static string NormalizarRa(string? ra)
+    {
+        return string.Concat((ra ?? string.Empty).Where(char.IsDigit));
+    }
+
     /// <summary>
     /// Serializa a lista completa e grava no arquivo JSON.
     /// </summary>
@@ -206,6 +239,73 @@ public static class ServicoArmazenamentoConscritos
     //    var json = JsonSerializer.Serialize(conscritos, OpcoesJson);
     //    File.WriteAllText(caminhoCompleto, json);
     //}
+
+    private static void RegistrarAlteracoesConscrito(Conscrito anterior, Conscrito atual)
+    {
+        var entidade = $"Conscrito {ObterIdentificacaoConscrito(atual)}";
+
+        foreach (var alteracao in ObterAlteracoes(anterior, atual, string.Empty))
+        {
+            ServicoAuditoria.RegistrarAlteracao(entidade, alteracao.Campo, alteracao.ValorAnterior, alteracao.ValorNovo);
+        }
+    }
+
+    private static IEnumerable<(string Campo, string ValorAnterior, string ValorNovo)> ObterAlteracoes(object? anterior, object? atual, string prefixo)
+    {
+        if (anterior is null || atual is null)
+        {
+            yield break;
+        }
+
+        var propriedades = atual.GetType()
+            .GetProperties(BindingFlags.Public | BindingFlags.Instance)
+            .Where(prop => prop.CanRead && prop.GetCustomAttribute<JsonIgnoreAttribute>() is null);
+
+        foreach (var propriedade in propriedades)
+        {
+            var tipo = Nullable.GetUnderlyingType(propriedade.PropertyType) ?? propriedade.PropertyType;
+            var nomeCampo = string.IsNullOrWhiteSpace(prefixo) ? propriedade.Name : $"{prefixo}.{propriedade.Name}";
+
+            if (tipo == typeof(string) || tipo.IsPrimitive || tipo == typeof(decimal) || tipo == typeof(DateTime))
+            {
+                var valorAnterior = propriedade.GetValue(anterior)?.ToString() ?? string.Empty;
+                var valorNovo = propriedade.GetValue(atual)?.ToString() ?? string.Empty;
+
+                if (!string.Equals(valorAnterior, valorNovo, StringComparison.Ordinal))
+                {
+                    yield return (nomeCampo, valorAnterior, valorNovo);
+                }
+
+                continue;
+            }
+
+            if (tipo.Namespace == typeof(Conscrito).Namespace)
+            {
+                var objetoAnterior = propriedade.GetValue(anterior);
+                var objetoAtual = propriedade.GetValue(atual);
+
+                foreach (var alteracao in ObterAlteracoes(objetoAnterior, objetoAtual, nomeCampo))
+                {
+                    yield return alteracao;
+                }
+            }
+        }
+    }
+
+    private static string ObterIdentificacaoConscrito(Conscrito conscrito)
+    {
+        if (!string.IsNullOrWhiteSpace(conscrito.Nome))
+        {
+            return conscrito.Nome;
+        }
+
+        if (!string.IsNullOrWhiteSpace(conscrito.RA))
+        {
+            return conscrito.RA;
+        }
+
+        return conscrito.Id;
+    }
 
     /// <summary>
     /// Cria a pasta/arquivo de armazenamento antes de qualquer leitura.

@@ -4,7 +4,9 @@
         Title="Alistar | Quarta Etapa"
         Height="520"
         Width="860"
-        WindowStartupLocation="CenterOwner">
+        WindowStartupLocation="CenterOwner"
+        Icon="/Views/Assets/alistar_icone.ico">
+    
     <!-- Estrutura inicial da quarta etapa, reservada para entrevista tecnica. -->
     <Grid Background="#F4F7F6">
         <Border Margin="24"
@@ -36,7 +38,7 @@
                         Padding="22"
                         Background="#EEF2EF"
                         CornerRadius="14">
-                    <TextBlock Text="A quarta etapa agora tem uma janela propria, pronta para receber campos e regras especificas."
+                    <TextBlock Text="A quarta etapa agora tem uma janela própria, pronta para receber campos e regras específicas."
                                TextWrapping="Wrap"
                                Foreground="#4B5563" />
                 </Border>

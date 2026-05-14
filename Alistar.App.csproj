@@ -6,15 +6,23 @@
 	  <Nullable>enable</Nullable>
 	  <ImplicitUsings>enable</ImplicitUsings>
 	  <UseWPF>true</UseWPF>
+	  <DefaultItemExcludes>$(DefaultItemExcludes);codex-build\**</DefaultItemExcludes>
 	  <PackageIcon>a1.jpeg</PackageIcon>
 	  <GeneratePackageOnBuild>False</GeneratePackageOnBuild>
 	  <IncludeSymbols>False</IncludeSymbols>
+	  <ApplicationIcon>Views\Assets\alistar_icone.ico</ApplicationIcon>
   </PropertyGroup>
 
   <ItemGroup>
     <None Remove="Views\Assets\1.png" />
     <None Remove="Views\Assets\2-semfundo.png" />
-    <None Remove="Views\Assets\logo-28x28.ico" />
+    <None Remove="Views\Assets\alistar_icone.ico" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="Views\Assets\alistar_icone.ico">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
 
   <ItemGroup>
@@ -29,7 +37,7 @@
 	    <CopyToOutputDirectory>Never</CopyToOutputDirectory>
 	  </Resource>
 	  <Resource Include="Views\Assets\a1.jpeg" />
-	  <Resource Include="Views\Assets\logo-28x28.ico">
+	  <Resource Include="Views\Assets\alistar_icone.ico">
 	    <CopyToOutputDirectory>Never</CopyToOutputDirectory>
 	  </Resource>
   </ItemGroup>

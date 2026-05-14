@@ -40,6 +40,12 @@ public partial class TelaLogin : Window
             return;
         }
 
+        if (ServicoAutenticacao.UsuarioAtualEhAdministrador())
+        {
+            ServicoNavegacao.Trocar(this, new TelaConfiguracaoProcesso());
+            return;
+        }
+
         ServicoNavegacao.Trocar(this, new TelaPainelControle());
     }
 
@@ -73,6 +79,6 @@ public partial class TelaLogin : Window
     /// </summary>
     private void EsqueceuSenhaBotao_Click(object sender, RoutedEventArgs e)
     {
-        // sua lógica aqui
+        ServicoNavegacao.Trocar(this, new TelaRecuperacaoSenha());
     }
 }

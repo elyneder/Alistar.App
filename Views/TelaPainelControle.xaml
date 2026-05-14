@@ -5,10 +5,11 @@
         Height="760"
         Width="1280"
         WindowState="Maximized"
-        WindowStartupLocation="CenterScreen">
+        WindowStartupLocation="CenterScreen"
+        Icon="/Views/Assets/alistar_icone.ico">
 
     <Window.Resources>
-        <!-- Estilos locais usados pela lista, filtros e botoes compactos do painel. -->
+        <!-- Estilos locais usados pela lista, filtros e botões compactos do painel. -->
         <Style x:Key="CaixaPesquisaListaStyle" TargetType="TextBox">
             <Setter Property="Padding" Value="12,6" />
             <Setter Property="FontSize" Value="14" />
@@ -24,6 +25,7 @@
             <Setter Property="FontSize" Value="13" />
             <Setter Property="Foreground" Value="#334155" />
             <Setter Property="VerticalAlignment" Value="Center" />
+            <Setter Property="VerticalContentAlignment" Value="Center" />
         </Style>
 
         <Style x:Key="BotaoConsultaCompactoStyle" TargetType="Button" BasedOn="{StaticResource BotaoSecundarioStyle}">
@@ -31,6 +33,50 @@
             <Setter Property="Padding" Value="12,4" />
             <Setter Property="FontSize" Value="13" />
             <Setter Property="Margin" Value="10,0,0,0" />
+        </Style>
+
+        <Style x:Key="CartaoResumoSituacaoStyle" TargetType="Border">
+            <Setter Property="Background" Value="#F8FAF9" />
+            <Setter Property="BorderBrush" Value="#E3EBE6" />
+            <Setter Property="BorderThickness" Value="1" />
+            <Setter Property="CornerRadius" Value="8" />
+            <Setter Property="Padding" Value="16" />
+            <Setter Property="Margin" Value="0,0,12,12" />
+        </Style>
+
+        <Style x:Key="AbaPainelStyle" TargetType="TabItem">
+            <Setter Property="Foreground" Value="#63756E" />
+            <Setter Property="FontWeight" Value="SemiBold" />
+            <Setter Property="FontSize" Value="16" />
+            <Setter Property="Padding" Value="15,4" />
+            <Setter Property="Margin" Value="0,0,0,0" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="TabItem">
+                        <Border x:Name="BordaAba"
+                                Margin="0,0,10,0"
+                                Background="#F3F7F5"
+                                BorderBrush="#DFE7E2"
+                                BorderThickness="1"
+                                CornerRadius="8"
+                                Padding="{TemplateBinding Padding}">
+                            <ContentPresenter ContentSource="Header"
+                                              HorizontalAlignment="Center"
+                                              VerticalAlignment="Center" />
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsSelected" Value="True">
+                                <Setter TargetName="BordaAba" Property="Background" Value="#145C3B" />
+                                <Setter TargetName="BordaAba" Property="BorderBrush" Value="#145C3B" />
+                                <Setter Property="Foreground" Value="White" />
+                            </Trigger>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="BordaAba" Property="BorderBrush" Value="#145C3B" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
         </Style>
     </Window.Resources>
 
@@ -75,9 +121,20 @@
                             Style="{StaticResource BotaoBarraLateralStyle}"
                             Click="MostrarListaConscritosBotao_Click" />
 
-                    <Button x:Name="VerEntrevistadores" Content=" 👥 Ver Entrevistadores"
+                    <Button x:Name="BotaoSituacoes"
+                            Content=" 📊 Situações"
+                            Style="{StaticResource BotaoBarraLateralStyle}"
+                            Click="MostrarSituacoesBotao_Click" />
+
+                    <Button x:Name="VerEntrevistadores"
+                            Content=" 👥 Ver Entrevistadores"
                             Style="{StaticResource BotaoBarraLateralStyle}"
                             Click="VerEntrevistadoresBotao_Click" />
+
+                    <Button x:Name="BotaoLogsGerais"
+                            Content=" 📋 Hist&#x00F3;rico de Atualiza&#x00E7;&#x00F5;es"
+                            Style="{StaticResource BotaoBarraLateralStyle}"
+                            Click="MostrarLogsGeraisBotao_Click" />
 
                     <Border Margin="0,30,0,0"
                             Padding="16"
@@ -98,12 +155,13 @@
                 </StackPanel>
 
                 <StackPanel Grid.Row="2">
-                    <Button x:Name="CadastrarEntrevistador" Content=" 👤 Cadastrar Entrevistador"
+                    <Button x:Name="CadastrarEntrevistador"
+                            Content=" 👤 Cadastrar Entrevistador"
                             Style="{StaticResource BotaoBarraLateralStyle}"
                             Margin="0,0,0,12"
                             Click="AbrirCadastroUsuarioBotao_Click" />
 
-                    <Button Content=" ➜] Sair do Sistema"
+                    <Button Content=" ➜ Sair do Sistema"
                         Style="{StaticResource BotaoPerigoTextoStyle}"
                         Click="SairSistemaBotao_Click" />
                 </StackPanel>
@@ -123,7 +181,7 @@
                            FontSize="32"
                            FontWeight="Bold"
                            Foreground="#123322" />
-                <TextBlock Text="Use o painel como hub e abra cada etapa em sua própria tela."
+                <TextBlock Text="Use o painel como hub e abra cada etapa em sua pr&#x00F3;pria tela."
                            FontSize="15"
                            Foreground="#688077"
                            Margin="0,4,0,0" />
@@ -141,7 +199,8 @@
                                    Margin="0,0,0,16" />
 
                         <UniformGrid Columns="3">
-                            <Button Style="{StaticResource BotaoEtapaStyle}"
+                            <Button x:Name="BotaoPrimeiraEtapa"
+                                    Style="{StaticResource BotaoEtapaStyle}"
                                     Click="PrimeiraEtapaBotao_Click">
                                 <StackPanel>
                                     <TextBlock Text="01"
@@ -153,80 +212,84 @@
                                                FontSize="24"
                                                Foreground="#123322"
                                                Margin="0,4,0,0" />
-                                    <TextBlock Text="Registro completo de dados pessoais e perfil do candidato"
-                                               FontSize="14"
+                                    <TextBlock Text="Registro completo dos dados pessoais do conscrito"
+                                               FontSize="12"
                                                Foreground="#688077" />
                                 </StackPanel>
                             </Button>
 
-                            <Button Style="{StaticResource BotaoEtapaStyle}"
+                            <Button x:Name="BotaoSegundaEtapa"
+                                    Style="{StaticResource BotaoEtapaStyle}"
                                     Click="SegundaEtapaBotao_Click">
                                 <StackPanel>
                                     <TextBlock Text="02"
                                                FontSize="32"
                                                FontWeight="Black"
                                                Foreground="#123322" />
-                                    <TextBlock Text="Exames Médicos"
+                                    <TextBlock Text="Exames M&#x00E9;dicos"
                                                FontWeight="Bold"
                                                FontSize="24"
                                                Foreground="#123322"
                                                Margin="0,4,0,0" />
-                                    <TextBlock Text="Avaliação clínica e laudos de aptidão física"
-                                               FontSize="14"
+                                    <TextBlock Text="Avalia&#x00E7;&#x00E3;o cl&#x00ED;nica e laudos de aptid&#x00E3;o f&#x00ED;sica"
+                                               FontSize="12"
                                                Foreground="#688077" />
                                 </StackPanel>
                             </Button>
 
-                            <Button Style="{StaticResource BotaoEtapaStyle}"
+                            <Button x:Name="BotaoTerceiraEtapa"
+                                    Style="{StaticResource BotaoEtapaStyle}"
                                     Click="TerceiraEtapaBotao_Click">
                                 <StackPanel>
                                     <TextBlock Text="03"
                                                FontSize="32"
                                                FontWeight="Black"
                                                Foreground="#123322" />
-                                    <TextBlock Text="Entrevista Técnica"
+                                    <TextBlock Text="Entrevista T&#x00E9;cnica"
                                                FontWeight="Bold"
                                                FontSize="24"
                                                Foreground="#123322"
                                                Margin="0,4,0,0" />
-                                    <TextBlock Text="Revisão e atualização da ficha da primeira etapa"
-                                               FontSize="14"
+                                    <TextBlock Text="Revis&#x00E3;o e atualiza&#x00E7;&#x00E3;o da ficha da primeira etapa"
+                                               FontSize="12"
                                                Foreground="#688077" />
                                 </StackPanel>
                             </Button>
 
-                            <Button Style="{StaticResource BotaoEtapaStyle}"
+                            <Button x:Name="BotaoQuartaEtapa"
+                                    Style="{StaticResource BotaoEtapaStyle}"
                                     Click="QuartaEtapaBotao_Click">
                                 <StackPanel>
                                     <TextBlock Text="04"
                                                FontSize="32"
                                                FontWeight="Black"
                                                Foreground="#123322" />
-                                    <TextBlock Text="Reavaliação Médica"
+                                    <TextBlock Text="Reavalia&#x00E7;&#x00E3;o M&#x00E9;dica"
                                                FontWeight="Bold"
                                                FontSize="24"
                                                Foreground="#123322"
                                                Margin="0,4,0,0" />
-                                    <TextBlock Text="Confirmação e edição dos exames médicos"
-                                               FontSize="14"
+                                    <TextBlock Text="Reavalia&#x00E7;&#x00E3;o m&#x00E9;dica do conscrito"
+                                               FontSize="12"
                                                Foreground="#688077" />
                                 </StackPanel>
                             </Button>
 
-                            <Button Style="{StaticResource BotaoEtapaStyle}"
+                            <Button x:Name="BotaoQuintaEtapa"
+                                    Style="{StaticResource BotaoEtapaStyle}"
                                     Click="QuintaEtapaBotao_Click">
                                 <StackPanel>
                                     <TextBlock Text="05"
                                                FontSize="32"
                                                FontWeight="Black"
                                                Foreground="#123322" />
-                                    <TextBlock Text="Designação Final"
+                                    <TextBlock Text="Designa&#x00E7;&#x00E3;o Final"
                                                FontWeight="Bold"
                                                FontSize="24"
                                                Foreground="#123322"
                                                Margin="0,4,0,0" />
-                                    <TextBlock Text="Classificação e atribuição de função ao conscrito"
-                                               FontSize="14"
+                                    <TextBlock Text="Ranking final dos conscritos eleg&#x00ED;veis para TG e substitutos"
+                                               FontSize="10.8"
                                                Foreground="#688077" />
                                 </StackPanel>
                             </Button>
@@ -280,8 +343,19 @@
 
                                     <Button Width="94"
                                             Style="{StaticResource BotaoConsultaCompactoStyle}"
-                                            Click="PesquisarConscritoBotao_Click"
-                                            Content="Pesquisar" />
+                                            Click="PesquisarConscritoBotao_Click">
+                                        <StackPanel Orientation="Horizontal">
+                                            <Path Data="M21 21l-4.35-4.35M17 11A6 6 0 1 1 5 11a6 6 0 0 1 12 0z"
+                                                  Stroke="#196743"
+                                                  StrokeThickness="1.5"
+                                                  Fill="Transparent"
+                                                  Width="14"
+                                                  Height="14"
+                                                  Stretch="Uniform"
+                                                  Margin="0,0,6,0" />
+                                            <TextBlock Text="Pesquisar" />
+                                        </StackPanel>
+                                    </Button>
 
                                     <Button x:Name="BotaoAlternarFiltros"
                                             Width="96"
@@ -306,8 +380,19 @@
 
                                     <Button Width="78"
                                             Style="{StaticResource BotaoConsultaCompactoStyle}"
-                                            Click="LimparFiltrosBotao_Click"
-                                            Content="Limpar" />
+                                            Click="LimparFiltrosBotao_Click">
+                                        <StackPanel Orientation="Horizontal">
+                                            <Path Data="M6 18L18 6M6 6l12 12"
+                                                  Stroke="#196743"
+                                                  StrokeThickness="1.5"
+                                                  Fill="Transparent"
+                                                  Width="14"
+                                                  Height="14"
+                                                  Stretch="Uniform"
+                                                  Margin="0,0,6,0" />
+                                            <TextBlock Text="Limpar" />
+                                        </StackPanel>
+                                    </Button>
                                 </WrapPanel>
 
                                 <Border x:Name="PainelFiltrosRapidos"
@@ -318,21 +403,48 @@
                                         BorderBrush="#E1E7E3"
                                         BorderThickness="1"
                                         CornerRadius="12">
-                                    <WrapPanel>
-                                        <CheckBox x:Name="FiltroSituacaoTG" Content="TG" Style="{StaticResource CheckBoxFiltroStyle}" Checked="FiltroRapido_Changed" Unchecked="FiltroRapido_Changed" />
-                                        <CheckBox x:Name="FiltroSituacaoSubstituto" Content="Substituto" Style="{StaticResource CheckBoxFiltroStyle}" Checked="FiltroRapido_Changed" Unchecked="FiltroRapido_Changed" />
-                                        <CheckBox x:Name="FiltroSituacaoApto" Content="Apto" Style="{StaticResource CheckBoxFiltroStyle}" Checked="FiltroRapido_Changed" Unchecked="FiltroRapido_Changed" />
-                                        <CheckBox x:Name="FiltroSituacaoInapto" Content="Inapto" Style="{StaticResource CheckBoxFiltroStyle}" Checked="FiltroRapido_Changed" Unchecked="FiltroRapido_Changed" />
-                                        <CheckBox x:Name="FiltroSituacaoDispensado" Content="Dispensado" Style="{StaticResource CheckBoxFiltroStyle}" Checked="FiltroRapido_Changed" Unchecked="FiltroRapido_Changed" />
-                                        <CheckBox x:Name="FiltroSituacaoIndefinido" Content="Indefinido" Style="{StaticResource CheckBoxFiltroStyle}" Checked="FiltroRapido_Changed" Unchecked="FiltroRapido_Changed" />
-                                        <CheckBox x:Name="FiltroTrabalha" Content="Trabalha" Style="{StaticResource CheckBoxFiltroStyle}" Checked="FiltroRapido_Changed" Unchecked="FiltroRapido_Changed" />
-                                        <CheckBox x:Name="FiltroRecebeAuxilio" Content="Recebe auxilio governamental" Style="{StaticResource CheckBoxFiltroStyle}" Checked="FiltroRapido_Changed" Unchecked="FiltroRapido_Changed" />
-                                        <CheckBox x:Name="FiltroEstuda" Content="Estuda" Style="{StaticResource CheckBoxFiltroStyle}" Checked="FiltroRapido_Changed" Unchecked="FiltroRapido_Changed" />
-                                        <CheckBox x:Name="FiltroExperiencia" Content="Tem experiencia profissional" Style="{StaticResource CheckBoxFiltroStyle}" Checked="FiltroRapido_Changed" Unchecked="FiltroRapido_Changed" />
-                                        <CheckBox x:Name="FiltroProblemaSaude" Content="Tem problema de saude" Style="{StaticResource CheckBoxFiltroStyle}" Checked="FiltroRapido_Changed" Unchecked="FiltroRapido_Changed" />
-                                        <CheckBox x:Name="FiltroDesejaServirSim" Content="Deseja servir" Style="{StaticResource CheckBoxFiltroStyle}" Checked="FiltroRapido_Changed" Unchecked="FiltroRapido_Changed" />
-                                        <CheckBox x:Name="FiltroDesejaServirNao" Content="Nao deseja servir" Style="{StaticResource CheckBoxFiltroStyle}" Checked="FiltroRapido_Changed" Unchecked="FiltroRapido_Changed" />
-                                    </WrapPanel>
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="1.1*" />
+                                            <ColumnDefinition Width="1.2*" />
+                                            <ColumnDefinition Width="1*" />
+                                        </Grid.ColumnDefinitions>
+
+                                        <StackPanel Grid.Column="0">
+                                            <TextBlock Text="Situa&#x00E7;&#x00E3;o" FontWeight="SemiBold" Foreground="#123322" Margin="0,0,0,8" />
+                                            <WrapPanel>
+                                                <CheckBox x:Name="FiltroSituacaoTG" Content="TG" Style="{StaticResource CheckBoxFiltroStyle}" Checked="FiltroRapido_Changed" Unchecked="FiltroRapido_Changed" />
+                                                <CheckBox x:Name="FiltroSituacaoSubstituto" Content="Substituto" Style="{StaticResource CheckBoxFiltroStyle}" Checked="FiltroRapido_Changed" Unchecked="FiltroRapido_Changed" />
+                                                <CheckBox x:Name="FiltroSituacaoApto" Content="Apto" Style="{StaticResource CheckBoxFiltroStyle}" Checked="FiltroRapido_Changed" Unchecked="FiltroRapido_Changed" />
+                                                <CheckBox x:Name="FiltroSituacaoInapto" Content="Inapto" Style="{StaticResource CheckBoxFiltroStyle}" Checked="FiltroRapido_Changed" Unchecked="FiltroRapido_Changed" />
+                                                <CheckBox x:Name="FiltroSituacaoDispensado" Content="Dispensado" Style="{StaticResource CheckBoxFiltroStyle}" Checked="FiltroRapido_Changed" Unchecked="FiltroRapido_Changed" />
+                                                <CheckBox x:Name="FiltroSituacaoRefratario" Content="Refrat&#x00E1;rio" Style="{StaticResource CheckBoxFiltroStyle}" Checked="FiltroRapido_Changed" Unchecked="FiltroRapido_Changed" />
+                                                <CheckBox x:Name="FiltroSituacaoIndefinido" Content="Indefinido" Style="{StaticResource CheckBoxFiltroStyle}" Checked="FiltroRapido_Changed" Unchecked="FiltroRapido_Changed" />
+                                            </WrapPanel>
+                                        </StackPanel>
+
+                                        <StackPanel Grid.Column="1" Margin="18,0,0,0">
+                                            <TextBlock Text="Perguntas pessoais" FontWeight="SemiBold" Foreground="#123322" Margin="0,0,0,8" />
+                                            <WrapPanel>
+                                                <CheckBox x:Name="FiltroTrabalha" Content="Trabalha" Style="{StaticResource CheckBoxFiltroStyle}" Checked="FiltroRapido_Changed" Unchecked="FiltroRapido_Changed" />
+                                                <CheckBox x:Name="FiltroRecebeAuxilio" Content="Recebe aux&#x00ED;lio governamental" Style="{StaticResource CheckBoxFiltroStyle}" Checked="FiltroRapido_Changed" Unchecked="FiltroRapido_Changed" />
+                                                <CheckBox x:Name="FiltroEstuda" Content="Estuda" Style="{StaticResource CheckBoxFiltroStyle}" Checked="FiltroRapido_Changed" Unchecked="FiltroRapido_Changed" />
+                                                <CheckBox x:Name="FiltroExperiencia" Content="Tem experi&#x00EA;ncia profissional" Style="{StaticResource CheckBoxFiltroStyle}" Checked="FiltroRapido_Changed" Unchecked="FiltroRapido_Changed" />
+                                                <CheckBox x:Name="FiltroProblemaSaude" Content="Tem problema de sa&#x00FA;de" Style="{StaticResource CheckBoxFiltroStyle}" Checked="FiltroRapido_Changed" Unchecked="FiltroRapido_Changed" />
+                                                <CheckBox x:Name="FiltroDesejaServirSim" Content="Deseja servir" Style="{StaticResource CheckBoxFiltroStyle}" Checked="FiltroRapido_Changed" Unchecked="FiltroRapido_Changed" />
+                                                <CheckBox x:Name="FiltroDesejaServirNao" Content="N&#x00E3;o deseja servir" Style="{StaticResource CheckBoxFiltroStyle}" Checked="FiltroRapido_Changed" Unchecked="FiltroRapido_Changed" />
+                                            </WrapPanel>
+                                        </StackPanel>
+
+                                        <StackPanel Grid.Column="2" Margin="18,0,0,0">
+                                            <TextBlock Text="Andamento" FontWeight="SemiBold" Foreground="#123322" Margin="0,0,0,8" />
+                                            <WrapPanel>
+                                                <CheckBox x:Name="FiltroAndamentoEmAndamento" Content="Em andamento" Style="{StaticResource CheckBoxFiltroStyle}" Checked="FiltroRapido_Changed" Unchecked="FiltroRapido_Changed" />
+                                                <CheckBox x:Name="FiltroAndamentoFinalizado" Content="Finalizado" Style="{StaticResource CheckBoxFiltroStyle}" Checked="FiltroRapido_Changed" Unchecked="FiltroRapido_Changed" />
+                                                <CheckBox x:Name="FiltroAndamentoFaltoso" Content="Faltoso" Style="{StaticResource CheckBoxFiltroStyle}" Checked="FiltroRapido_Changed" Unchecked="FiltroRapido_Changed" />
+                                            </WrapPanel>
+                                        </StackPanel>
+                                    </Grid>
                                 </Border>
                             </StackPanel>
                         </Border>
@@ -384,7 +496,38 @@
                                 <DataGridTextColumn Header="RA"
                                                     Width="0.9*"
                                                     Binding="{Binding RA}" />
-                                <DataGridTemplateColumn Header="Situação"
+                                <DataGridTemplateColumn Header="Andamento"
+                                                        Width="1.15*"
+                                                        SortMemberPath="AndamentoProcesso">
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <StackPanel Orientation="Horizontal"
+                                                        VerticalAlignment="Center">
+                                                <Ellipse Width="10"
+                                                         Height="10"
+                                                         Margin="0,0,8,0">
+                                                    <Ellipse.Style>
+                                                        <Style TargetType="Ellipse">
+                                                            <Setter Property="Fill" Value="#FACC15" />
+                                                            <Style.Triggers>
+                                                                <DataTrigger Binding="{Binding AndamentoProcesso}" Value="Finalizado">
+                                                                    <Setter Property="Fill" Value="#16A34A" />
+                                                                </DataTrigger>
+                                                                <DataTrigger Binding="{Binding AndamentoProcesso}" Value="Faltoso">
+                                                                    <Setter Property="Fill" Value="#2563EB" />
+                                                                </DataTrigger>
+                                                            </Style.Triggers>
+                                                        </Style>
+                                                    </Ellipse.Style>
+                                                </Ellipse>
+                                                <TextBlock Text="{Binding AndamentoProcesso}"
+                                                           FontWeight="SemiBold"
+                                                           Foreground="#1F2937" />
+                                            </StackPanel>
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                </DataGridTemplateColumn>
+                                <DataGridTemplateColumn Header="Situa&#x00E7;&#x00E3;o"
                                                         Width="1*"
                                                         SortMemberPath="Situacao">
                                     <DataGridTemplateColumn.CellTemplate>
@@ -411,6 +554,9 @@
                                                             <DataTrigger Binding="{Binding Situacao}" Value="Dispensado">
                                                                 <Setter Property="Background" Value="#DC2626" />
                                                             </DataTrigger>
+                                                            <DataTrigger Binding="{Binding Situacao}" Value="Refrat&#x00E1;rio">
+                                                                <Setter Property="Background" Value="#7C2D12" />
+                                                            </DataTrigger>
                                                         </Style.Triggers>
                                                     </Style>
                                                 </Border.Style>
@@ -435,6 +581,9 @@
                                                                 <DataTrigger Binding="{Binding Situacao}" Value="Dispensado">
                                                                     <Setter Property="Foreground" Value="White" />
                                                                 </DataTrigger>
+                                                                <DataTrigger Binding="{Binding Situacao}" Value="Refrat&#x00E1;rio">
+                                                                    <Setter Property="Foreground" Value="White" />
+                                                                </DataTrigger>
                                                             </Style.Triggers>
                                                         </Style>
                                                     </TextBlock.Style>
@@ -447,8 +596,465 @@
                         </DataGrid>
                     </Grid>
                 </Border>
+
+                <Border x:Name="VisaoSituacoes"
+                        Visibility="Collapsed"
+                        Background="White"
+                        BorderBrush="#DFE7E2"
+                        BorderThickness="1"
+                        CornerRadius="20"
+                        Padding="32">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="*" />
+                        </Grid.RowDefinitions>
+
+                        <StackPanel Margin="0,0,0,18">
+                            <TextBlock Text="Situa&#x00E7;&#x00F5;es dos Conscritos"
+                                       FontSize="24"
+                                       FontWeight="Bold"
+                                       Foreground="#123322" />
+                            <TextBlock x:Name="TextoResumoSituacoes"
+                                       Text="Resumo por situa&#x00E7;&#x00E3;o cadastrada."
+                                       FontSize="15"
+                                       Foreground="#63756E"
+                                       Margin="0,8,0,0" />
+                        </StackPanel>
+
+                        <TabControl Grid.Row="1"
+                                    BorderThickness="0"
+                                    Background="Transparent"
+                                    ItemContainerStyle="{StaticResource AbaPainelStyle}">
+                            <TabItem Header="Resumo">
+                                <ScrollViewer VerticalScrollBarVisibility="Auto" Margin="0,18,0,0">
+                                    <ItemsControl x:Name="ListaResumoSituacoes">
+                                        <ItemsControl.ItemsPanel>
+                                            <ItemsPanelTemplate>
+                                                <UniformGrid Columns="3" />
+                                            </ItemsPanelTemplate>
+                                        </ItemsControl.ItemsPanel>
+                                        <ItemsControl.ItemTemplate>
+                                            <DataTemplate>
+                                                <Border Style="{StaticResource CartaoResumoSituacaoStyle}">
+                                                    <StackPanel>
+                                                        <StackPanel Orientation="Horizontal">
+                                                            <Ellipse Width="10" Height="10" Fill="{Binding Cor}" Margin="0,0,8,0" VerticalAlignment="Center" />
+                                                            <TextBlock Text="{Binding Situacao}" Foreground="#123322" FontWeight="SemiBold" />
+                                                        </StackPanel>
+                                                        <TextBlock Text="{Binding Quantidade}" FontSize="30" FontWeight="Bold" Foreground="#111111" Margin="0,8,0,0" />
+                                                        <TextBlock Text="{Binding PercentualTexto}" Foreground="#63756E" FontSize="12" />
+                                                    </StackPanel>
+                                                </Border>
+                                            </DataTemplate>
+                                        </ItemsControl.ItemTemplate>
+                                    </ItemsControl>
+                                </ScrollViewer>
+                            </TabItem>
+
+                            <TabItem Header="Gr&#x00E1;fico">
+                                <ScrollViewer Margin="0,22,0,0"
+                                              VerticalScrollBarVisibility="Auto"
+                                              HorizontalScrollBarVisibility="Disabled">
+                                    <Border Padding="24" Background="#F8FAF9" BorderBrush="#E3EBE6" BorderThickness="1" CornerRadius="10">
+                                    <Grid>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="Auto" />
+                                            <RowDefinition Height="Auto" />
+                                        </Grid.RowDefinitions>
+
+                                        <Grid Margin="0,0,0,12">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="*" />
+                                                <ColumnDefinition Width="220" />
+                                            </Grid.ColumnDefinitions>
+
+                                            <TextBlock Text="Distribui&#x00E7;&#x00E3;o por situa&#x00E7;&#x00E3;o"
+                                                       FontSize="20"
+                                                       FontWeight="SemiBold"
+                                                       Foreground="#123322"
+                                                       VerticalAlignment="Center" />
+
+                                            <StackPanel Grid.Column="1">
+                                                <TextBlock Text="Filtrar situação"
+                                                           FontSize="12"
+                                                           FontWeight="SemiBold"
+                                                           Foreground="#123322"
+                                                           Margin="0,0,0,6" />
+                                                <ComboBox x:Name="ComboFiltroSituacaoResumo"
+                                                          Height="34"
+                                                          HorizontalContentAlignment="Left"
+                                                          VerticalContentAlignment="Center"
+                                                          SelectionChanged="ComboFiltroSituacaoResumo_SelectionChanged" />
+                                            </StackPanel>
+                                        </Grid>
+
+                                        <Border Grid.Row="1"
+                                                MinHeight="400"
+                                                Background="White"
+                                                BorderBrush="#E3EBE6"
+                                                BorderThickness="1"
+                                                CornerRadius="10"
+                                                Padding="20,18,20,12">
+                                            <Grid>
+                                                <Grid.RowDefinitions>
+                                                    <RowDefinition Height="*" />
+                                                    <RowDefinition Height="1" />
+                                                </Grid.RowDefinitions>
+
+                                                <Line Grid.Row="1"
+                                                      X1="0"
+                                                      X2="10000"
+                                                      Y1="0"
+                                                      Y2="0"
+                                                      Stroke="#DDE7E2"
+                                                      StrokeThickness="1" />
+
+                                                <ItemsControl x:Name="GraficoSituacoes"
+                                                              VerticalAlignment="Stretch">
+                                                    <ItemsControl.ItemsPanel>
+                                                        <ItemsPanelTemplate>
+                                                            <UniformGrid Rows="1" />
+                                                        </ItemsPanelTemplate>
+                                                    </ItemsControl.ItemsPanel>
+                                                    <ItemsControl.ItemTemplate>
+                                                        <DataTemplate>
+                                                            <Grid Margin="8,0"
+                                                                  MinHeight="340">
+                                                                <Grid.RowDefinitions>
+                                                                    <RowDefinition Height="*" />
+                                                                    <RowDefinition Height="Auto" />
+                                                                </Grid.RowDefinitions>
+
+                                                                <StackPanel VerticalAlignment="Bottom" HorizontalAlignment="Center">
+                                                                    <TextBlock Text="{Binding Quantidade}"
+                                                                               FontWeight="Bold"
+                                                                               FontSize="18"
+                                                                               Foreground="#111111"
+                                                                               HorizontalAlignment="Center"
+                                                                               Margin="0,0,0,8" />
+                                                                    <Border Width="62"
+                                                                            Height="{Binding AlturaColuna}"
+                                                                            Background="{Binding Cor}"
+                                                                            CornerRadius="9,9,0,0" />
+                                                                    <TextBlock Text="{Binding PercentualTexto}"
+                                                                               Foreground="#63756E"
+                                                                               FontSize="12"
+                                                                               HorizontalAlignment="Center"
+                                                                               Margin="0,8,0,0" />
+                                                                </StackPanel>
+
+                                                                <TextBlock Grid.Row="1"
+                                                                           Text="{Binding Situacao}"
+                                                                           Foreground="#334155"
+                                                                           FontWeight="SemiBold"
+                                                                           TextAlignment="Center"
+                                                                           TextWrapping="Wrap"
+                                                                           HorizontalAlignment="Center"
+                                                                           Margin="0,12,0,0" />
+                                                            </Grid>
+                                                        </DataTemplate>
+                                                    </ItemsControl.ItemTemplate>
+                                                </ItemsControl>
+                                            </Grid>
+                                        </Border>
+                                    </Grid>
+                                    </Border>
+                                </ScrollViewer>
+                            </TabItem>
+
+                            <TabItem Header="Lista">
+                                <DataGrid x:Name="GradeSituacoes"
+                                          Margin="0,18,0,0"
+                                          AutoGenerateColumns="False"
+                                          CanUserAddRows="False"
+                                          IsReadOnly="True"
+                                          HeadersVisibility="Column"
+                                          BorderThickness="1"
+                                          BorderBrush="#DFE7E2"
+                                          GridLinesVisibility="Horizontal"
+                                          HorizontalGridLinesBrush="#F0F4F2"
+                                          RowBackground="White"
+                                          AlternatingRowBackground="#FAFCFB"
+                                          RowHeight="40">
+                                    <DataGrid.Resources>
+                                        <Style TargetType="DataGridColumnHeader">
+                                            <Setter Property="Background" Value="#F3F7F5" />
+                                            <Setter Property="Foreground" Value="#123322" />
+                                            <Setter Property="FontWeight" Value="SemiBold" />
+                                            <Setter Property="Padding" Value="12,10" />
+                                            <Setter Property="BorderThickness" Value="0,0,0,1" />
+                                            <Setter Property="BorderBrush" Value="#DFE7E2" />
+                                        </Style>
+                                        <Style TargetType="DataGridCell">
+                                            <Setter Property="Padding" Value="12,0" />
+                                            <Setter Property="Template">
+                                                <Setter.Value>
+                                                    <ControlTemplate TargetType="DataGridCell">
+                                                        <Border Padding="{TemplateBinding Padding}" Background="Transparent">
+                                                            <ContentPresenter VerticalAlignment="Center" />
+                                                        </Border>
+                                                    </ControlTemplate>
+                                                </Setter.Value>
+                                            </Setter>
+                                        </Style>
+                                    </DataGrid.Resources>
+                                    <DataGrid.Columns>
+                                        <DataGridTextColumn Header="Nome" Binding="{Binding Nome}" Width="1.7*" />
+                                        <DataGridTextColumn Header="CPF" Binding="{Binding CPF}" Width="1.1*" />
+                                        <DataGridTextColumn Header="RA" Binding="{Binding RA}" Width="0.9*" />
+                                        <DataGridTemplateColumn Header="Andamento" Width="1.1*" SortMemberPath="AndamentoProcesso">
+                                            <DataGridTemplateColumn.CellTemplate>
+                                                <DataTemplate>
+                                                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                                        <Ellipse Width="10" Height="10" Margin="0,0,8,0">
+                                                            <Ellipse.Style>
+                                                                <Style TargetType="Ellipse">
+                                                                    <Setter Property="Fill" Value="#FACC15" />
+                                                                    <Style.Triggers>
+                                                                        <DataTrigger Binding="{Binding AndamentoProcesso}" Value="Finalizado">
+                                                                            <Setter Property="Fill" Value="#16A34A" />
+                                                                        </DataTrigger>
+                                                                        <DataTrigger Binding="{Binding AndamentoProcesso}" Value="Faltoso">
+                                                                            <Setter Property="Fill" Value="#2563EB" />
+                                                                        </DataTrigger>
+                                                                    </Style.Triggers>
+                                                                </Style>
+                                                            </Ellipse.Style>
+                                                        </Ellipse>
+                                                        <TextBlock Text="{Binding AndamentoProcesso}"
+                                                                   FontWeight="SemiBold"
+                                                                   Foreground="#1F2937" />
+                                                    </StackPanel>
+                                                </DataTemplate>
+                                            </DataGridTemplateColumn.CellTemplate>
+                                        </DataGridTemplateColumn>
+                                        <DataGridTemplateColumn Header="Situa&#x00E7;&#x00E3;o" Width="1*" SortMemberPath="Situacao">
+                                            <DataGridTemplateColumn.CellTemplate>
+                                                <DataTemplate>
+                                                    <Border Padding="10,4" CornerRadius="12" HorizontalAlignment="Left">
+                                                        <Border.Style>
+                                                            <Style TargetType="Border">
+                                                                <Setter Property="Background" Value="#E5E7EB" />
+                                                                <Style.Triggers>
+                                                                    <DataTrigger Binding="{Binding Situacao}" Value="TG">
+                                                                        <Setter Property="Background" Value="#166534" />
+                                                                    </DataTrigger>
+                                                                    <DataTrigger Binding="{Binding Situacao}" Value="Substituto">
+                                                                        <Setter Property="Background" Value="#86EFAC" />
+                                                                    </DataTrigger>
+                                                                    <DataTrigger Binding="{Binding Situacao}" Value="Apto">
+                                                                        <Setter Property="Background" Value="#FACC15" />
+                                                                    </DataTrigger>
+                                                                    <DataTrigger Binding="{Binding Situacao}" Value="Inapto">
+                                                                        <Setter Property="Background" Value="#F97316" />
+                                                                    </DataTrigger>
+                                                                    <DataTrigger Binding="{Binding Situacao}" Value="Dispensado">
+                                                                        <Setter Property="Background" Value="#DC2626" />
+                                                                    </DataTrigger>
+                                                                    <DataTrigger Binding="{Binding Situacao}" Value="Refrat&#x00E1;rio">
+                                                                        <Setter Property="Background" Value="#7C2D12" />
+                                                                    </DataTrigger>
+                                                                </Style.Triggers>
+                                                            </Style>
+                                                        </Border.Style>
+                                                        <TextBlock Text="{Binding Situacao}" FontWeight="SemiBold">
+                                                            <TextBlock.Style>
+                                                                <Style TargetType="TextBlock">
+                                                                    <Setter Property="Foreground" Value="#1F2937" />
+                                                                    <Style.Triggers>
+                                                                        <DataTrigger Binding="{Binding Situacao}" Value="TG">
+                                                                            <Setter Property="Foreground" Value="White" />
+                                                                        </DataTrigger>
+                                                                        <DataTrigger Binding="{Binding Situacao}" Value="Substituto">
+                                                                            <Setter Property="Foreground" Value="#14532D" />
+                                                                        </DataTrigger>
+                                                                        <DataTrigger Binding="{Binding Situacao}" Value="Apto">
+                                                                            <Setter Property="Foreground" Value="#713F12" />
+                                                                        </DataTrigger>
+                                                                        <DataTrigger Binding="{Binding Situacao}" Value="Inapto">
+                                                                            <Setter Property="Foreground" Value="White" />
+                                                                        </DataTrigger>
+                                                                        <DataTrigger Binding="{Binding Situacao}" Value="Dispensado">
+                                                                            <Setter Property="Foreground" Value="White" />
+                                                                        </DataTrigger>
+                                                                        <DataTrigger Binding="{Binding Situacao}" Value="Refrat&#x00E1;rio">
+                                                                            <Setter Property="Foreground" Value="White" />
+                                                                        </DataTrigger>
+                                                                    </Style.Triggers>
+                                                                </Style>
+                                                            </TextBlock.Style>
+                                                        </TextBlock>
+                                                    </Border>
+                                                </DataTemplate>
+                                            </DataGridTemplateColumn.CellTemplate>
+                                        </DataGridTemplateColumn>
+                                    </DataGrid.Columns>
+                                </DataGrid>
+                            </TabItem>
+                        </TabControl>
+                    </Grid>
+                </Border>
+                <Border x:Name="VisaoEntrevistadores"
+                        Visibility="Collapsed"
+                        Background="White"
+                        BorderBrush="#DFE7E2"
+                        BorderThickness="1"
+                        CornerRadius="20"
+                        Padding="32">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="*" />
+                        </Grid.RowDefinitions>
+
+                        <StackPanel Margin="0,0,0,20">
+                            <TextBlock Text="Entrevistadores"
+                                       FontSize="24"
+                                       FontWeight="Bold"
+                                       Foreground="#123322" />
+                            <TextBlock x:Name="TextoResumoEntrevistadoresPainel"
+                                       Text="Usu&#x00E1;rios cadastrados pelo administrador."
+                                       FontSize="15"
+                                       Foreground="#63756E"
+                                       Margin="0,8,0,0" />
+                        </StackPanel>
+
+                        <DataGrid x:Name="GradeEntrevistadoresPainel"
+                                  Grid.Row="1"
+                                  AutoGenerateColumns="False"
+                                  CanUserAddRows="False"
+                                  IsReadOnly="True"
+                                  HeadersVisibility="Column"
+                                  BorderThickness="1"
+                                  BorderBrush="#DFE7E2"
+                                  GridLinesVisibility="Horizontal"
+                                  HorizontalGridLinesBrush="#F0F4F2"
+                                  RowBackground="White"
+                                  AlternatingRowBackground="#FAFCFB"
+                                  RowHeight="40">
+                            <DataGrid.Resources>
+                                <Style TargetType="DataGridColumnHeader">
+                                    <Setter Property="Background" Value="#F3F7F5" />
+                                    <Setter Property="Foreground" Value="#123322" />
+                                    <Setter Property="FontWeight" Value="SemiBold" />
+                                    <Setter Property="Padding" Value="12,10" />
+                                    <Setter Property="BorderThickness" Value="0,0,0,1" />
+                                    <Setter Property="BorderBrush" Value="#DFE7E2" />
+                                </Style>
+                                <Style TargetType="DataGridCell">
+                                    <Setter Property="Padding" Value="12,0" />
+                                    <Setter Property="Template">
+                                        <Setter.Value>
+                                            <ControlTemplate TargetType="DataGridCell">
+                                                <Border Padding="{TemplateBinding Padding}" Background="Transparent">
+                                                    <ContentPresenter VerticalAlignment="Center" />
+                                                </Border>
+                                            </ControlTemplate>
+                                        </Setter.Value>
+                                    </Setter>
+                                </Style>
+                            </DataGrid.Resources>
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="Nome" Binding="{Binding Nome}" Width="2*" />
+                                <DataGridTextColumn Header="E-mail" Binding="{Binding Email}" Width="2*" />
+                            </DataGrid.Columns>
+                        </DataGrid>
+                    </Grid>
+                </Border>
+                <Border x:Name="VisaoLogsGerais"
+                        Visibility="Collapsed"
+                        Background="White"
+                        BorderBrush="#DFE7E2"
+                        BorderThickness="1"
+                        CornerRadius="20"
+                        Padding="32">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="*" />
+                        </Grid.RowDefinitions>
+
+                        <StackPanel Margin="0,0,0,20">
+                            <TextBlock Text="Histórico de Atualizações"
+                                       FontSize="24"
+                                       FontWeight="Bold"
+                                       Foreground="#123322" />
+                            <TextBlock Text="Histórico de acessos e alterações realizadas no sistema."
+                                       FontSize="15"
+                                       Foreground="#63756E"
+                                       Margin="0,8,0,0" />
+                        </StackPanel>
+
+                        <DataGrid x:Name="GradeLogsGerais"
+                                  Grid.Row="1"
+                                  AutoGenerateColumns="False"
+                                  CanUserAddRows="False"
+                                  IsReadOnly="True"
+                                  HeadersVisibility="Column"
+                                  BorderThickness="1"
+                                  BorderBrush="#DFE7E2"
+                                  GridLinesVisibility="Horizontal"
+                                  HorizontalGridLinesBrush="#F0F4F2"
+                                  RowBackground="White"
+                                  AlternatingRowBackground="#FAFCFB"
+                                  RowHeight="40"
+                                  ScrollViewer.HorizontalScrollBarVisibility="Auto"
+                                  ScrollViewer.VerticalScrollBarVisibility="Auto">
+                            <DataGrid.Resources>
+                                <Style TargetType="DataGridColumnHeader">
+                                    <Setter Property="Background" Value="#F3F7F5" />
+                                    <Setter Property="Foreground" Value="#123322" />
+                                    <Setter Property="FontWeight" Value="SemiBold" />
+                                    <Setter Property="Padding" Value="12,10" />
+                                    <Setter Property="BorderThickness" Value="0,0,0,1" />
+                                    <Setter Property="BorderBrush" Value="#DFE7E2" />
+                                </Style>
+                                <Style TargetType="DataGridCell">
+                                    <Setter Property="Padding" Value="12,0" />
+                                    <Setter Property="Template">
+                                        <Setter.Value>
+                                            <ControlTemplate TargetType="DataGridCell">
+                                                <Border Padding="{TemplateBinding Padding}" Background="Transparent">
+                                                    <ContentPresenter VerticalAlignment="Center" />
+                                                </Border>
+                                            </ControlTemplate>
+                                        </Setter.Value>
+                                    </Setter>
+                                </Style>
+                            </DataGrid.Resources>
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="Data" Binding="{Binding DataHora, StringFormat=dd/MM/yyyy HH:mm}" Width="140" />
+                                <DataGridTextColumn Header="Usuário" Binding="{Binding UsuarioNome}" Width="170" />
+                                <DataGridTextColumn Header="Tipo" Binding="{Binding TipoUsuario}" Width="140" />
+                                <DataGridTemplateColumn Header="Ação" Width="120">
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <TextBlock VerticalAlignment="Center">
+                                                <TextBlock.Style>
+                                                    <Style TargetType="TextBlock">
+                                                        <Setter Property="Text" Value="{Binding Acao}" />
+                                                        <Style.Triggers>
+                                                            <DataTrigger Binding="{Binding Acao}" Value="Alteracao">
+                                                                <Setter Property="Text" Value="Alteração" />
+                                                            </DataTrigger>
+                                                        </Style.Triggers>
+                                                    </Style>
+                                                </TextBlock.Style>
+                                            </TextBlock>
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                </DataGridTemplateColumn>
+                                <DataGridTextColumn Header="Entidade" Binding="{Binding Entidade}" Width="210" />
+                                <DataGridTextColumn Header="Campo" Binding="{Binding Campo}" Width="180" />
+                                <DataGridTextColumn Header="Antes" Binding="{Binding ValorAnterior}" Width="180" />
+                                <DataGridTextColumn Header="Depois" Binding="{Binding ValorNovo}" Width="180" />
+                                <DataGridTextColumn Header="Descrição" Binding="{Binding Descricao}" Width="280" />
+                            </DataGrid.Columns>
+                        </DataGrid>
+                    </Grid>
+                </Border>
             </Grid>
         </Grid>
     </Grid>
 </Window>
-

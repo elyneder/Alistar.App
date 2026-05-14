@@ -5,7 +5,8 @@
         Height="760"
         Width="1280"
         WindowState="Maximized"
-        WindowStartupLocation="CenterScreen">
+        WindowStartupLocation="CenterScreen"
+        Icon="/Views/Assets/alistar_icone.ico">
     <Window.Resources>
         <Style x:Key="ResumoCardStyle" TargetType="Border">
             <Setter Property="Background" Value="White" />
@@ -60,7 +61,7 @@
                 </StackPanel>
 
                 <StackPanel Grid.Row="1">
-                    <Button Content="Tela Inicial"
+                    <Button Content=" 🏠︎ Tela Inicial"
                             Style="{StaticResource BotaoBarraLateralStyle}"
                             Click="MostrarTelaInicialBotao_Click" />
 
@@ -83,7 +84,7 @@
                 </StackPanel>
 
                 <StackPanel Grid.Row="2">
-                    <Button Content="Sair do Sistema"
+                    <Button Content=" ➜] Sair do Sistema"
                             Style="{StaticResource BotaoPerigoTextoStyle}"
                             Click="SairSistemaBotao_Click" />
                 </StackPanel>
@@ -106,19 +107,14 @@
                         Style="{StaticResource BotaoSecundarioStyle}"
                         Click="MostrarTelaInicialBotao_Click">
                     <StackPanel Orientation="Horizontal">
-                        <Canvas Width="14" Height="14" Margin="0,0,6,0">
-                            <Line X1="8" Y1="1" X2="1" Y2="7" Stroke="#196743" StrokeThickness="1.5" StrokeStartLineCap="Round" StrokeEndLineCap="Round"/>
-                            <Line X1="1" Y1="7" X2="8" Y2="13" Stroke="#196743" StrokeThickness="1.5" StrokeStartLineCap="Round" StrokeEndLineCap="Round"/>
-                            <Line X1="1" Y1="7" X2="13" Y2="7" Stroke="#196743" StrokeThickness="1.5" StrokeStartLineCap="Round" StrokeEndLineCap="Round"/>
-                        </Canvas>
-                        <TextBlock Text="Voltar ao Painel"/>
+                        <TextBlock Text="  🡸  Voltar     "/>
                     </StackPanel>
                 </Button>
                 <TextBlock Text="Quinta Etapa"
                            FontSize="32"
                            FontWeight="Bold"
                            Foreground="#123322" />
-                <TextBlock Text="Ranking final dos conscritos elegíveis para TG e substitutos."
+                <TextBlock Text="Designação final: entram apenas TG, Substituto e Refratário; ajuste cada conscrito para TG, Substituto ou Dispensado."
                            FontSize="15"
                            Foreground="#688077"
                            Margin="0,4,0,0" />
@@ -162,25 +158,161 @@
                     BorderThickness="1"
                     CornerRadius="8"
                     Padding="14">
+
                 <DataGrid x:Name="GradeRanking"
-                          AutoGenerateColumns="False"
-                          CanUserAddRows="False"
-                          IsReadOnly="True"
-                          HeadersVisibility="Column"
-                          GridLinesVisibility="Horizontal"
-                          HorizontalGridLinesBrush="#EEF2EF"
-                          RowHeight="42"
-                          AlternatingRowBackground="#F8FBF9"
-                          BorderThickness="0">
+                AutoGenerateColumns="False"
+                CanUserAddRows="False"
+                IsReadOnly="True"
+                HeadersVisibility="Column"
+                GridLinesVisibility="Horizontal"
+                HorizontalGridLinesBrush="#F0F4F2"
+                RowBackground="White"
+                AlternatingRowBackground="#FAFCFB"
+                RowHeight="40"
+                BorderThickness="1"
+                BorderBrush="#DFE7E2">
+
+                    <DataGrid.Resources>
+                        <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}" Color="#E3F5EA"/>
+                        <SolidColorBrush x:Key="{x:Static SystemColors.HighlightTextBrushKey}" Color="#123322"/>
+                        <SolidColorBrush x:Key="{x:Static SystemColors.InactiveSelectionHighlightBrushKey}" Color="#E3F5EA"/>
+                        <SolidColorBrush x:Key="{x:Static SystemColors.InactiveSelectionHighlightTextBrushKey}" Color="#123322"/>
+                        <Style TargetType="DataGridColumnHeader">
+                            <Setter Property="Background" Value="#F3F7F5" />
+                            <Setter Property="Foreground" Value="#123322" />
+                            <Setter Property="FontWeight" Value="SemiBold" />
+                            <Setter Property="Padding" Value="12,10" />
+                            <Setter Property="BorderThickness" Value="0,0,0,1" />
+                            <Setter Property="BorderBrush" Value="#DFE7E2" />
+                        </Style>
+                        <Style TargetType="DataGridRow">
+                            <Setter Property="Background" Value="White" />
+                            <Style.Triggers>
+                                <Trigger Property="IsSelected" Value="True">
+                                    <Setter Property="Background" Value="#E3F5EA"/>
+                                    <Setter Property="Foreground" Value="#123322"/>
+                                </Trigger>
+                            </Style.Triggers>
+                        </Style>
+                        <Style TargetType="DataGridCell">
+                            <Setter Property="Padding" Value="12,0" />
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="DataGridCell">
+                                        <Border Padding="{TemplateBinding Padding}"
+                                Background="Transparent">
+                                            <ContentPresenter VerticalAlignment="Center" />
+                                        </Border>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                    </DataGrid.Resources>
                     <DataGrid.Columns>
-                        <DataGridTextColumn Header="#" Binding="{Binding Posicao}" Width="58" />
-                        <DataGridTextColumn Header="Classificação" Binding="{Binding Classificacao}" Width="130" />
-                        <DataGridTextColumn Header="Situação" Binding="{Binding Situacao}" Width="110" />
-                        <DataGridTextColumn Header="RA" Binding="{Binding RA}" Width="150" />
+                        <DataGridTextColumn Header="#" Binding="{Binding Posicao}" Width="70" />
+                        <DataGridTextColumn Header="Classificação" Binding="{Binding Classificacao}" Width="1*" />
+                        <DataGridTextColumn Header="RA" Binding="{Binding RA}" Width="1.2*" />
                         <DataGridTextColumn Header="Nome" Binding="{Binding Nome}" Width="2*" />
-                        <DataGridTextColumn Header="Pontuação" Binding="{Binding Pontuacao}" Width="100" />
-                        <DataGridTextColumn Header="Ficha" Binding="{Binding StatusFicha}" Width="150" />
-                        <DataGridTextColumn Header="Critérios principais" Binding="{Binding Criterios}" Width="3*" />
+                        <DataGridTextColumn Header="Pontuação" Binding="{Binding Pontuacao}" Width="1*" />
+
+                        <DataGridTemplateColumn Header="Situação"
+                        Width="1*"
+                        SortMemberPath="Situacao">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <Border Padding="10,4"
+                    CornerRadius="12"
+                    HorizontalAlignment="Left">
+                                        <Border.Style>
+                                            <Style TargetType="Border">
+                                                <Setter Property="Background" Value="#E5E7EB" />
+
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding Situacao}" Value="TG">
+                                                        <Setter Property="Background" Value="#166534" />
+                                                    </DataTrigger>
+
+                                                    <DataTrigger Binding="{Binding Situacao}" Value="Substituto">
+                                                        <Setter Property="Background" Value="#86EFAC" />
+                                                    </DataTrigger>
+
+                                                    <DataTrigger Binding="{Binding Situacao}" Value="Apto">
+                                                        <Setter Property="Background" Value="#FACC15" />
+                                                    </DataTrigger>
+
+                                                    <DataTrigger Binding="{Binding Situacao}" Value="Inapto">
+                                                        <Setter Property="Background" Value="#F97316" />
+                                                    </DataTrigger>
+
+                                                    <DataTrigger Binding="{Binding Situacao}" Value="Dispensado">
+                                                        <Setter Property="Background" Value="#DC2626" />
+                                                    </DataTrigger>
+
+                                                    <DataTrigger Binding="{Binding Situacao}" Value="Refratário">
+                                                        <Setter Property="Background" Value="#7C2D12" />
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </Border.Style>
+
+                                        <TextBlock Text="{Binding Situacao}"
+                           FontWeight="SemiBold">
+                                            <TextBlock.Style>
+                                                <Style TargetType="TextBlock">
+                                                    <Setter Property="Foreground" Value="#1F2937" />
+
+                                                    <Style.Triggers>
+                                                        <DataTrigger Binding="{Binding Situacao}" Value="TG">
+                                                            <Setter Property="Foreground" Value="White" />
+                                                        </DataTrigger>
+
+                                                        <DataTrigger Binding="{Binding Situacao}" Value="Substituto">
+                                                            <Setter Property="Foreground" Value="#14532D" />
+                                                        </DataTrigger>
+
+                                                        <DataTrigger Binding="{Binding Situacao}" Value="Apto">
+                                                            <Setter Property="Foreground" Value="#713F12" />
+                                                        </DataTrigger>
+
+                                                        <DataTrigger Binding="{Binding Situacao}" Value="Inapto">
+                                                            <Setter Property="Foreground" Value="White" />
+                                                        </DataTrigger>
+
+                                                        <DataTrigger Binding="{Binding Situacao}" Value="Dispensado">
+                                                            <Setter Property="Foreground" Value="White" />
+                                                        </DataTrigger>
+
+                                                        <DataTrigger Binding="{Binding Situacao}" Value="Refratário">
+                                                            <Setter Property="Foreground" Value="White" />
+                                                        </DataTrigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </TextBlock.Style>
+                                        </TextBlock>
+                                    </Border>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                        <DataGridTemplateColumn Header="Editar"
+                                                Width="90">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <Button Width="34"
+                                            Height="28"
+                                            Content="✎"
+                                            Style="{StaticResource BotaoSecundarioStyle}"
+                                            Click="AbrirMenuSituacao_Click">
+                                        <Button.ContextMenu>
+                                            <ContextMenu>
+                                                <MenuItem Header="TG" Click="AlterarSituacaoTG_Click" />
+                                                <MenuItem Header="Substituto" Click="AlterarSituacaoSubstituto_Click" />
+                                                <MenuItem Header="Dispensado" Click="AlterarSituacaoDispensado_Click" />
+                                            </ContextMenu>
+                                        </Button.ContextMenu>
+                                    </Button>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
                     </DataGrid.Columns>
                 </DataGrid>
             </Border>

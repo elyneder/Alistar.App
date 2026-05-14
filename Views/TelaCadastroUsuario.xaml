@@ -6,9 +6,10 @@
         Width="1220"
         WindowState="Maximized"
         WindowStartupLocation="CenterOwner"
-        ResizeMode="NoResize"
-        FontFamily="Segoe UI">
-
+        ResizeMode="CanResize"
+        FontFamily="Segoe UI"
+        Icon="/Views/Assets/alistar_icone.ico">
+    
     <!-- Tela modal de cadastro: identidade visual a esquerda e campos do entrevistador a direita. -->
     <Grid Background="#0F291D">
         <Grid.ColumnDefinitions>
@@ -50,13 +51,6 @@
                                    Text="Alistar - Sistema de Gestão de Alistamento e Seleção Militar" />
                     </StackPanel>
                 </StackPanel>
-
-                <TextBlock VerticalAlignment="Bottom"
-                           HorizontalAlignment="Left"
-                           Margin="40,0,0,28"
-                           FontSize="10"
-                           Foreground="#2A4D38"
-                           Text="ALISTAR - Uso restrito - Acesso autorizado" />
             </Grid>
         </Border>
 
@@ -98,7 +92,7 @@
                                          FontSize="13"
                                          BorderThickness="0"
                                          Background="Transparent"
-                                         Foreground="#1F2D26" />
+                                         Foreground="#1F2D26" MaxLength="40" />
                             </Border>
 
                             <TextBlock Text="E-mail"
@@ -116,7 +110,7 @@
                                          FontSize="13"
                                          BorderThickness="0"
                                          Background="Transparent"
-                                         Foreground="#1F2D26" />
+                                         Foreground="#1F2D26" MaxLength="30" />
                             </Border>
 
                             <TextBlock Text="Senha"
@@ -133,7 +127,7 @@
                                                  Padding="10"
                                                  FontSize="13"
                                                  BorderThickness="0"
-                                                 Background="Transparent" />
+                                                 Background="Transparent" MaxLength="30" />
                                 </Border>
 
                                 <Border x:Name="BordaSenhaVisivelUsuario"

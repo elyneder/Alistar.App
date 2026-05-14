@@ -15,7 +15,7 @@ namespace Alistar.App.Services;
 /// </remarks>
 public static class ServicoAutenticacao
 {
-    private static readonly List<ContaUsuario> Contas = new List<ContaUsuario> {
+    public static readonly List<ContaUsuario> Contas = new List<ContaUsuario> {
         new ContaUsuario(){
             Nome = "Administrador",
             Email = "admin@alistar.com",
@@ -48,7 +48,7 @@ public static class ServicoAutenticacao
     //private static string caminhoCompleto = Path.Combine(raizDoProjeto, "entrevistadores.json");
 
     /// <summary>
-    /// Usuario logado atualmente. Fica nulo quando nao ha sessao ativa.
+    /// Usuário logado atualmente. Fica nulo quando não há sessão ativa.
     /// </summary>
     public static ContaUsuario? UsuarioAtual { get; private set; }
 
@@ -91,6 +91,11 @@ public static class ServicoAutenticacao
 
         UsuarioAtual = senhaValida ? account : null;
 
+        if (senhaValida)
+        {
+            ServicoAuditoria.RegistrarAcao("Login", "Acesso", $"Usuário {account.Email} entrou no sistema.");
+        }
+
         return senhaValida;
     }
 
@@ -104,14 +109,17 @@ public static class ServicoAutenticacao
     }
 
     /// <summary>
-    /// Regra simples de permissao: somente o email admin@alistar.com e administrador.
+    /// Regra de permissao para os administradores gerais do sistema.
     /// </summary>
     public static bool UsuarioAtualEhAdministrador()
     {
-        return string.Equals(
-            UsuarioAtual?.Email,
-            "admin@alistar.com",
-            StringComparison.OrdinalIgnoreCase);
+        return UsuarioEhAdministrador(UsuarioAtual);
+    }
+
+    public static bool UsuarioEhAdministrador(ContaUsuario? conta)
+    {
+        return conta is not null &&
+               (conta.AdministradorGeral);
     }
 
     /// <summary>
@@ -125,7 +133,7 @@ public static class ServicoAutenticacao
         }
 
         return Contas
-            .Where(conta => !string.Equals(conta.Email, "admin@alistar.com", StringComparison.OrdinalIgnoreCase))
+            .Where(conta => !UsuarioEhAdministrador(conta))
             .OrderBy(conta => conta.Nome)
             .ThenBy(conta => conta.Email)
             .Select(conta => new EntrevistadorResumo
@@ -137,7 +145,7 @@ public static class ServicoAutenticacao
     }
 
     /// <summary>
-    /// Remove o usuario atual da sessao.
+    /// Remove o usuário atual da sessão.
     /// </summary>
     public static void EncerrarSessao()
     {
@@ -199,10 +207,51 @@ public static class ServicoAutenticacao
 
         return ResultadoCadastroUsuario.Sucesso;
     }
+
+    private static void GarantirSegundoAdministrador()
+    {
+        var administradorOriginal = Contas.FirstOrDefault(conta =>
+            string.Equals(conta.Email, "admin@alistar.com", StringComparison.OrdinalIgnoreCase));
+
+        if (administradorOriginal is not null)
+        {
+            administradorOriginal.AdministradorGeral = true;
+        }
+
+        var segundoAdministrador = Contas.FirstOrDefault(conta =>
+            string.Equals(conta.Email, "admin2@alistar.com", StringComparison.OrdinalIgnoreCase));
+
+        if (segundoAdministrador is not null)
+        {
+            segundoAdministrador.AdministradorGeral = true;
+            return;
+        }
+
+        if (administradorOriginal is null)
+        {
+            return;
+        }
+
+        Contas.Add(new ContaUsuario
+        {
+            Nome = "Administrador Geral 2",
+            Email = "admin2@alistar.com",
+            Senha = administradorOriginal.Senha,
+            AdministradorGeral = true
+        });
+
+        //SalvarContas();
+    }
+
+    //private static void SalvarContas()
+    //{
+    //    string jsonString = JsonSerializer.Serialize(Contas, new JsonSerializerOptions { WriteIndented = true });
+    //    File.WriteAllText(caminhoCompleto, jsonString);
+    //}
 }
 
 /// <summary>
-/// Resultado possivel da tentativa de cadastro de um usuario.
+/// Resultado possível da tentativa de cadastro de um usuário.
 /// </summary>
 public enum ResultadoCadastroUsuario
 {

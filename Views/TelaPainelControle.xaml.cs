@@ -1,6 +1,7 @@
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using System.Windows.Media;
 using Alistar.App.Models;
 using Alistar.App.Services;
 
@@ -16,6 +17,8 @@ public partial class TelaPainelControle : Window
 {
     // Cache local dos conscritos carregados do JSON para pesquisa e filtros.
     private List<Conscrito> _conscritosCarregados = [];
+    private List<SituacaoResumo> _resumosSituacao = [];
+    private const string FiltroTodasSituacoes = "Todas";
 
     public TelaPainelControle()
     {
@@ -27,33 +30,43 @@ public partial class TelaPainelControle : Window
         {
             VerEntrevistadores.Visibility = Visibility.Collapsed;
             VerEntrevistadores.IsEnabled = false;
+            BotaoLogsGerais.Visibility = Visibility.Collapsed;
+            BotaoLogsGerais.IsEnabled = false;
             CadastrarEntrevistador.Visibility = Visibility.Collapsed;
             CadastrarEntrevistador.IsEnabled = false;
         }
+
+        AplicarPermissoesEtapas();
+        ServicoAuditoria.RegistrarAcao("Acesso", "Painel de Controle", "Usuário abriu o painel de controle.");
     }
 
     private void PrimeiraEtapaBotao_Click(object sender, RoutedEventArgs e)
     {
+        ServicoAuditoria.RegistrarAcao("Acesso", "Primeira Etapa", "Usuário abriu a primeira etapa.");
         AbrirJanelaEtapa(new TelaPrimeiraEtapa());
     }
 
     private void SegundaEtapaBotao_Click(object sender, RoutedEventArgs e)
     {
+        ServicoAuditoria.RegistrarAcao("Acesso", "Segunda Etapa", "Usuário abriu a segunda etapa.");
         AbrirJanelaEtapa(new TelaSegundaEtapa());
     }
 
     private void TerceiraEtapaBotao_Click(object sender, RoutedEventArgs e)
     {
-        AbrirJanelaEtapa(new TelaPrimeiraEtapa(abrirListaAoIniciar: true, modoEntrevistaTecnica: true));
+        ServicoAuditoria.RegistrarAcao("Acesso", "Terceira Etapa", "Usuário abriu a terceira etapa.");
+        ServicoNavegacao.Trocar(this, new TelaPrimeiraEtapa(null, true, true));
     }
 
     private void QuartaEtapaBotao_Click(object sender, RoutedEventArgs e)
     {
+        ServicoAuditoria.RegistrarAcao("Acesso", "Quarta Etapa", "Usuário abriu a quarta etapa.");
         AbrirJanelaEtapa(new TelaSegundaEtapa(modoReavaliacaoMedica: true));
     }
 
     private void QuintaEtapaBotao_Click(object sender, RoutedEventArgs e)
     {
+        ServicoAuditoria.RegistrarAcao("Acesso", "Quinta Etapa", "Usuário abriu a quinta etapa.");
         AbrirJanelaEtapa(new TelaQuintaEtapa());
     }
 
@@ -67,6 +80,11 @@ public partial class TelaPainelControle : Window
         MostrarListaConscritos();
     }
 
+    private void MostrarSituacoesBotao_Click(object sender, RoutedEventArgs e)
+    {
+        MostrarSituacoes();
+    }
+
     private void AbrirCadastroUsuarioBotao_Click(object sender, RoutedEventArgs e)
     {
         AbrirJanelaEtapa(new TelaCadastroUsuario());
@@ -74,7 +92,12 @@ public partial class TelaPainelControle : Window
 
     private void VerEntrevistadoresBotao_Click(object sender, RoutedEventArgs e)
     {
-        AbrirJanelaEtapa(new TelaEntrevistadores());
+        MostrarEntrevistadores();
+    }
+
+    private void MostrarLogsGeraisBotao_Click(object sender, RoutedEventArgs e)
+    {
+        MostrarLogsGerais();
     }
 
     private void SairSistemaBotao_Click(object sender, RoutedEventArgs e)
@@ -132,7 +155,11 @@ public partial class TelaPainelControle : Window
         FiltroSituacaoApto.IsChecked = false;
         FiltroSituacaoInapto.IsChecked = false;
         FiltroSituacaoDispensado.IsChecked = false;
+        FiltroSituacaoRefratario.IsChecked = false;
         FiltroSituacaoIndefinido.IsChecked = false;
+        FiltroAndamentoEmAndamento.IsChecked = false;
+        FiltroAndamentoFinalizado.IsChecked = false;
+        FiltroAndamentoFaltoso.IsChecked = false;
         FiltroTrabalha.IsChecked = false;
         FiltroRecebeAuxilio.IsChecked = false;
         FiltroEstuda.IsChecked = false;
@@ -144,12 +171,36 @@ public partial class TelaPainelControle : Window
         AplicarFiltrosLista();
     }
 
+    private void ComboFiltroSituacaoResumo_SelectionChanged(object sender, SelectionChangedEventArgs e)
+    {
+        AplicarFiltroSituacoes();
+    }
+
     /// <summary>
     /// Abre uma tela de etapa e fecha a janela anterior para manter um fluxo unico.
     /// </summary>
     private void AbrirJanelaEtapa(Window janela)
     {
         ServicoNavegacao.Trocar(this, janela);
+    }
+
+    private void AplicarPermissoesEtapas()
+    {
+        var email = ServicoAutenticacao.UsuarioAtual?.Email;
+
+        ConfigurarBotaoEtapa(BotaoPrimeiraEtapa, 1, email);
+        ConfigurarBotaoEtapa(BotaoSegundaEtapa, 2, email);
+        ConfigurarBotaoEtapa(BotaoTerceiraEtapa, 3, email);
+        ConfigurarBotaoEtapa(BotaoQuartaEtapa, 4, email);
+        ConfigurarBotaoEtapa(BotaoQuintaEtapa, 5, email);
+    }
+
+    private static void ConfigurarBotaoEtapa(Button botao, int numeroEtapa, string? email)
+    {
+        var permitido = ServicoConfiguracaoProcesso.UsuarioPodeAcessarEtapa(numeroEtapa, email);
+        botao.IsEnabled = permitido;
+        botao.Opacity = permitido ? 1 : 0.45;
+        botao.ToolTip = permitido ? null : "Seu usuário não foi autorizado para esta etapa.";
     }
 
 
@@ -173,6 +224,9 @@ public partial class TelaPainelControle : Window
     {
         VisaoInicial.Visibility = Visibility.Visible;
         VisaoListaConscritos.Visibility = Visibility.Collapsed;
+        VisaoSituacoes.Visibility = Visibility.Collapsed;
+        VisaoEntrevistadores.Visibility = Visibility.Collapsed;
+        VisaoLogsGerais.Visibility = Visibility.Collapsed;
     }
 
     /// <summary>
@@ -182,8 +236,130 @@ public partial class TelaPainelControle : Window
     {
         VisaoInicial.Visibility = Visibility.Collapsed;
         VisaoListaConscritos.Visibility = Visibility.Visible;
+        VisaoSituacoes.Visibility = Visibility.Collapsed;
+        VisaoEntrevistadores.Visibility = Visibility.Collapsed;
+        VisaoLogsGerais.Visibility = Visibility.Collapsed;
         GradeConscritos.SelectedItem = null;
         CarregarConscritos();
+    }
+
+    private void MostrarSituacoes()
+    {
+        VisaoInicial.Visibility = Visibility.Collapsed;
+        VisaoListaConscritos.Visibility = Visibility.Collapsed;
+        VisaoSituacoes.Visibility = Visibility.Visible;
+        VisaoEntrevistadores.Visibility = Visibility.Collapsed;
+        VisaoLogsGerais.Visibility = Visibility.Collapsed;
+
+        CarregarConscritos();
+        AtualizarResumoSituacoes();
+        AplicarFiltroSituacoes();
+    }
+
+    private void MostrarEntrevistadores()
+    {
+        VisaoInicial.Visibility = Visibility.Collapsed;
+        VisaoListaConscritos.Visibility = Visibility.Collapsed;
+        VisaoSituacoes.Visibility = Visibility.Collapsed;
+        VisaoEntrevistadores.Visibility = Visibility.Visible;
+        VisaoLogsGerais.Visibility = Visibility.Collapsed;
+
+        var entrevistadores = ServicoAutenticacao.ObterEntrevistadores();
+        GradeEntrevistadoresPainel.ItemsSource = entrevistadores;
+        TextoResumoEntrevistadoresPainel.Text = $"{entrevistadores.Count} entrevistador(es) cadastrado(s).";
+    }
+
+    private void MostrarLogsGerais()
+    {
+        VisaoInicial.Visibility = Visibility.Collapsed;
+        VisaoListaConscritos.Visibility = Visibility.Collapsed;
+        VisaoSituacoes.Visibility = Visibility.Collapsed;
+        VisaoEntrevistadores.Visibility = Visibility.Collapsed;
+        VisaoLogsGerais.Visibility = Visibility.Visible;
+        GradeLogsGerais.ItemsSource = ServicoAuditoria.ObterTodos();
+    }
+
+    private void AtualizarResumoSituacoes()
+    {
+        var total = Math.Max(_conscritosCarregados.Count, 1);
+        var situacoes = new[] { "TG", "Substituto", "Apto", "Inapto", "Dispensado", "Refratário", "Indefinido" };
+
+        _resumosSituacao = situacoes
+            .Select(situacao =>
+            {
+                var quantidade = _conscritosCarregados.Count(conscrito =>
+                    string.Equals(NormalizarSituacao(conscrito.Situacao), situacao, StringComparison.OrdinalIgnoreCase));
+                var percentual = Math.Round((double)quantidade / total * 100, 1);
+
+                return new SituacaoResumo
+                {
+                    Situacao = situacao,
+                    Quantidade = quantidade,
+                    Percentual = percentual,
+                    Cor = ObterCorSituacao(situacao)
+                };
+            })
+            .ToList();
+
+        ListaResumoSituacoes.ItemsSource = _resumosSituacao;
+
+        var filtroAtual = ComboFiltroSituacaoResumo.SelectedItem?.ToString() ?? FiltroTodasSituacoes;
+        ComboFiltroSituacaoResumo.ItemsSource = new[] { FiltroTodasSituacoes }.Concat(situacoes).ToList();
+        ComboFiltroSituacaoResumo.SelectedItem = ComboFiltroSituacaoResumo.Items.Contains(filtroAtual)
+            ? filtroAtual
+            : FiltroTodasSituacoes;
+
+        TextoResumoSituacoes.Text = $"{_conscritosCarregados.Count} conscritos cadastrados no total.";
+    }
+
+    private void AplicarFiltroSituacoes()
+    {
+        if (GradeSituacoes is null)
+        {
+            return;
+        }
+
+        var filtro = ComboFiltroSituacaoResumo.SelectedItem?.ToString() ?? FiltroTodasSituacoes;
+        IEnumerable<Conscrito> consulta = _conscritosCarregados;
+        IEnumerable<SituacaoResumo> resumosGrafico = _resumosSituacao;
+
+        if (!string.Equals(filtro, FiltroTodasSituacoes, StringComparison.OrdinalIgnoreCase))
+        {
+            consulta = consulta.Where(conscrito =>
+                string.Equals(NormalizarSituacao(conscrito.Situacao), filtro, StringComparison.OrdinalIgnoreCase));
+            resumosGrafico = resumosGrafico.Where(resumo =>
+                string.Equals(resumo.Situacao, filtro, StringComparison.OrdinalIgnoreCase));
+        }
+
+        var resumosGraficoLista = resumosGrafico.ToList();
+        var maiorQuantidade = Math.Max(resumosGraficoLista.MaxBy(resumo => resumo.Quantidade)?.Quantidade ?? 0, 1);
+        foreach (var resumo in resumosGraficoLista)
+        {
+            resumo.AlturaColuna = resumo.Quantidade == 0
+                ? 8
+                : Math.Max(42, (double)resumo.Quantidade / maiorQuantidade * 230);
+        }
+
+        GraficoSituacoes.ItemsSource = resumosGraficoLista;
+        GradeSituacoes.ItemsSource = consulta
+            .OrderBy(conscrito => conscrito.Nome)
+            .ToList();
+    }
+
+    private static Brush ObterCorSituacao(string situacao)
+    {
+        var cor = situacao switch
+        {
+            "TG" => "#166534",
+            "Substituto" => "#22C55E",
+            "Apto" => "#FACC15",
+            "Inapto" => "#F97316",
+            "Dispensado" => "#DC2626",
+            "Refratário" => "#7C2D12",
+            _ => "#64748B"
+        };
+
+        return new SolidColorBrush((Color)ColorConverter.ConvertFromString(cor)!);
     }
 
     /// <summary>
@@ -206,6 +382,12 @@ public partial class TelaPainelControle : Window
         if (situacoesSelecionadas.Count > 0)
         {
             consulta = consulta.Where(conscrito => situacoesSelecionadas.Contains(NormalizarSituacao(conscrito.Situacao)));
+        }
+
+        var andamentosSelecionados = ObterAndamentosSelecionados();
+        if (andamentosSelecionados.Count > 0)
+        {
+            consulta = consulta.Where(conscrito => andamentosSelecionados.Contains(conscrito.AndamentoProcesso));
         }
 
         if (FiltroTrabalha.IsChecked == true)
@@ -266,9 +448,21 @@ public partial class TelaPainelControle : Window
         if (FiltroSituacaoApto.IsChecked == true) situacoes.Add("Apto");
         if (FiltroSituacaoInapto.IsChecked == true) situacoes.Add("Inapto");
         if (FiltroSituacaoDispensado.IsChecked == true) situacoes.Add("Dispensado");
+        if (FiltroSituacaoRefratario.IsChecked == true) situacoes.Add("Refratário");
         if (FiltroSituacaoIndefinido.IsChecked == true) situacoes.Add("Indefinido");
 
         return situacoes;
+    }
+
+    private HashSet<string> ObterAndamentosSelecionados()
+    {
+        var andamentos = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+
+        if (FiltroAndamentoEmAndamento.IsChecked == true) andamentos.Add("Em andamento");
+        if (FiltroAndamentoFinalizado.IsChecked == true) andamentos.Add("Finalizado");
+        if (FiltroAndamentoFaltoso.IsChecked == true) andamentos.Add("Faltoso");
+
+        return andamentos;
     }
 
     private static bool ContemTexto(string? valor, string pesquisa)
@@ -306,4 +500,19 @@ public partial class TelaPainelControle : Window
                !string.Equals(ocupacaoNormalizada, "Não trabalha", StringComparison.OrdinalIgnoreCase) &&
                !string.Equals(ocupacaoNormalizada, "Desempregado", StringComparison.OrdinalIgnoreCase);
     }
+}
+
+public class SituacaoResumo
+{
+    public string Situacao { get; set; } = string.Empty;
+
+    public int Quantidade { get; set; }
+
+    public double Percentual { get; set; }
+
+    public Brush Cor { get; set; } = Brushes.SlateGray;
+
+    public string PercentualTexto => $"{Percentual:0.#}%";
+
+    public double AlturaColuna { get; set; }
 }

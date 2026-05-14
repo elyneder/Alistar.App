@@ -17,6 +17,8 @@ namespace Alistar.App.Services
     /// </remarks>
     public static class Seguranca
     {
+        private static List<ContaUsuario> contaUsuarios = ServicoAutenticacao.Contas;
+
         /// <summary>
         /// Recebe a senha digitada e devolve um hash seguro para armazenamento.
         /// </summary>
@@ -35,17 +37,17 @@ namespace Alistar.App.Services
 
         public static void gerarToken(string emailParaEnvioDeToken)
         {
-            //ContaUsuario usuarioEncontrado = listaUsuarios.FirstOrDefault(u => u.Email == emailParaEnvioDeToken);
+            ContaUsuario usuarioEncontrado = contaUsuarios.FirstOrDefault(u => u.Email == emailParaEnvioDeToken);
 
             string token = new Random().Next(100000, 999999).ToString();
 
-            //usuarioEncontrado.Token = token;
-            //usuarioEncontrado.DataExpiracaoToken = DateTime.Now.AddMinutes(3);
+            usuarioEncontrado.Token = token;
+            usuarioEncontrado.DataExpiracaoToken = DateTime.Now.AddMinutes(3);
 
             using var client = new SmtpClient("sandbox.smtp.mailtrap.io", 2525)
             {
                 // Alterar as credenciaciais para as fornecidas pelo Mailtrap de cada usuário para evitar vazamento de credenciais
-                Credentials = new NetworkCredential("username", "senha"),
+                Credentials = new NetworkCredential("c4fed5e8565447", "29622df1a99279"),
                 EnableSsl = true
             };
 
@@ -65,18 +67,17 @@ namespace Alistar.App.Services
 
         public static bool ValidarCodigo(string codigo, string emailParaEnvioDeToken)
         {
-            // ContaUsuario usuario = listaUsuario.FirstOrDefault(u => u.Email == emailParaEnvioDeToken);
+            ContaUsuario usuario = contaUsuarios.FirstOrDefault(u => u.Email == emailParaEnvioDeToken);
 
-            // if (string.IsNullOrEmpty(codigo)) return false;
+            if (string.IsNullOrEmpty(codigo)) return false;
 
-            /*
+            
             if (codigo == usuario.Token && DateTime.Now <= usuario.DataExpiracaoToken)
             {
                 usuario.Token = null;
-                usuario.DataExpiracaoToken = null;
+                usuario.DataExpiracaoToken = DateTime.MinValue;
                 return true;
             }
-            .*/
 
             return false;
         }

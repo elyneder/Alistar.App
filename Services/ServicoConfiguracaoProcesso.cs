@@ -25,6 +25,7 @@ public static class ServicoConfiguracaoProcesso
         var conteudo = File.ReadAllText(CaminhoCompleto);
         var configuracao = JsonSerializer.Deserialize<ConfiguracaoProcesso>(conteudo, OpcoesJson) ?? new ConfiguracaoProcesso();
 
+        NormalizarDatas(configuracao);
         NormalizarEtapas(configuracao);
         CalcularEliminados(configuracao);
 
@@ -33,6 +34,7 @@ public static class ServicoConfiguracaoProcesso
 
     public static void Salvar(ConfiguracaoProcesso configuracao)
     {
+        NormalizarDatas(configuracao);
         NormalizarEtapas(configuracao);
         CalcularEliminados(configuracao);
 
@@ -60,6 +62,7 @@ public static class ServicoConfiguracaoProcesso
 
     private static void RegistrarAlteracoes(ConfiguracaoProcesso anterior, ConfiguracaoProcesso atual)
     {
+        ServicoAuditoria.RegistrarAlteracao("ConfiguraÃ§Ã£o do Processo", "Data de fechamento", anterior.DataFechamento.ToShortDateString(), atual.DataFechamento.ToShortDateString());
         ServicoAuditoria.RegistrarAlteracao("Configuração do Processo", "Data de abertura", anterior.DataAbertura.ToShortDateString(), atual.DataAbertura.ToShortDateString());
         ServicoAuditoria.RegistrarAlteracao("Configuração do Processo", "Ano limite", anterior.AnoLimiteNascimento.ToString(), atual.AnoLimiteNascimento.ToString());
         ServicoAuditoria.RegistrarAlteracao("Configuração do Processo", "Total de classificados", anterior.TotalClassificados.ToString(), atual.TotalClassificados.ToString());
@@ -87,9 +90,26 @@ public static class ServicoConfiguracaoProcesso
     {
         foreach (var etapa in configuracao.Etapas)
         {
-            etapa.PercentualEliminacao = Math.Clamp(etapa.PercentualEliminacao, 0, 100);
+            etapa.PercentualEliminacao = Math.Clamp(etapa.PercentualEliminacao, 0, 99);
             etapa.QuantidadeEliminados = (int)Math.Ceiling(configuracao.TotalClassificados * (etapa.PercentualEliminacao / 100m));
         }
+    }
+
+    private static void NormalizarDatas(ConfiguracaoProcesso configuracao)
+    {
+        if (configuracao.DataAbertura == default)
+        {
+            configuracao.DataAbertura = DateTime.Today;
+        }
+
+        configuracao.DataAbertura = configuracao.DataAbertura.Date;
+
+        if (configuracao.DataFechamento == default)
+        {
+            configuracao.DataFechamento = configuracao.DataAbertura.AddMonths(3);
+        }
+
+        configuracao.DataFechamento = configuracao.DataFechamento.Date;
     }
 
     private static void NormalizarEtapas(ConfiguracaoProcesso configuracao)

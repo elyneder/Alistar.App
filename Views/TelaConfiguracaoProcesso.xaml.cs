@@ -1,6 +1,7 @@
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Windows;
+using System.Windows.Input;
 using System.Windows.Media;
 using Alistar.App.Models;
 using Alistar.App.Services;
@@ -27,6 +28,8 @@ public partial class TelaConfiguracaoProcesso : Window
     private ConfiguracaoProcesso _configuracao = new();
     private List<ServidorSelecao> _servidoresSelecao = [];
     private int _passoAtual = PassoDadosGerais;
+    private bool _dataFechamentoFoiAjustadaManualmente;
+    private bool _atualizandoDataFechamentoAutomaticamente;
 
     public TelaConfiguracaoProcesso()
     {
@@ -39,10 +42,14 @@ public partial class TelaConfiguracaoProcesso : Window
     private void CarregarTela()
     {
         _configuracao = ServicoConfiguracaoProcesso.Obter();
+        _configuracao.DataAbertura = DateTime.Today;
+        _configuracao.DataFechamento = _configuracao.DataAbertura.AddMonths(3);
 
         DataAberturaPicker.SelectedDate = _configuracao.DataAbertura;
-        CaixaAnoLimite.Text = _configuracao.AnoLimiteNascimento.ToString();
-        CaixaTotalClassificados.Text = _configuracao.TotalClassificados.ToString();
+        DefinirDataFechamento(_configuracao.DataFechamento);
+        CaixaAnoLimite.Text = ObterTextoInicialAnoLimite(_configuracao.AnoLimiteNascimento);
+        CaixaTotalClassificados.Text = ObterTextoInicialTotalClassificados(_configuracao.TotalClassificados);
+        _dataFechamentoFoiAjustadaManualmente = false;
 
         ListaEtapasPercentuais.ItemsSource = _configuracao.Etapas;
         AtualizarListaServidores();
@@ -81,8 +88,10 @@ public partial class TelaConfiguracaoProcesso : Window
     private bool LerFormulario()
     {
         SalvarSelecaoServidores();
+        var dataAbertura = (DataAberturaPicker.SelectedDate ?? DateTime.Today).Date;
+        var dataFechamento = (DataFechamentoPicker.SelectedDate ?? dataAbertura.AddMonths(3)).Date;
 
-        if (!ValidarInteiro(CaixaAnoLimite.Text, "ano limite", out var anoLimite) ||
+        if (!ValidarAnoLimite(CaixaAnoLimite.Text, out var anoLimite) ||
             !ValidarInteiro(CaixaTotalClassificados.Text, "total de classificados", out var totalClassificados))
         {
             return false;
@@ -94,13 +103,20 @@ public partial class TelaConfiguracaoProcesso : Window
             return false;
         }
 
-        _configuracao.DataAbertura = DataAberturaPicker.SelectedDate ?? DateTime.Today;
+        if (dataFechamento < dataAbertura)
+        {
+            TextoFeedback.Text = "A data de fechamento nao pode ser anterior a data de abertura.";
+            return false;
+        }
+
+        _configuracao.DataAbertura = dataAbertura;
+        _configuracao.DataFechamento = dataFechamento;
         _configuracao.AnoLimiteNascimento = anoLimite;
         _configuracao.TotalClassificados = totalClassificados;
 
         foreach (var etapa in _configuracao.Etapas)
         {
-            etapa.PercentualEliminacao = Math.Clamp(etapa.PercentualEliminacao, 0, 100);
+            etapa.PercentualEliminacao = Math.Clamp(etapa.PercentualEliminacao, 0, 99);
         }
 
         AtualizarConfirmacao();
@@ -140,6 +156,7 @@ public partial class TelaConfiguracaoProcesso : Window
     {
         TextoResumoConfirmacao.Text =
             $"Data de abertura: {_configuracao.DataAbertura:dd/MM/yyyy}\n" +
+            $"Data de fechamento: {_configuracao.DataFechamento:dd/MM/yyyy}\n" +
             $"Ano limite: {_configuracao.AnoLimiteNascimento}\n" +
             $"Total de classificados: {_configuracao.TotalClassificados}";
 
@@ -165,6 +182,85 @@ public partial class TelaConfiguracaoProcesso : Window
 
         TextoFeedback.Text = $"Informe um valor numérico válido para {campo}.";
         return false;
+    }
+
+    private bool ValidarAnoLimite(string texto, out int valor)
+    {
+        valor = 0;
+        var textoLimpo = texto.Trim();
+
+        if (textoLimpo.Length != 4 || !int.TryParse(textoLimpo, out valor))
+        {
+            TextoFeedback.Text = "Informe o ano limite com 4 digitos numericos.";
+            return false;
+        }
+
+        return true;
+    }
+
+    private static string ObterTextoInicialAnoLimite(int anoLimite)
+    {
+        var anoPadraoAntigo = DateTime.Today.Year - 18;
+        return anoLimite <= 0 || anoLimite == anoPadraoAntigo
+            ? string.Empty
+            : anoLimite.ToString();
+    }
+
+    private static string ObterTextoInicialTotalClassificados(int totalClassificados)
+    {
+        return totalClassificados <= 0 || totalClassificados == 50
+            ? string.Empty
+            : totalClassificados.ToString();
+    }
+
+    private void CampoNumerico_PreviewTextInput(object sender, TextCompositionEventArgs e)
+    {
+        e.Handled = !e.Text.All(char.IsDigit);
+    }
+
+    private void CampoNumerico_Pasting(object sender, DataObjectPastingEventArgs e)
+    {
+        if (!e.DataObject.GetDataPresent(typeof(string)))
+        {
+            e.CancelCommand();
+            return;
+        }
+
+        var texto = e.DataObject.GetData(typeof(string)) as string ?? string.Empty;
+        if (!texto.All(char.IsDigit))
+        {
+            e.CancelCommand();
+        }
+    }
+
+    private void DataAberturaPicker_SelectedDateChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
+    {
+        if (_atualizandoDataFechamentoAutomaticamente || _dataFechamentoFoiAjustadaManualmente)
+        {
+            return;
+        }
+
+        var dataAbertura = (DataAberturaPicker.SelectedDate ?? DateTime.Today).Date;
+        DefinirDataFechamento(dataAbertura.AddMonths(3));
+    }
+
+    private void DataFechamentoPicker_SelectedDateChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
+    {
+        if (_atualizandoDataFechamentoAutomaticamente)
+        {
+            return;
+        }
+
+        var dataAbertura = (DataAberturaPicker.SelectedDate ?? DateTime.Today).Date;
+        var dataFechamento = (DataFechamentoPicker.SelectedDate ?? dataAbertura.AddMonths(3)).Date;
+        _dataFechamentoFoiAjustadaManualmente = dataFechamento != dataAbertura.AddMonths(3);
+    }
+
+    private void DefinirDataFechamento(DateTime dataFechamento)
+    {
+        _atualizandoDataFechamentoAutomaticamente = true;
+        DataFechamentoPicker.SelectedDate = dataFechamento.Date;
+        _atualizandoDataFechamentoAutomaticamente = false;
     }
 
     private void DefinirPasso(int passo)
@@ -212,7 +308,7 @@ public partial class TelaConfiguracaoProcesso : Window
     {
         return passo switch
         {
-            PassoDadosGerais => "Informe os dados principais do processo seletivo.",
+            PassoDadosGerais => "Informe datas e numeros principais do processo seletivo.",
             PassoEtapas => "Defina apenas a porcentagem de saída de cada etapa.",
             PassoServidores => "Selecione os entrevistadores que poderão atuar no processo.",
             _ => "Revise os dados antes de concluir a configuração."

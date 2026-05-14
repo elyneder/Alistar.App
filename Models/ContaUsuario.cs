@@ -17,7 +17,7 @@ public class ContaUsuario
 
     /// <summary>Hash da senha gerado pelo BCrypt.</summary>
     public string Senha { get; set; } = string.Empty;
-
-    /// <summary>Define se a conta tem acesso administrativo geral.</summary>
     public bool AdministradorGeral { get; set; }
+    public string Token { get; set; }
+    public DateTime DataExpiracaoToken { get; set; }
 }

@@ -22,7 +22,7 @@ public class Conscrito
     /// <summary>Dados de identificacao usados para localizar o conscrito no sistema.</summary>
     public string CPF { get; set; } = string.Empty;
     public string RA { get; set; } = string.Empty;
-    public string Situacao { get; set; } = "Indefinido";
+    public string Situacao { get; set; } = string.Empty;
 
     /// <summary>Informacoes basicas coletadas antes dos blocos da entrevista.</summary>
     [JsonPropertyName("MotherName")]

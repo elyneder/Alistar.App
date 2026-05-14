@@ -32,7 +32,7 @@ public static class ServicoArmazenamentoConscritos
 
     public static void CarregarLista()
     {
-        GarantirArmazenamentoCriado();
+        //GarantirArmazenamentoCriado();
 
         if (File.Exists(caminhoCompleto))
         {
@@ -51,22 +51,22 @@ public static class ServicoArmazenamentoConscritos
     {
         // Na pratica, este metodo e o "SELECT *" do nosso projeto.
         // Ele le o JSON, transforma em objetos C# e devolve para as telas.
-        GarantirArmazenamentoCriado();
+        //GarantirArmazenamentoCriado();
 
-        var conteudo = File.ReadAllText(caminhoCompleto);
+        //var conteudo = File.ReadAllText(caminhoCompleto);
 
-        if (string.IsNullOrWhiteSpace(conteudo))
-        {
-            return [];
-        }
+        //if (string.IsNullOrWhiteSpace(conteudo))
+        //{
+        //    return [];
+        //}
 
-        var conscritos = JsonSerializer.Deserialize<List<Conscrito>>(conteudo, OpcoesJson) ?? [];
+        //var conscritos = JsonSerializer.Deserialize<List<Conscrito>>(conteudo, OpcoesJson) ?? [];
         var houveNormalizacao = NormalizarConscritos(conscritos);
 
-        if (houveNormalizacao)
-        {
-            SalvarTodos(conscritos);
-        }
+        //if (houveNormalizacao)
+        //{
+        //    SalvarTodos(conscritos);
+        //}
 
         return conscritos;
     }
@@ -93,8 +93,7 @@ public static class ServicoArmazenamentoConscritos
         }
 
         conscritos.Add(conscrito);
-        SalvarTodos(conscritos);
-        ServicoAuditoria.RegistrarAcao("Cadastro", "Conscrito", $"Conscrito {conscrito.Nome} foi cadastrado.");
+        //SalvarTodos(conscritos);
     }
 
     /// <summary>
@@ -117,7 +116,7 @@ public static class ServicoArmazenamentoConscritos
 
         var conscritoAnterior = conscritos[indice];
         conscritos[indice] = conscritoAtualizado;
-        SalvarTodos(conscritos);
+        //SalvarTodos(conscritos);
         RegistrarAlteracoesConscrito(conscritoAnterior, conscritoAtualizado);
     }
 
@@ -235,11 +234,11 @@ public static class ServicoArmazenamentoConscritos
     /// <summary>
     /// Serializa a lista completa e grava no arquivo JSON.
     /// </summary>
-    private static void SalvarTodos(List<Conscrito> conscritos)
-    {
-        var json = JsonSerializer.Serialize(conscritos, OpcoesJson);
-        File.WriteAllText(caminhoCompleto, json);
-    }
+    //private static void SalvarTodos(List<Conscrito> conscritos)
+    //{
+    //    var json = JsonSerializer.Serialize(conscritos, OpcoesJson);
+    //    File.WriteAllText(caminhoCompleto, json);
+    //}
 
     private static void RegistrarAlteracoesConscrito(Conscrito anterior, Conscrito atual)
     {
@@ -311,13 +310,13 @@ public static class ServicoArmazenamentoConscritos
     /// <summary>
     /// Cria a pasta/arquivo de armazenamento antes de qualquer leitura.
     /// </summary>
-    private static void GarantirArmazenamentoCriado()
-    {
-        Directory.CreateDirectory(raizDoProjeto);
+    //private static void GarantirArmazenamentoCriado()
+    //{
+    //    Directory.CreateDirectory(raizDoProjeto);
 
-        if (!File.Exists(caminhoCompleto))
-        {
-            File.WriteAllText(caminhoCompleto, "[]");
-        }
-    }
+    //    if (!File.Exists(caminhoCompleto))
+    //    {
+    //        File.WriteAllText(caminhoCompleto, "[]");
+    //    }
+    //}
 }

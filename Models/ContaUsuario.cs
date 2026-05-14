@@ -17,4 +17,6 @@ public class ContaUsuario
 
     /// <summary>Hash da senha gerado pelo BCrypt.</summary>
     public string Senha { get; set; } = string.Empty;
+    public string Token { get; set; }
+    public DateTime DataExpiracaoToken { get; set; }
 }

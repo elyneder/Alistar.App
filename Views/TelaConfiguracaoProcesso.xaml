@@ -146,10 +146,7 @@
                                Margin="0,4,0,0" />
                 </StackPanel>
 
-                <StackPanel Grid.Row="1">
-                    <Button Content=" ⚙ Configuração do Processo"
-                            Style="{StaticResource BotaoBarraLateralStyle}" />
-                </StackPanel>
+                <StackPanel Grid.Row="1"/>
 
                 <StackPanel Grid.Row="2">
                     <Button Content=" ➜ Sair do Sistema"
@@ -217,7 +214,7 @@
                             <Border x:Name="CartaoWizardServidores" Style="{StaticResource CartaoEtapaWizardStyle}">
                                 <StackPanel>
                                     <TextBlock Text="03" Style="{StaticResource NumeroEtapaWizardStyle}" />
-                                    <TextBlock Text="Servidores" Style="{StaticResource TituloEtapaWizardStyle}" />
+                                    <TextBlock Text="Entrevistadores" Style="{StaticResource TituloEtapaWizardStyle}" />
                                     <TextBlock Text="Permissão geral" Style="{StaticResource DescricaoEtapaWizardStyle}" />
                                 </StackPanel>
                             </Border>
@@ -326,7 +323,7 @@
                                 Visibility="Collapsed"
                                 Style="{StaticResource CaixaSecaoDocumentoStyle}">
                             <StackPanel>
-                                <TextBlock Text="SERVIDORES AUTORIZADOS"
+                                <TextBlock Text="ENTREVISTADORES AUTORIZADOS"
                                            Style="{StaticResource TituloSecaoPapelStyle}" />
                                 <TextBlock Text="A seleção abaixo vale para todas as etapas do processo."
                                            Style="{StaticResource DescricaoBlocoPapelStyle}" />

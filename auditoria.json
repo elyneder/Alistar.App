@@ -1,5 +1,53 @@
 [
   {
+    "DataHora": "2026-05-14T08:26:52.2065109-03:00",
+    "UsuarioNome": "Administrador",
+    "UsuarioEmail": "admin@alistar.com",
+    "TipoUsuario": "Administrador",
+    "Acao": "Acesso",
+    "Entidade": "Painel de Controle",
+    "Campo": "",
+    "ValorAnterior": "",
+    "ValorNovo": "",
+    "Descricao": "Usu\u00E1rio abriu o painel de controle."
+  },
+  {
+    "DataHora": "2026-05-14T08:26:52.0533573-03:00",
+    "UsuarioNome": "Administrador",
+    "UsuarioEmail": "admin@alistar.com",
+    "TipoUsuario": "Administrador",
+    "Acao": "Configura\u00E7\u00E3o",
+    "Entidade": "Processo",
+    "Campo": "",
+    "ValorAnterior": "",
+    "ValorNovo": "",
+    "Descricao": "Administrador geral concluiu a configura\u00E7\u00E3o do processo."
+  },
+  {
+    "DataHora": "2026-05-14T08:26:42.5396423-03:00",
+    "UsuarioNome": "Administrador",
+    "UsuarioEmail": "admin@alistar.com",
+    "TipoUsuario": "Administrador",
+    "Acao": "Acesso",
+    "Entidade": "Configura\u00E7\u00E3o do Processo",
+    "Campo": "",
+    "ValorAnterior": "",
+    "ValorNovo": "",
+    "Descricao": "Administrador geral abriu a configura\u00E7\u00E3o do processo."
+  },
+  {
+    "DataHora": "2026-05-14T08:26:42.4137804-03:00",
+    "UsuarioNome": "Administrador",
+    "UsuarioEmail": "admin@alistar.com",
+    "TipoUsuario": "Administrador",
+    "Acao": "Login",
+    "Entidade": "Acesso",
+    "Campo": "",
+    "ValorAnterior": "",
+    "ValorNovo": "",
+    "Descricao": "Usu\u00E1rio admin@alistar.com entrou no sistema."
+  },
+  {
     "DataHora": "2026-05-14T07:33:10.2953973-03:00",
     "UsuarioNome": "Administrador",
     "UsuarioEmail": "admin@alistar.com",

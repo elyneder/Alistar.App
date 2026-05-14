@@ -339,7 +339,7 @@ public partial class TelaPrimeiraEtapa : Window
             return;
         }
 
-        ServicoArmazenamentoConscritos.Excluir(_idConscritoEmEdicao);
+        //ServicoArmazenamentoConscritos.Excluir(_idConscritoEmEdicao);
         ServicoNavegacao.Trocar(this, new TelaPainelControle());
     }
 

@@ -14,57 +14,57 @@ namespace Alistar.App.Services;
 public static class ServicoArmazenamentoConscritos
 {
     private static List<Conscrito> conscritos = new List<Conscrito>();
-    private static string caminhoArquivo = AppDomain.CurrentDomain.BaseDirectory;
-    private static string raizDoProjeto = Path.GetFullPath(Path.Combine(caminhoArquivo, @"..\..\..\"));
-    private static string caminhoCompleto = Path.Combine(raizDoProjeto, "conscritos.json");
+    //private static string caminhoArquivo = AppDomain.CurrentDomain.BaseDirectory;
+    //private static string raizDoProjeto = Path.GetFullPath(Path.Combine(caminhoArquivo, @"..\..\..\"));
+    //private static string caminhoCompleto = Path.Combine(raizDoProjeto, "conscritos.json");
 
     private static readonly JsonSerializerOptions OpcoesJson = new()
     {
         WriteIndented = true
     };
 
-    static ServicoArmazenamentoConscritos()
-    {
-        CarregarLista();
-    }
+    //static ServicoArmazenamentoConscritos()
+    //{
+    //    CarregarLista();
+    //}
 
-    public static void CarregarLista()
-    {
-        GarantirArmazenamentoCriado();
+    //public static void CarregarLista()
+    //{
+    //    //GarantirArmazenamentoCriado();
 
-        if (File.Exists(caminhoCompleto))
-        {
-            string json = File.ReadAllText(caminhoCompleto);
-            var data = JsonSerializer.Deserialize<List<Conscrito>>(json);
+    //    if (File.Exists(caminhoCompleto))
+    //    {
+    //        string json = File.ReadAllText(caminhoCompleto);
+    //        var data = JsonSerializer.Deserialize<List<Conscrito>>(json);
 
-            if (data != null)
-            {
-                conscritos.Clear();
-                conscritos.AddRange(data);
-            }
-        }
-    }
+    //        if (data != null)
+    //        {
+    //            conscritos.Clear();
+    //            conscritos.AddRange(data);
+    //        }
+    //    }
+    //}
 
     public static List<Conscrito> ObterTodos()
     {
         // Na pratica, este metodo e o "SELECT *" do nosso projeto.
         // Ele le o JSON, transforma em objetos C# e devolve para as telas.
-        GarantirArmazenamentoCriado();
+        //GarantirArmazenamentoCriado();
 
-        var conteudo = File.ReadAllText(caminhoCompleto);
+        //var conteudo = File.ReadAllText(caminhoCompleto);
 
-        if (string.IsNullOrWhiteSpace(conteudo))
-        {
-            return [];
-        }
+        //if (string.IsNullOrWhiteSpace(conteudo))
+        //{
+        //    return [];
+        //}
 
-        var conscritos = JsonSerializer.Deserialize<List<Conscrito>>(conteudo, OpcoesJson) ?? [];
+        //var conscritos = JsonSerializer.Deserialize<List<Conscrito>>(conteudo, OpcoesJson) ?? [];
         var houveNormalizacao = NormalizarConscritos(conscritos);
 
-        if (houveNormalizacao)
-        {
-            SalvarTodos(conscritos);
-        }
+        //if (houveNormalizacao)
+        //{
+        //    SalvarTodos(conscritos);
+        //}
 
         return conscritos;
     }
@@ -86,7 +86,6 @@ public static class ServicoArmazenamentoConscritos
         }
 
         conscritos.Add(conscrito);
-        SalvarTodos(conscritos);
     }
 
     /// <summary>
@@ -103,18 +102,8 @@ public static class ServicoArmazenamentoConscritos
         }
 
         conscritos[indice] = conscritoAtualizado;
-        SalvarTodos(conscritos);
     }
 
-    /// <summary>
-    /// Remove um conscrito pelo Id.
-    /// </summary>
-    public static void Excluir(string id)
-    {
-        var conscritos = ObterTodos();
-        conscritos.RemoveAll(conscrito => conscrito.Id == id);
-        SalvarTodos(conscritos);
-    }
 
     /// <summary>
     /// Corrige registros antigos que possam estar sem Id ou sem situacao.
@@ -212,22 +201,22 @@ public static class ServicoArmazenamentoConscritos
     /// <summary>
     /// Serializa a lista completa e grava no arquivo JSON.
     /// </summary>
-    private static void SalvarTodos(List<Conscrito> conscritos)
-    {
-        var json = JsonSerializer.Serialize(conscritos, OpcoesJson);
-        File.WriteAllText(caminhoCompleto, json);
-    }
+    //private static void SalvarTodos(List<Conscrito> conscritos)
+    //{
+    //    var json = JsonSerializer.Serialize(conscritos, OpcoesJson);
+    //    File.WriteAllText(caminhoCompleto, json);
+    //}
 
     /// <summary>
     /// Cria a pasta/arquivo de armazenamento antes de qualquer leitura.
     /// </summary>
-    private static void GarantirArmazenamentoCriado()
-    {
-        Directory.CreateDirectory(raizDoProjeto);
+    //private static void GarantirArmazenamentoCriado()
+    //{
+    //    Directory.CreateDirectory(raizDoProjeto);
 
-        if (!File.Exists(caminhoCompleto))
-        {
-            File.WriteAllText(caminhoCompleto, "[]");
-        }
-    }
+    //    if (!File.Exists(caminhoCompleto))
+    //    {
+    //        File.WriteAllText(caminhoCompleto, "[]");
+    //    }
+    //}
 }

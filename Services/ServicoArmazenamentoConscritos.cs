@@ -14,36 +14,36 @@ namespace Alistar.App.Services;
 public static class ServicoArmazenamentoConscritos
 {
     private static List<Conscrito> conscritos = new List<Conscrito>();
-    //private static string caminhoArquivo = AppDomain.CurrentDomain.BaseDirectory;
-    //private static string raizDoProjeto = Path.GetFullPath(Path.Combine(caminhoArquivo, @"..\..\..\"));
-    //private static string caminhoCompleto = Path.Combine(raizDoProjeto, "conscritos.json");
+    private static string caminhoArquivo = AppDomain.CurrentDomain.BaseDirectory;
+    private static string raizDoProjeto = Path.GetFullPath(Path.Combine(caminhoArquivo, @"..\..\..\"));
+    private static string caminhoCompleto = Path.Combine(raizDoProjeto, "conscritos.json");
 
     private static readonly JsonSerializerOptions OpcoesJson = new()
     {
         WriteIndented = true
     };
 
-    //static ServicoArmazenamentoConscritos()
-    //{
-    //    CarregarLista();
-    //}
+    static ServicoArmazenamentoConscritos()
+    {
+        CarregarLista();
+    }
 
-    //public static void CarregarLista()
-    //{
-    //    //GarantirArmazenamentoCriado();
+    public static void CarregarLista()
+    {
+        //GarantirArmazenamentoCriado();
 
-    //    if (File.Exists(caminhoCompleto))
-    //    {
-    //        string json = File.ReadAllText(caminhoCompleto);
-    //        var data = JsonSerializer.Deserialize<List<Conscrito>>(json);
+        if (File.Exists(caminhoCompleto))
+        {
+            string json = File.ReadAllText(caminhoCompleto);
+            var data = JsonSerializer.Deserialize<List<Conscrito>>(json);
 
-    //        if (data != null)
-    //        {
-    //            conscritos.Clear();
-    //            conscritos.AddRange(data);
-    //        }
-    //    }
-    //}
+            if (data != null)
+            {
+                conscritos.Clear();
+                conscritos.AddRange(data);
+            }
+        }
+    }
 
     public static List<Conscrito> ObterTodos()
     {

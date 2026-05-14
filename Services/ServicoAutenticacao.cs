@@ -15,41 +15,65 @@ namespace Alistar.App.Services;
 /// </remarks>
 public static class ServicoAutenticacao
 {
-    // Lista em memoria usada durante a execucao do aplicativo.
-    private static List<ContaUsuario> Contas = new List<ContaUsuario>();
+    private static readonly List<ContaUsuario> Contas = new List<ContaUsuario> {
+        new ContaUsuario(){
+            Nome = "Administrador",
+            Email = "admin@alistar.com",
+            Senha = "$2a$11$9c/gtvWSNiZ6pTQqjQfdJeg4JrJDY8nsrnqGeKnsp9wD1VrNppIhi",
+            AdministradorGeral = true
+        },
+        new ContaUsuario(){
+            Nome = "Administrador Geral 2",
+            Email = "admin2@alistar.com",
+            Senha = "$2a$11$9c/gtvWSNiZ6pTQqjQfdJeg4JrJDY8nsrnqGeKnsp9wD1VrNppIhi",
+            AdministradorGeral = true
+        },
+        new ContaUsuario(){
+            Nome = "Medico Exercito",
+            Email = "medico1@alistar.com",
+            Senha = "$2a$11$iyMesKR9emDlxInsjNKWSehASGm8ts0UY4qcTiTQnADZEWLteVKXa",
+            AdministradorGeral = false
+        },
+        new ContaUsuario(){
+            Nome = "Cabo 1",
+            Email = "cabo1@gmail.com",
+            Senha = "$2a$11$K/8V8RgPIc3xN7fzcHiwteGTtnZQHFwptbjAHZAhM4EjZL7Jzncl2",
+            AdministradorGeral = false
+        }
+    };
 
     // Caminho calculado ate o arquivo entrevistadores.json do projeto.
-    private static string caminhoArquivo = AppDomain.CurrentDomain.BaseDirectory;
-    private static string raizDoProjeto = Path.GetFullPath(Path.Combine(caminhoArquivo, @"..\..\..\"));
-    private static string caminhoCompleto = Path.Combine(raizDoProjeto, "entrevistadores.json");
+    //private static string caminhoArquivo = AppDomain.CurrentDomain.BaseDirectory;
+    //private static string raizDoProjeto = Path.GetFullPath(Path.Combine(caminhoArquivo, @"..\..\..\"));
+    //private static string caminhoCompleto = Path.Combine(raizDoProjeto, "entrevistadores.json");
 
     /// <summary>
     /// Usuario logado atualmente. Fica nulo quando nao ha sessao ativa.
     /// </summary>
     public static ContaUsuario? UsuarioAtual { get; private set; }
 
-    static ServicoAutenticacao()
-    {
-        CarregarLista();
-    }
+    //static ServicoAutenticacao()
+    //{
+    //    CarregarLista();
+    //}
 
     /// <summary>
     /// Carrega as contas do arquivo JSON para a lista em memoria.
     /// </summary>
-    public static void CarregarLista()
-    {
-        if (File.Exists(caminhoCompleto))
-        {
-            string json = File.ReadAllText(caminhoCompleto);
-            var data = JsonSerializer.Deserialize<List<ContaUsuario>>(json);
+    //public static void CarregarLista()
+    //{
+    //    if (File.Exists(caminhoCompleto))
+    //    {
+    //        string json = File.ReadAllText(caminhoCompleto);
+    //        var data = JsonSerializer.Deserialize<List<ContaUsuario>>(json);
 
-            if (data != null)
-            {
-                Contas.Clear();
-                Contas.AddRange(data);
-            }
-        }
-    }
+    //        if (data != null)
+    //        {
+    //            Contas.Clear();
+    //            Contas.AddRange(data);
+    //        }
+    //    }
+    //}
 
     /// <summary>
     /// Valida email e senha digitados na tela de login.
@@ -154,18 +178,19 @@ public static class ServicoAutenticacao
             return ResultadoCadastroUsuario.EmailJaCadastrado;
         }
 
-        Contas.Add(new ContaUsuario
-        {
-            Nome = nome,
-            Email = email,
-            Senha = Seguranca.CriptografarSenha(senha)
-        });
-
         try
         {
-            string jsonString = JsonSerializer.Serialize(Contas, new JsonSerializerOptions { WriteIndented = true });
+            Contas.Add(new ContaUsuario
+            {
+                Nome = nome,
+                Email = email,
+                Senha = Seguranca.CriptografarSenha(senha),
+                AdministradorGeral = false
+            });
 
-            File.WriteAllText(caminhoCompleto, jsonString);
+            //string jsonString = JsonSerializer.Serialize(Contas, new JsonSerializerOptions { WriteIndented = true });
+
+            //File.WriteAllText(caminhoCompleto, jsonString);
         }
         catch (Exception ex)
         {

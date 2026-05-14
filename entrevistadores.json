@@ -2,16 +2,25 @@
   {
     "Nome": "Administrador",
     "Email": "admin@alistar.com",
-    "Senha": "$2a$11$9c/gtvWSNiZ6pTQqjQfdJeg4JrJDY8nsrnqGeKnsp9wD1VrNppIhi"
+    "Senha": "$2a$11$9c/gtvWSNiZ6pTQqjQfdJeg4JrJDY8nsrnqGeKnsp9wD1VrNppIhi",
+    "AdministradorGeral": true
+  },
+  {
+    "Nome": "Administrador Geral 2",
+    "Email": "admin2@alistar.com",
+    "Senha": "$2a$11$9c/gtvWSNiZ6pTQqjQfdJeg4JrJDY8nsrnqGeKnsp9wD1VrNppIhi",
+    "AdministradorGeral": true
   },
   {
     "Nome": "Medico Exercito",
     "Email": "medico1@alistar.com",
-    "Senha": "$2a$11$iyMesKR9emDlxInsjNKWSehASGm8ts0UY4qcTiTQnADZEWLteVKXa"
+    "Senha": "$2a$11$iyMesKR9emDlxInsjNKWSehASGm8ts0UY4qcTiTQnADZEWLteVKXa",
+    "AdministradorGeral": false
   },
   {
     "Nome": "Cabo 1",
     "Email": "cabo1@gmail.com",
-    "Senha": "$2a$11$K/8V8RgPIc3xN7fzcHiwteGTtnZQHFwptbjAHZAhM4EjZL7Jzncl2"
+    "Senha": "$2a$11$K/8V8RgPIc3xN7fzcHiwteGTtnZQHFwptbjAHZAhM4EjZL7Jzncl2",
+    "AdministradorGeral": false
   }
 ]

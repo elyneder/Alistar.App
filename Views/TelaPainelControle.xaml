@@ -976,11 +976,11 @@
                         </Grid.RowDefinitions>
 
                         <StackPanel Margin="0,0,0,20">
-                            <TextBlock Text="Logs Gerais"
+                            <TextBlock Text="Histórico de Atualizações"
                                        FontSize="24"
                                        FontWeight="Bold"
                                        Foreground="#123322" />
-                            <TextBlock Text="Hist&#x00F3;rico de acessos e altera&#x00E7;&#x00F5;es realizadas no sistema."
+                            <TextBlock Text="Histórico de acessos e alterações realizadas no sistema."
                                        FontSize="15"
                                        Foreground="#63756E"
                                        Margin="0,8,0,0" />
@@ -998,17 +998,58 @@
                                   HorizontalGridLinesBrush="#F0F4F2"
                                   RowBackground="White"
                                   AlternatingRowBackground="#FAFCFB"
-                                  RowHeight="38">
+                                  RowHeight="40"
+                                  ScrollViewer.HorizontalScrollBarVisibility="Auto"
+                                  ScrollViewer.VerticalScrollBarVisibility="Auto">
+                            <DataGrid.Resources>
+                                <Style TargetType="DataGridColumnHeader">
+                                    <Setter Property="Background" Value="#F3F7F5" />
+                                    <Setter Property="Foreground" Value="#123322" />
+                                    <Setter Property="FontWeight" Value="SemiBold" />
+                                    <Setter Property="Padding" Value="12,10" />
+                                    <Setter Property="BorderThickness" Value="0,0,0,1" />
+                                    <Setter Property="BorderBrush" Value="#DFE7E2" />
+                                </Style>
+                                <Style TargetType="DataGridCell">
+                                    <Setter Property="Padding" Value="12,0" />
+                                    <Setter Property="Template">
+                                        <Setter.Value>
+                                            <ControlTemplate TargetType="DataGridCell">
+                                                <Border Padding="{TemplateBinding Padding}" Background="Transparent">
+                                                    <ContentPresenter VerticalAlignment="Center" />
+                                                </Border>
+                                            </ControlTemplate>
+                                        </Setter.Value>
+                                    </Setter>
+                                </Style>
+                            </DataGrid.Resources>
                             <DataGrid.Columns>
-                                <DataGridTextColumn Header="Data" Binding="{Binding DataHora, StringFormat=dd/MM/yyyy HH:mm}" Width="130" />
-                                <DataGridTextColumn Header="Usu&#x00E1;rio" Binding="{Binding UsuarioNome}" Width="150" />
-                                <DataGridTextColumn Header="Tipo" Binding="{Binding TipoUsuario}" Width="120" />
-                                <DataGridTextColumn Header="A&#x00E7;&#x00E3;o" Binding="{Binding Acao}" Width="110" />
-                                <DataGridTextColumn Header="Entidade" Binding="{Binding Entidade}" Width="190" />
-                                <DataGridTextColumn Header="Campo" Binding="{Binding Campo}" Width="160" />
-                                <DataGridTextColumn Header="Antes" Binding="{Binding ValorAnterior}" Width="160" />
-                                <DataGridTextColumn Header="Depois" Binding="{Binding ValorNovo}" Width="160" />
-                                <DataGridTextColumn Header="Descri&#x00E7;&#x00E3;o" Binding="{Binding Descricao}" Width="2*" />
+                                <DataGridTextColumn Header="Data" Binding="{Binding DataHora, StringFormat=dd/MM/yyyy HH:mm}" Width="140" />
+                                <DataGridTextColumn Header="Usuário" Binding="{Binding UsuarioNome}" Width="170" />
+                                <DataGridTextColumn Header="Tipo" Binding="{Binding TipoUsuario}" Width="140" />
+                                <DataGridTemplateColumn Header="Ação" Width="120">
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <TextBlock VerticalAlignment="Center">
+                                                <TextBlock.Style>
+                                                    <Style TargetType="TextBlock">
+                                                        <Setter Property="Text" Value="{Binding Acao}" />
+                                                        <Style.Triggers>
+                                                            <DataTrigger Binding="{Binding Acao}" Value="Alteracao">
+                                                                <Setter Property="Text" Value="Alteração" />
+                                                            </DataTrigger>
+                                                        </Style.Triggers>
+                                                    </Style>
+                                                </TextBlock.Style>
+                                            </TextBlock>
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                </DataGridTemplateColumn>
+                                <DataGridTextColumn Header="Entidade" Binding="{Binding Entidade}" Width="210" />
+                                <DataGridTextColumn Header="Campo" Binding="{Binding Campo}" Width="180" />
+                                <DataGridTextColumn Header="Antes" Binding="{Binding ValorAnterior}" Width="180" />
+                                <DataGridTextColumn Header="Depois" Binding="{Binding ValorNovo}" Width="180" />
+                                <DataGridTextColumn Header="Descrição" Binding="{Binding Descricao}" Width="280" />
                             </DataGrid.Columns>
                         </DataGrid>
                     </Grid>

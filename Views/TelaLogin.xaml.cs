@@ -46,6 +46,13 @@ public partial class TelaLogin : Window
             return;
         }
 
+        if (!ServicoConfiguracaoProcesso.ProcessoFoiConfigurado())
+        {
+            ServicoAutenticacao.EncerrarSessao();
+            TextoFeedback.Text = "O processo ainda nao foi iniciado pelo administrador.";
+            return;
+        }
+
         ServicoNavegacao.Trocar(this, new TelaPainelControle());
     }
 

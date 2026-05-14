@@ -60,6 +60,14 @@ public static class ServicoConfiguracaoProcesso
         return Obter().ServidoresAutorizados.Contains(emailUsuario, StringComparer.OrdinalIgnoreCase);
     }
 
+    public static bool ProcessoFoiConfigurado()
+    {
+        var configuracao = Obter();
+
+        return configuracao.AnoLimiteNascimento > 0 &&
+               configuracao.TotalClassificados > 0;
+    }
+
     private static void RegistrarAlteracoes(ConfiguracaoProcesso anterior, ConfiguracaoProcesso atual)
     {
         ServicoAuditoria.RegistrarAlteracao("ConfiguraÃ§Ã£o do Processo", "Data de fechamento", anterior.DataFechamento.ToShortDateString(), atual.DataFechamento.ToShortDateString());

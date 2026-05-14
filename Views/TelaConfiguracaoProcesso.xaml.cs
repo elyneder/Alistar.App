@@ -200,10 +200,7 @@ public partial class TelaConfiguracaoProcesso : Window
 
     private static string ObterTextoInicialAnoLimite(int anoLimite)
     {
-        var anoPadraoAntigo = DateTime.Today.Year - 18;
-        return anoLimite <= 0 || anoLimite == anoPadraoAntigo
-            ? string.Empty
-            : anoLimite.ToString();
+        return (DateTime.Today.Year - 18).ToString();
     }
 
     private static string ObterTextoInicialTotalClassificados(int totalClassificados)

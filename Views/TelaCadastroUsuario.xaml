@@ -51,13 +51,6 @@
                                    Text="Alistar - Sistema de Gestão de Alistamento e Seleção Militar" />
                     </StackPanel>
                 </StackPanel>
-
-                <TextBlock VerticalAlignment="Bottom"
-                           HorizontalAlignment="Left"
-                           Margin="40,0,0,28"
-                           FontSize="10"
-                           Foreground="#2A4D38"
-                           Text="ALISTAR - Uso restrito - Acesso autorizado" />
             </Grid>
         </Border>
 

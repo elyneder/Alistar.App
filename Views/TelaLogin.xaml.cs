@@ -1,4 +1,5 @@
 using System.Windows;
+using Alistar.App.Models;
 using Alistar.App.Services;
 
 namespace Alistar.App;
@@ -40,9 +41,25 @@ public partial class TelaLogin : Window
             return;
         }
 
-        if (ServicoAutenticacao.UsuarioAtualEhAdministrador())
+        // Obtem a configuracao do processo antes de usar, evitando esconder o campo da classe.
+        var configuracao = ServicoConfiguracaoProcesso.Obter();
+
+        if (!ServicoAutenticacao.VerificacaoDeProcessoAberto(configuracao))
         {
-            ServicoNavegacao.Trocar(this, new TelaConfiguracaoProcesso());
+            if (ServicoAutenticacao.UsuarioAtualEhAdministrador())
+            {
+                ServicoNavegacao.Trocar(this, new TelaConfiguracaoProcesso());
+                return;
+            }
+            TextoFeedback.Text = "O processo ainda não foi aberto, contate um administrador.";
+            return;
+        }
+
+        
+
+        if (configuracao == null)
+        {
+            TextoFeedback.Text = "Nenhuma configuracao de processo encontrada. Contate o administrador.";
             return;
         }
 

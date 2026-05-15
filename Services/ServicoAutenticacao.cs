@@ -15,6 +15,7 @@ namespace Alistar.App.Services;
 /// </remarks>
 public static class ServicoAutenticacao
 {
+
     public static readonly List<ContaUsuario> Contas = new List<ContaUsuario> {
         new ContaUsuario(){
             Nome = "Administrador",
@@ -120,6 +121,13 @@ public static class ServicoAutenticacao
     {
         return conta is not null &&
                (conta.AdministradorGeral);
+    }
+
+    public static bool VerificacaoDeProcessoAberto (ConfiguracaoProcesso configuracao)
+    {
+        if (configuracao.ProcessoAberto == false) return false;
+
+        return true;
     }
 
     /// <summary>

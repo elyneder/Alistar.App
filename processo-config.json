@@ -12,7 +12,7 @@
       "Numero": 1,
       "Nome": "Primeira Etapa",
       "PercentualEliminacao": 10,
-      "QuantidadeEliminados": 4,
+      "QuantidadeEliminados": 5,
       "EntrevistadoresAutorizados": [
         "cabo1@gmail.com",
         "medico1@alistar.com"
@@ -22,7 +22,7 @@
       "Numero": 2,
       "Nome": "Exames M\u00E9dicos",
       "PercentualEliminacao": 10,
-      "QuantidadeEliminados": 4,
+      "QuantidadeEliminados": 5,
       "EntrevistadoresAutorizados": [
         "cabo1@gmail.com",
         "medico1@alistar.com"
@@ -32,7 +32,7 @@
       "Numero": 3,
       "Nome": "Entrevista T\u00E9cnica",
       "PercentualEliminacao": 10,
-      "QuantidadeEliminados": 4,
+      "QuantidadeEliminados": 5,
       "EntrevistadoresAutorizados": [
         "cabo1@gmail.com",
         "medico1@alistar.com"
@@ -42,7 +42,7 @@
       "Numero": 4,
       "Nome": "Reavalia\u00E7\u00E3o M\u00E9dica",
       "PercentualEliminacao": 10,
-      "QuantidadeEliminados": 4,
+      "QuantidadeEliminados": 5,
       "EntrevistadoresAutorizados": [
         "cabo1@gmail.com",
         "medico1@alistar.com"

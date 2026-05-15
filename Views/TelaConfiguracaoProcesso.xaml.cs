@@ -26,6 +26,7 @@ public partial class TelaConfiguracaoProcesso : Window
     private static readonly Brush BordaEtapaInativa = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#D9E1DD")!);
 
     private ConfiguracaoProcesso _configuracao = new();
+    private List<EtapaPercentualFormulario> _etapasPercentuais = [];
     private List<ServidorSelecao> _servidoresSelecao = [];
     private int _passoAtual = PassoDadosGerais;
     private bool _dataFechamentoFoiAjustadaManualmente;
@@ -52,7 +53,15 @@ public partial class TelaConfiguracaoProcesso : Window
         CaixaTotalClassificados.Text = ObterTextoInicialTotalClassificados(_configuracao.TotalClassificados);
         _dataFechamentoFoiAjustadaManualmente = false;
 
-        ListaEtapasPercentuais.ItemsSource = _configuracao.Etapas;
+        _etapasPercentuais = _configuracao.Etapas
+            .Select(etapa => new EtapaPercentualFormulario
+            {
+                Numero = etapa.Numero,
+                Nome = etapa.Nome
+            })
+            .ToList();
+
+        ListaEtapasPercentuais.ItemsSource = _etapasPercentuais;
         AtualizarListaServidores();
     }
 
@@ -89,6 +98,23 @@ public partial class TelaConfiguracaoProcesso : Window
     private bool LerFormulario()
     {
         SalvarSelecaoServidores();
+
+        if (!LerDadosGerais())
+        {
+            return false;
+        }
+
+        if (_passoAtual >= PassoEtapas && !LerPercentuaisEtapas())
+        {
+            return false;
+        }
+
+        AtualizarConfirmacao();
+        return true;
+    }
+
+    private bool LerDadosGerais()
+    {
         var dataAbertura = (DataAberturaPicker.SelectedDate ?? DateTime.Today).Date;
         var dataFechamento = (DataFechamentoPicker.SelectedDate ?? dataAbertura.AddMonths(3)).Date;
 
@@ -116,25 +142,38 @@ public partial class TelaConfiguracaoProcesso : Window
         _configuracao.TotalClassificados = totalClassificados;
         _configuracao.ProcessoAberto = true;
 
-        foreach (var etapa in _configuracao.Etapas)
+        return true;
+    }
+
+    private bool LerPercentuaisEtapas()
+    {
+        foreach (var etapaFormulario in _etapasPercentuais)
         {
-            etapa.PercentualEliminacao = Math.Clamp(etapa.PercentualEliminacao, 0, 99);
+            if (!ValidarInteiro(etapaFormulario.TextoPercentual, $"percentual da etapa {etapaFormulario.Numero}", out var percentual))
+            {
+                return false;
+            }
+
+            etapaFormulario.PercentualEliminacao = Math.Clamp(percentual, 0, 99);
         }
 
-        AtualizarConfirmacao();
+        foreach (var etapa in _configuracao.Etapas)
+        {
+            var etapaFormulario = _etapasPercentuais.FirstOrDefault(item => item.Numero == etapa.Numero);
+            etapa.PercentualEliminacao = etapaFormulario?.PercentualEliminacao ?? 0;
+        }
+
         return true;
     }
 
     private void AtualizarListaServidores()
     {
-        var autorizados = _configuracao.ServidoresAutorizados.ToHashSet(StringComparer.OrdinalIgnoreCase);
-
         _servidoresSelecao = ServicoAutenticacao.ObterEntrevistadores()
             .Select(servidor => new ServidorSelecao
             {
                 Nome = servidor.Nome,
                 Email = servidor.Email,
-                Selecionado = autorizados.Contains(servidor.Email)
+                Selecionado = false
             })
             .ToList();
 
@@ -336,6 +375,17 @@ public partial class TelaConfiguracaoProcesso : Window
         cartao.Background = FundoEtapaInativa;
         cartao.BorderBrush = BordaEtapaInativa;
     }
+}
+
+public class EtapaPercentualFormulario
+{
+    public int Numero { get; set; }
+
+    public string Nome { get; set; } = string.Empty;
+
+    public string TextoPercentual { get; set; } = string.Empty;
+
+    public int PercentualEliminacao { get; set; }
 }
 
 public class ServidorSelecao : INotifyPropertyChanged

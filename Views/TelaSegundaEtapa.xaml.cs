@@ -41,11 +41,13 @@ public partial class TelaSegundaEtapa : Window
     private bool _dadosAnaliseConfirmados;
     private int _quantidadePessoasAnalise = 1;
     private int _quantidadePessoasProcessadas;
+    private readonly Conscrito? _conscritoInicial;
     private readonly bool _modoReavaliacaoMedica;
     private List<Conscrito> _conscritosCarregados = [];
 
-    public TelaSegundaEtapa(bool modoReavaliacaoMedica = false)
+    public TelaSegundaEtapa(Conscrito? conscrito = null, bool modoReavaliacaoMedica = false)
     {
+        _conscritoInicial = conscrito;
         _modoReavaliacaoMedica = modoReavaliacaoMedica;
 
         InitializeComponent();
@@ -55,6 +57,7 @@ public partial class TelaSegundaEtapa : Window
         AtualizarCamposCondicionais();
         CarregarResumo();
         DefinirEtapaWizard(EtapaWizardIdentificacao);
+        CarregarConscritoInicial();
 
         VerEntrevistadores.Visibility = Visibility.Collapsed;
         VerEntrevistadores.IsEnabled = false;
@@ -655,6 +658,12 @@ public partial class TelaSegundaEtapa : Window
             return false;
         }
 
+        if (_conscritoInicial is not null &&
+            string.Equals(conscrito.Id, _conscritoInicial.Id, StringComparison.OrdinalIgnoreCase))
+        {
+            return true;
+        }
+
         return _modoReavaliacaoMedica
             ? conscrito.PrimeiraEtapaConcluida &&
               conscrito.SegundaEtapaConcluida &&
@@ -662,6 +671,21 @@ public partial class TelaSegundaEtapa : Window
               !conscrito.QuartaEtapaConcluida
             : conscrito.PrimeiraEtapaConcluida &&
               !conscrito.SegundaEtapaConcluida;
+    }
+
+    private void CarregarConscritoInicial()
+    {
+        if (_conscritoInicial is null)
+        {
+            return;
+        }
+
+        var conscritoAtualizado = _conscritosCarregados.FirstOrDefault(conscrito =>
+            string.Equals(conscrito.Id, _conscritoInicial.Id, StringComparison.OrdinalIgnoreCase)) ?? _conscritoInicial;
+
+        PreencherFormularioComConscrito(conscritoAtualizado);
+        _dadosAnaliseConfirmados = true;
+        DefinirEtapaWizard(EtapaWizardConfirmacao);
     }
 
     private void CaixaPesquisaRA_TextChanged(object sender, TextChangedEventArgs e)

@@ -15,48 +15,66 @@ namespace Alistar.App.Services;
 /// </remarks>
 public static class ServicoAutenticacao
 {
-    private static readonly HashSet<string> EmailsAdministradoresPadrao = new(StringComparer.OrdinalIgnoreCase)
-    {
-        "admin@alistar.com",
-        "admin2@alistar.com"
+
+    public static readonly List<ContaUsuario> Contas = new List<ContaUsuario> {
+        new ContaUsuario(){
+            Nome = "Administrador",
+            Email = "admin@alistar.com",
+            Senha = "$2a$11$9c/gtvWSNiZ6pTQqjQfdJeg4JrJDY8nsrnqGeKnsp9wD1VrNppIhi",
+            AdministradorGeral = true
+        },
+        new ContaUsuario(){
+            Nome = "Administrador Geral 2",
+            Email = "admin2@alistar.com",
+            Senha = "$2a$11$9c/gtvWSNiZ6pTQqjQfdJeg4JrJDY8nsrnqGeKnsp9wD1VrNppIhi",
+            AdministradorGeral = true
+        },
+        new ContaUsuario(){
+            Nome = "Medico Exercito",
+            Email = "medico1@alistar.com",
+            Senha = "$2a$11$iyMesKR9emDlxInsjNKWSehASGm8ts0UY4qcTiTQnADZEWLteVKXa",
+            AdministradorGeral = false
+        },
+        new ContaUsuario(){
+            Nome = "Cabo 1",
+            Email = "cabo1@gmail.com",
+            Senha = "$2a$11$K/8V8RgPIc3xN7fzcHiwteGTtnZQHFwptbjAHZAhM4EjZL7Jzncl2",
+            AdministradorGeral = false
+        }
     };
 
-    // Lista em memoria usada durante a execucao do aplicativo.
-    private static List<ContaUsuario> Contas = new List<ContaUsuario>();
-
     // Caminho calculado ate o arquivo entrevistadores.json do projeto.
-    private static string caminhoArquivo = AppDomain.CurrentDomain.BaseDirectory;
-    private static string raizDoProjeto = Path.GetFullPath(Path.Combine(caminhoArquivo, @"..\..\..\"));
-    private static string caminhoCompleto = Path.Combine(raizDoProjeto, "entrevistadores.json");
+    //private static string caminhoArquivo = AppDomain.CurrentDomain.BaseDirectory;
+    //private static string raizDoProjeto = Path.GetFullPath(Path.Combine(caminhoArquivo, @"..\..\..\"));
+    //private static string caminhoCompleto = Path.Combine(raizDoProjeto, "entrevistadores.json");
 
     /// <summary>
     /// Usuário logado atualmente. Fica nulo quando não há sessão ativa.
     /// </summary>
     public static ContaUsuario? UsuarioAtual { get; private set; }
 
-    static ServicoAutenticacao()
-    {
-        CarregarLista();
-    }
+    //static ServicoAutenticacao()
+    //{
+    //    CarregarLista();
+    //}
 
     /// <summary>
     /// Carrega as contas do arquivo JSON para a lista em memoria.
     /// </summary>
-    public static void CarregarLista()
-    {
-        if (File.Exists(caminhoCompleto))
-        {
-            string json = File.ReadAllText(caminhoCompleto);
-            var data = JsonSerializer.Deserialize<List<ContaUsuario>>(json);
+    //public static void CarregarLista()
+    //{
+    //    if (File.Exists(caminhoCompleto))
+    //    {
+    //        string json = File.ReadAllText(caminhoCompleto);
+    //        var data = JsonSerializer.Deserialize<List<ContaUsuario>>(json);
 
-            if (data != null)
-            {
-                Contas.Clear();
-                Contas.AddRange(data);
-                GarantirSegundoAdministrador();
-            }
-        }
-    }
+    //        if (data != null)
+    //        {
+    //            Contas.Clear();
+    //            Contas.AddRange(data);
+    //        }
+    //    }
+    //}
 
     /// <summary>
     /// Valida email e senha digitados na tela de login.
@@ -102,7 +120,14 @@ public static class ServicoAutenticacao
     public static bool UsuarioEhAdministrador(ContaUsuario? conta)
     {
         return conta is not null &&
-               (conta.AdministradorGeral || EmailsAdministradoresPadrao.Contains(conta.Email));
+               (conta.AdministradorGeral);
+    }
+
+    public static bool VerificacaoDeProcessoAberto (ConfiguracaoProcesso configuracao)
+    {
+        if (configuracao.ProcessoAberto == false) return false;
+
+        return true;
     }
 
     /// <summary>
@@ -169,18 +194,19 @@ public static class ServicoAutenticacao
             return ResultadoCadastroUsuario.EmailJaCadastrado;
         }
 
-        Contas.Add(new ContaUsuario
-        {
-            Nome = nome,
-            Email = email,
-            Senha = Seguranca.CriptografarSenha(senha),
-            AdministradorGeral = false
-        });
-
         try
         {
-            SalvarContas();
-            ServicoAuditoria.RegistrarAcao("Cadastro", "Entrevistador", $"Administrador cadastrou o entrevistador {email}.");
+            Contas.Add(new ContaUsuario
+            {
+                Nome = nome,
+                Email = email,
+                Senha = Seguranca.CriptografarSenha(senha),
+                AdministradorGeral = false
+            });
+
+            //string jsonString = JsonSerializer.Serialize(Contas, new JsonSerializerOptions { WriteIndented = true });
+
+            //File.WriteAllText(caminhoCompleto, jsonString);
         }
         catch (Exception ex)
         {
@@ -222,14 +248,14 @@ public static class ServicoAutenticacao
             AdministradorGeral = true
         });
 
-        SalvarContas();
+        //SalvarContas();
     }
 
-    private static void SalvarContas()
-    {
-        string jsonString = JsonSerializer.Serialize(Contas, new JsonSerializerOptions { WriteIndented = true });
-        File.WriteAllText(caminhoCompleto, jsonString);
-    }
+    //private static void SalvarContas()
+    //{
+    //    string jsonString = JsonSerializer.Serialize(Contas, new JsonSerializerOptions { WriteIndented = true });
+    //    File.WriteAllText(caminhoCompleto, jsonString);
+    //}
 }
 
 /// <summary>

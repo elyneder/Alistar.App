@@ -9,9 +9,11 @@ namespace Alistar.App.Services;
 /// </summary>
 public static class ServicoConfiguracaoProcesso
 {
-    private static readonly string CaminhoArquivo = AppDomain.CurrentDomain.BaseDirectory;
-    private static readonly string RaizDoProjeto = Path.GetFullPath(Path.Combine(CaminhoArquivo, @"..\..\..\"));
-    private static readonly string CaminhoCompleto = Path.Combine(RaizDoProjeto, "processo-config.json");
+    //private static readonly string CaminhoArquivo = AppDomain.CurrentDomain.BaseDirectory;
+    //private static readonly string RaizDoProjeto = Path.GetFullPath(Path.Combine(CaminhoArquivo, @"..\..\..\"));
+    //private static readonly string CaminhoCompleto = Path.Combine(RaizDoProjeto, "processo-config.json");
+
+    public static List <ConfiguracaoProcesso> _configuracoes = new List<ConfiguracaoProcesso>();
 
     private static readonly JsonSerializerOptions OpcoesJson = new()
     {
@@ -20,10 +22,10 @@ public static class ServicoConfiguracaoProcesso
 
     public static ConfiguracaoProcesso Obter()
     {
-        GarantirArquivoCriado();
+        //GarantirArquivoCriado();
 
-        var conteudo = File.ReadAllText(CaminhoCompleto);
-        var configuracao = JsonSerializer.Deserialize<ConfiguracaoProcesso>(conteudo, OpcoesJson) ?? new ConfiguracaoProcesso();
+        //var conteudo = File.ReadAllText(CaminhoCompleto);
+        var configuracao = _configuracoes.FirstOrDefault() ?? new ConfiguracaoProcesso();
 
         NormalizarDatas(configuracao);
         NormalizarEtapas(configuracao);
@@ -40,9 +42,10 @@ public static class ServicoConfiguracaoProcesso
 
         var anterior = Obter();
         RegistrarAlteracoes(anterior, configuracao);
+        _configuracoes.Add(configuracao);
 
-        var json = JsonSerializer.Serialize(configuracao, OpcoesJson);
-        File.WriteAllText(CaminhoCompleto, json);
+        //var json = JsonSerializer.Serialize(configuracao, OpcoesJson);
+        //File.WriteAllText(CaminhoCompleto, json);
     }
 
     public static bool UsuarioPodeAcessarEtapa(int numeroEtapa, string? emailUsuario)
@@ -58,6 +61,14 @@ public static class ServicoConfiguracaoProcesso
         }
 
         return Obter().ServidoresAutorizados.Contains(emailUsuario, StringComparer.OrdinalIgnoreCase);
+    }
+
+    public static bool ProcessoFoiConfigurado()
+    {
+        var configuracao = Obter();
+
+        return configuracao.AnoLimiteNascimento > 0 &&
+               configuracao.TotalClassificados > 0;
     }
 
     private static void RegistrarAlteracoes(ConfiguracaoProcesso anterior, ConfiguracaoProcesso atual)
@@ -130,14 +141,14 @@ public static class ServicoConfiguracaoProcesso
         configuracao.Etapas = new ConfiguracaoProcesso().Etapas;
     }
 
-    private static void GarantirArquivoCriado()
-    {
-        Directory.CreateDirectory(RaizDoProjeto);
+    //private static void GarantirArquivoCriado()
+    //{
+    //    Directory.CreateDirectory(RaizDoProjeto);
 
-        if (!File.Exists(CaminhoCompleto))
-        {
-            var json = JsonSerializer.Serialize(new ConfiguracaoProcesso(), OpcoesJson);
-            File.WriteAllText(CaminhoCompleto, json);
-        }
-    }
+    //    if (!File.Exists(CaminhoCompleto))
+    //    {
+    //        var json = JsonSerializer.Serialize(new ConfiguracaoProcesso(), OpcoesJson);
+    //        File.WriteAllText(CaminhoCompleto, json);
+    //    }
+    //}
 }

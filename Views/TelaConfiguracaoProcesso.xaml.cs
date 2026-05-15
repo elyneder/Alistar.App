@@ -45,11 +45,12 @@ public partial class TelaConfiguracaoProcesso : Window
         _configuracao = ServicoConfiguracaoProcesso.Obter();
         _configuracao.DataAbertura = DateTime.Today;
         _configuracao.DataFechamento = _configuracao.DataAbertura.AddMonths(3);
+        _configuracao.DataNascimentoLimite = _configuracao.DataNascimentoLimite;
 
         DataAberturaPicker.SelectedDate = _configuracao.DataAbertura;
         DefinirDataFechamento(_configuracao.DataFechamento);
-        CaixaAnoLimite.Text = string.Empty;
-        CaixaTotalClassificados.Text = string.Empty;
+        CaixaAnoLimite.Text = ObterTextoInicialAnoLimite(_configuracao.DataNascimentoLimite.Year);
+        CaixaTotalClassificados.Text = ObterTextoInicialTotalClassificados(_configuracao.TotalClassificados);
         _dataFechamentoFoiAjustadaManualmente = false;
 
         _etapasPercentuais = _configuracao.Etapas
@@ -139,6 +140,7 @@ public partial class TelaConfiguracaoProcesso : Window
         _configuracao.DataFechamento = dataFechamento;
         _configuracao.AnoLimiteNascimento = anoLimite;
         _configuracao.TotalClassificados = totalClassificados;
+        _configuracao.ProcessoAberto = true;
 
         return true;
     }
@@ -235,6 +237,21 @@ public partial class TelaConfiguracaoProcesso : Window
         }
 
         return true;
+    }
+
+    private string ObterTextoInicialAnoLimite(int anoLimite)
+    {
+        var anoPadraoAntigo = _configuracao.DataAbertura.Year - 18;
+        return anoLimite <= 0 || anoLimite == anoPadraoAntigo
+            ? anoLimite.ToString()
+            : string.Empty;
+    }
+
+    private static string ObterTextoInicialTotalClassificados(int totalClassificados)
+    {
+        return totalClassificados <= 0 || totalClassificados == 50
+            ? string.Empty
+            : totalClassificados.ToString();
     }
 
     private void CampoNumerico_PreviewTextInput(object sender, TextCompositionEventArgs e)

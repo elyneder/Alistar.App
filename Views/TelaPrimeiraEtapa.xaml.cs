@@ -422,6 +422,19 @@ public partial class TelaPrimeiraEtapa : Window
         }
     }
 
+    private void AbrirEtapaMedicaBotao_Click(object sender, RoutedEventArgs e)
+    {
+        var conscrito = ObterConscritoEmEdicao();
+        if (conscrito is null)
+        {
+            TextoFeedbackCadastroConscrito.Text = "Selecione um conscrito antes de abrir a etapa médica.";
+            return;
+        }
+
+        ServicoAuditoria.RegistrarAcao("Acesso", "Etapa Médica", $"Usuário abriu a etapa médica de {conscrito.Nome} pela lista de candidatos.");
+        ServicoNavegacao.Trocar(this, new TelaSegundaEtapa(conscrito, modoReavaliacaoMedica: true));
+    }
+
     private void CarregarConscritos()
     {
         // Sempre que a lista abre, recarregamos do JSON para pegar cadastros recentes.
@@ -624,6 +637,7 @@ public partial class TelaPrimeiraEtapa : Window
         BotaoPdfMedico.Visibility = EmModoEdicao && ObterConscritoEmEdicao() is { } conscrito && ServicoRelatorioPdf.PossuiRelatorioMedico(conscrito)
             ? Visibility.Visible
             : Visibility.Collapsed;
+        BotaoAbrirEtapaMedica.Visibility = EmModoEdicao ? Visibility.Visible : Visibility.Collapsed;
         TextoBotaoLimpar.Text = EmModoEdicao ? "Fechar" : "Limpar";
         IconeAvancarBotaoSalvar.Visibility = _etapaWizardAtual == EtapaWizardConfirmacao ? Visibility.Collapsed : Visibility.Visible;
         IconeSalvarBotaoSalvar.Visibility = _etapaWizardAtual == EtapaWizardConfirmacao ? Visibility.Visible : Visibility.Collapsed;
@@ -1298,6 +1312,7 @@ public partial class TelaPrimeiraEtapa : Window
         conscrito.TerceiraEtapaConcluida = existente.TerceiraEtapaConcluida;
         conscrito.QuartaEtapaConcluida = existente.QuartaEtapaConcluida;
         conscrito.Faltoso = existente.Faltoso;
+        conscrito.Entrevista_Medica = existente.Entrevista_Medica;
     }
 
     private void AplicarAndamentoDaEtapa(Conscrito conscrito)

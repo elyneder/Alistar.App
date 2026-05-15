@@ -9,6 +9,10 @@ public class ConfiguracaoProcesso
 
     public DateTime DataFechamento { get; set; } = DateTime.Today.AddMonths(3);
 
+    public DateTime DataNascimentoLimite { get; set; } = new DateTime(DateTime.Now.Year - 18, 1, 1);
+
+    public bool ProcessoAberto { get; set; } = false;
+
     public int AnoLimiteNascimento { get; set; }
 
     public int TotalClassificados { get; set; }

@@ -267,8 +267,6 @@
                                         <Border Style="{StaticResource LinhaCampoDocumentoStyle}">
                                             <TextBox x:Name="CaixaAnoLimite"
                                                      MaxLength="4"
-                                                     PreviewTextInput="CampoNumerico_PreviewTextInput"
-                                                     DataObject.Pasting="CampoNumerico_Pasting"
                                                      Style="{StaticResource CampoTextoDocumentoStyle}" />
                                         </Border>
                                     </StackPanel>

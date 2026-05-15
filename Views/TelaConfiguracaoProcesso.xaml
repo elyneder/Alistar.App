@@ -325,7 +325,7 @@
                                                                    Style="{StaticResource RotuloCampoDocumentoStyle}"
                                                                    Height="Auto" />
                                                         <Border Style="{StaticResource LinhaCampoDocumentoStyle}">
-                                                            <TextBox Text="{Binding PercentualEliminacao, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                            <TextBox Text="{Binding TextoPercentual, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                                      MaxLength="2"
                                                                      PreviewTextInput="CampoNumerico_PreviewTextInput"
                                                                      DataObject.Pasting="CampoNumerico_Pasting"

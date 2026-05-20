@@ -15,7 +15,7 @@ public partial class TelaNovaSenha : Window
 
     private void SalvarSenhaBotao_Click(object sender, RoutedEventArgs e)
     {
-        TextoFeedbackNovaSenha.Text = "Senha alterada com sucesso. Voce ja pode entrar novamente.";
+        TextoFeedbackNovaSenha.Text = "Senha alterada com sucesso. Você já pode entrar novamente.";
         ServicoNavegacao.Trocar(this, new TelaLogin());
     }
 

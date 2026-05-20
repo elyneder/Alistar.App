@@ -30,7 +30,6 @@ public static class ServicoConfiguracaoProcesso
         NormalizarDatas(configuracao);
         NormalizarEtapas(configuracao);
         CalcularEliminados(configuracao);
-
         return configuracao;
     }
 

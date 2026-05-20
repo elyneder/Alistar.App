@@ -27,7 +27,7 @@
                                FontSize="28"
                                FontWeight="Bold"
                                Foreground="#123322" />
-                    <TextBlock Text="Tela dedicada a entrevista tecnica."
+                    <TextBlock Text="Tela dedicada à entrevista técnica."
                                Margin="0,8,0,0"
                                FontSize="14"
                                Foreground="#5A5F66" />

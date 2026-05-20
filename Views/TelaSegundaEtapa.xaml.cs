@@ -36,17 +36,20 @@ public partial class TelaSegundaEtapa : Window
     private int _quantidadePessoasProcessadas;
     private readonly Conscrito? _conscritoInicial;
     private readonly bool _modoReavaliacaoMedica;
+    private readonly bool _abrirEmContextoListaGeral;
     private List<Conscrito> _conscritosCarregados = [];
     private List<ItemAnaliseGrupo> _itensAnaliseGrupo = [];
     private bool _aguardandoConfirmacaoGrupoFinal;
 
-    public TelaSegundaEtapa(Conscrito? conscrito = null, bool modoReavaliacaoMedica = false)
+    public TelaSegundaEtapa(Conscrito? conscrito = null, bool modoReavaliacaoMedica = false, bool abrirEmContextoListaGeral = false)
     {
         _conscritoInicial = conscrito;
         _modoReavaliacaoMedica = modoReavaliacaoMedica;
+        _abrirEmContextoListaGeral = abrirEmContextoListaGeral;
 
         InitializeComponent();
         ComboTipoAnaliseMedica.SelectedIndex = 0;
+        CaixaTextoQuantidadePessoas.Text = "1";
         AplicarModoTela();
         RegistrarEventosCamposCondicionais();
         AtualizarCamposCondicionais();
@@ -69,9 +72,15 @@ public partial class TelaSegundaEtapa : Window
             return;
         }
 
-        Title = "Alistar | Quarta Etapa";
-        TextoTituloPagina.Text = "Quarta Etapa";
-        TextoDescricaoPagina.Text = "Reavaliacao medica do conscrito.";
+        Title = _abrirEmContextoListaGeral ? "Alistar | Lista Geral" : "Alistar | Quarta Etapa";
+        TextoTituloPagina.Text = _abrirEmContextoListaGeral ? "Lista Geral" : "Quarta Etapa";
+        TextoDescricaoPagina.Text = "Reavaliação médica do conscrito.";
+
+        if (_abrirEmContextoListaGeral)
+        {
+            SelecionarComboPorTexto(ComboTipoAnaliseMedica, "Individual");
+            CaixaTextoQuantidadePessoas.Text = "1";
+        }
     }
 
     /// <summary>
@@ -230,14 +239,14 @@ public partial class TelaSegundaEtapa : Window
 
         if (_modoReavaliacaoMedica && novoCadastro)
         {
-            TextoFeedback.Text = "Localize um conscrito cadastrado pelo RA antes de salvar a reavaliacao.";
+            TextoFeedback.Text = "Localize um conscrito cadastrado pelo RA antes de salvar a reavaliação.";
             DefinirEtapaWizard(EtapaWizardIdentificacao);
             return;
         }
 
         if (!_modoReavaliacaoMedica && !novoCadastro && EntrevistaMedicaPossuiDados(conscrito.Entrevista_Medica))
         {
-            TextoFeedback.Text = "Este conscrito ja possui avaliacao medica. Use a Quarta Etapa para visualizar ou editar a ficha.";
+            TextoFeedback.Text = "Este conscrito já possui avaliação médica. Use a Quarta Etapa para visualizar ou editar a ficha.";
             DefinirEtapaWizard(EtapaWizardIdentificacao);
             return;
         }
@@ -336,19 +345,27 @@ public partial class TelaSegundaEtapa : Window
     /// </summary>
     private bool ValidarDadosAnalise()
     {
+        if (_modoReavaliacaoMedica && _abrirEmContextoListaGeral)
+        {
+            SelecionarComboPorTexto(ComboTipoAnaliseMedica, "Individual");
+            CaixaTextoQuantidadePessoas.Text = "1";
+            _quantidadePessoasAnalise = 1;
+            return true;
+        }
+
         var tipoAnalise = ObterTextoSelecionado(ComboTipoAnaliseMedica);
         var quantidadeTexto = CaixaTextoQuantidadePessoas.Text.Trim();
 
         if (string.IsNullOrWhiteSpace(tipoAnalise))
         {
-            TextoFeedback.Text = "Selecione o tipo de analise antes de avancar.";
+            TextoFeedback.Text = "Selecione o tipo de análise antes de avançar.";
             ComboTipoAnaliseMedica.Focus();
             return false;
         }
 
         if (string.IsNullOrWhiteSpace(CaixaTextoCRM.Text))
         {
-            TextoFeedback.Text = "Informe o CRM do medico antes de avancar.";
+            TextoFeedback.Text = "Informe o CRM do médico antes de avançar.";
             CaixaTextoCRM.Focus();
             return false;
         }
@@ -380,7 +397,7 @@ public partial class TelaSegundaEtapa : Window
             return true;
         }
 
-        TextoFeedback.Text = "Informe a quantidade de pessoas da analise grupal.";
+        TextoFeedback.Text = "Informe a quantidade de pessoas da análise grupal.";
         CaixaTextoQuantidadePessoas.Focus();
         return false;
     }
@@ -394,7 +411,7 @@ public partial class TelaSegundaEtapa : Window
             return true;
         }
 
-        TextoFeedback.Text = "Preencha nome, CPF e RA para avancar.";
+        TextoFeedback.Text = "Preencha nome, CPF e RA para avançar.";
         DefinirEtapaWizard(EtapaWizardIdentificacao);
         return false;
     }
@@ -437,7 +454,7 @@ public partial class TelaSegundaEtapa : Window
             return true;
         }
 
-        TextoFeedback.Text = "Preencha todos os campos desta etapa antes de avancar.";
+        TextoFeedback.Text = "Preencha todos os campos desta etapa antes de avançar.";
         return false;
     }
 
@@ -461,7 +478,7 @@ public partial class TelaSegundaEtapa : Window
             return true;
         }
 
-        TextoFeedback.Text = "Preencha todos os campos do formulario antes de salvar.";
+        TextoFeedback.Text = "Preencha todos os campos do formulário antes de salvar.";
         return false;
     }
 
@@ -516,6 +533,12 @@ public partial class TelaSegundaEtapa : Window
 
     private void VoltarEtapaWizardBotao_Click(object sender, RoutedEventArgs e)
     {
+        if (_modoReavaliacaoMedica && _abrirEmContextoListaGeral)
+        {
+            RetornarParaListaGeralAnterior();
+            return;
+        }
+
         if (_etapaWizardAtual == EtapaWizardIdentificacao)
         {
             if (_dadosAnaliseConfirmados)
@@ -552,15 +575,16 @@ public partial class TelaSegundaEtapa : Window
     private void AtualizarWizardFormulario()
     {
         var mostrarFormularioCompleto = _etapaWizardAtual == EtapaWizardConfirmacao;
-        var tituloFormulario = _modoReavaliacaoMedica ? "Reavaliacao Medica" : "Etapa Medica";
+        var tituloFormulario = _modoReavaliacaoMedica ? "Reavaliação Médica" : "Etapa Médica";
 
         var mostrarDadosAnalise = _etapaWizardAtual == EtapaWizardIdentificacao && !_dadosAnaliseConfirmados;
         var mostrarBuscaConscrito = mostrarFormularioCompleto ||
             _etapaWizardAtual != EtapaWizardIdentificacao ||
             _dadosAnaliseConfirmados;
+        var mostrarPainelDadosAnalise = !_abrirEmContextoListaGeral && (mostrarDadosAnalise || mostrarFormularioCompleto);
 
         SecaoIdentificacao.Visibility = Visibility.Visible;
-        PainelDadosAnalise.Visibility = mostrarDadosAnalise || mostrarFormularioCompleto ? Visibility.Visible : Visibility.Collapsed;
+        PainelDadosAnalise.Visibility = mostrarPainelDadosAnalise ? Visibility.Visible : Visibility.Collapsed;
         PainelBuscaConscrito.Visibility = mostrarBuscaConscrito && !_aguardandoConfirmacaoGrupoFinal ? Visibility.Visible : Visibility.Collapsed;
         PainelConscritosAnalise.Visibility = _dadosAnaliseConfirmados && _quantidadePessoasAnalise > 1
             ? Visibility.Visible
@@ -588,11 +612,11 @@ public partial class TelaSegundaEtapa : Window
         {
             TextoTituloFormulario.Text = tituloFormulario;
             TextoDescricaoFormulario.Text = _dadosAnaliseConfirmados
-                ? "Selecione o conscrito e informe apenas o resultado medico."
+                ? "Selecione o conscrito e informe apenas o resultado médico."
                 : _modoReavaliacaoMedica
-                    ? "Busque o RA do conscrito para abrir o resultado medico."
-                    : "Defina o tipo de analise e depois selecione o conscrito para informar o resultado.";
-            TextoBotaoSalvar.Text = "Proximo";
+                    ? "Busque o RA do conscrito para abrir o resultado médico."
+                    : "Defina o tipo de análise e depois selecione o conscrito para informar o resultado.";
+            TextoBotaoSalvar.Text = "Próximo";
             return;
         }
 
@@ -604,11 +628,11 @@ public partial class TelaSegundaEtapa : Window
             return;
         }
 
-        TextoTituloFormulario.Text = _modoReavaliacaoMedica ? "Reavaliando a Pessoa" : "Confirmar Resultado Medico";
+        TextoTituloFormulario.Text = _modoReavaliacaoMedica ? "Reavaliando a Pessoa" : "Confirmar Resultado Médico";
         TextoDescricaoFormulario.Text = _modoReavaliacaoMedica
-            ? "Confira o resultado medico. Se precisar, altere os dados e salve a reavaliacao."
-            : "Confira o resultado medico antes de salvar.";
-        TextoBotaoSalvar.Text = _modoReavaliacaoMedica ? "Salvar Reavaliacao" : "Salvar Resultado";
+            ? "Confira o resultado médico. Se precisar, altere os dados e salve a reavaliação."
+            : "Confira o resultado médico antes de salvar.";
+        TextoBotaoSalvar.Text = _modoReavaliacaoMedica ? "Salvar Reavaliação" : "Salvar Resultado";
     }
     private void LimparBotao_Click(object sender, RoutedEventArgs e)
     {
@@ -644,7 +668,7 @@ public partial class TelaSegundaEtapa : Window
         PainelResultadosPesquisaRA.Visibility = Visibility.Collapsed;
         _etapaWizardAtual = EtapaWizardIdentificacao;
         _dadosAnaliseConfirmados = true;
-        TextoResultadoPesquisaRA.Text = $"Avaliado {_quantidadePessoasProcessadas} de {_quantidadePessoasAnalise}. Pesquise o proximo conscrito por nome ou RA.";
+        TextoResultadoPesquisaRA.Text = $"Avaliado {_quantidadePessoasProcessadas} de {_quantidadePessoasAnalise}. Pesquise o próximo conscrito por nome ou RA.";
         TextoFeedback.Foreground = BordaEtapaAtiva;
         TextoFeedback.Text = $"Ficha salva. Falta(m) {_quantidadePessoasAnalise - _quantidadePessoasProcessadas} conscrito(s).";
         AtualizarCamposCondicionais();
@@ -658,7 +682,7 @@ public partial class TelaSegundaEtapa : Window
             .Select(indice => new ItemAnaliseGrupo
             {
                 Indice = indice,
-                Status = indice == 1 ? "Aguardando selecao" : "Pendente"
+                Status = indice == 1 ? "Aguardando seleção" : "Pendente"
             })
             .ToList();
 
@@ -697,7 +721,7 @@ public partial class TelaSegundaEtapa : Window
         var proximo = _itensAnaliseGrupo.ElementAtOrDefault(_quantidadePessoasProcessadas + 1);
         if (proximo is not null && string.IsNullOrWhiteSpace(proximo.RA))
         {
-            proximo.Status = "Aguardando selecao";
+            proximo.Status = "Aguardando seleção";
         }
 
         AtualizarListaConscritosAnalise();
@@ -753,7 +777,7 @@ public partial class TelaSegundaEtapa : Window
 
         if (!_modoReavaliacaoMedica && EntrevistaMedicaPossuiDados(conscrito.Entrevista_Medica))
         {
-            TextoFeedback.Text = "Este conscrito ja possui avaliacao medica. Use a Quarta Etapa para visualizar ou editar a ficha.";
+            TextoFeedback.Text = "Este conscrito já possui avaliação médica. Use a Quarta Etapa para visualizar ou editar a ficha.";
             DefinirEtapaWizard(EtapaWizardIdentificacao);
             return;
         }
@@ -806,7 +830,7 @@ public partial class TelaSegundaEtapa : Window
 
             if (conscrito is null)
             {
-                TextoFeedback.Text = $"Conscrito {item.RA} nao encontrado para salvar.";
+                TextoFeedback.Text = $"Conscrito {item.RA} não encontrado para salvar.";
                 return;
             }
 
@@ -1022,7 +1046,7 @@ public partial class TelaSegundaEtapa : Window
         if (ConscritoJaEscolhidoNaAnalise(conscrito))
         {
             TextoFeedback.Foreground = Brushes.Firebrick;
-            TextoFeedback.Text = "Este conscrito ja foi selecionado nesta analise grupal.";
+            TextoFeedback.Text = "Este conscrito já foi selecionado nesta análise grupal.";
             return;
         }
 
@@ -1033,6 +1057,11 @@ public partial class TelaSegundaEtapa : Window
         CaixaTextoNome.Text = conscrito.Nome;
         CaixaTextoCPF.Text = conscrito.CPF;
         CaixaTextoRA.Text = conscrito.RA;
+        SelecionarComboPorTexto(ComboTipoAnaliseMedica, string.IsNullOrWhiteSpace(entrevistaMedica.TipoAnalise) ? "Individual" : entrevistaMedica.TipoAnalise);
+        CaixaTextoQuantidadePessoas.Text = string.IsNullOrWhiteSpace(entrevistaMedica.QuantidadePessoasAnalisadas)
+            ? "1"
+            : entrevistaMedica.QuantidadePessoasAnalisadas;
+        CaixaTextoCRM.Text = entrevistaMedica.CRM;
 
         SelecionarComboPorTexto(ComboResultadoAptidao, entrevistaMedica.ResultadoAptidao);
         SelecionarComboPorTexto(ComboRestricaoAptidao, entrevistaMedica.Restricao);
@@ -1049,7 +1078,7 @@ public partial class TelaSegundaEtapa : Window
             AtualizarItemAnaliseAtual(conscrito);
             TextoResultadoPesquisaRA.Text = $"Selecionado: {conscrito.RA} - {conscrito.Nome}";
             TextoFeedback.Text = EntrevistaMedicaPossuiDados(entrevistaMedica)
-                ? "Este conscrito ja possui avaliacao medica. Use a Quarta Etapa para visualizar ou editar a ficha."
+                ? "Este conscrito já possui avaliação médica. Use a Quarta Etapa para visualizar ou editar a ficha."
                 : string.Empty;
             ListaResultadosPesquisaRA.ItemsSource = null;
             PainelResultadosPesquisaRA.Visibility = Visibility.Collapsed;
@@ -1058,7 +1087,7 @@ public partial class TelaSegundaEtapa : Window
 
         ListaResultadosPesquisaRA.ItemsSource = null;
         PainelResultadosPesquisaRA.Visibility = Visibility.Collapsed;
-        TextoResultadoPesquisaRA.Text = $"Ficha medica carregada: {conscrito.RA} - {conscrito.Nome}";
+        TextoResultadoPesquisaRA.Text = $"Ficha médica carregada: {conscrito.RA} - {conscrito.Nome}";
         TextoFeedback.Text = string.Empty;
         AtualizarWizardFormulario();
     }
@@ -1066,15 +1095,15 @@ public partial class TelaSegundaEtapa : Window
     private string ObterTextoBuscaInicial()
     {
         return _modoReavaliacaoMedica
-            ? "Digite o RA para localizar a ficha medica do conscrito."
+            ? "Digite o RA para localizar a ficha médica do conscrito."
             : "Digite o nome ou RA para localizar um conscrito pendente.";
     }
 
     private string ObterTextoResultadoEncontrado(int totalResultados)
     {
         return _modoReavaliacaoMedica
-            ? $"{totalResultados} resultado(s) encontrado(s). Selecione um conscrito para abrir a ficha medica completa."
-            : $"{totalResultados} resultado(s) encontrado(s). Selecione um conscrito para preencher a identificacao.";
+            ? $"{totalResultados} resultado(s) encontrado(s). Selecione um conscrito para abrir a ficha médica completa."
+            : $"{totalResultados} resultado(s) encontrado(s). Selecione um conscrito para preencher a identificação.";
     }
 
     private void LimparDadosMedicos()
@@ -1259,12 +1288,20 @@ public partial class TelaSegundaEtapa : Window
     private void PreencherDadosMedicos(Conscrito conscrito)
     {
         var entrevistaMedica = ObterEntrevistaMedica(conscrito);
+        var tipoAnalise = ObterTextoSelecionado(ComboTipoAnaliseMedica);
+        var crmInformado = CaixaTextoCRM.Text.Trim();
 
-        entrevistaMedica.TipoAnalise = ObterTextoSelecionado(ComboTipoAnaliseMedica);
+        entrevistaMedica.TipoAnalise = !string.IsNullOrWhiteSpace(tipoAnalise)
+            ? tipoAnalise
+            : string.IsNullOrWhiteSpace(entrevistaMedica.TipoAnalise)
+                ? "Individual"
+                : entrevistaMedica.TipoAnalise;
         entrevistaMedica.QuantidadePessoasAnalisadas = string.Equals(entrevistaMedica.TipoAnalise, "Grupal", StringComparison.OrdinalIgnoreCase)
             ? CaixaTextoQuantidadePessoas.Text.Trim()
             : "1";
-        entrevistaMedica.CRM = CaixaTextoCRM.Text.Trim();
+        entrevistaMedica.CRM = !string.IsNullOrWhiteSpace(crmInformado) || !_abrirEmContextoListaGeral
+            ? crmInformado
+            : entrevistaMedica.CRM;
         entrevistaMedica.ResultadoAptidao = ObterTextoSelecionado(ComboResultadoAptidao);
         entrevistaMedica.Restricao = ObterTextoSelecionado(ComboRestricaoAptidao);
         entrevistaMedica.QualProblema = ResultadoEhAptoComRestricao(entrevistaMedica.ResultadoAptidao)
@@ -1276,6 +1313,25 @@ public partial class TelaSegundaEtapa : Window
         entrevistaMedica.CID = CaixaTextoCID.Text.Trim();
 
         LimparCamposMedicosRemovidos(entrevistaMedica);
+    }
+
+    private void RetornarParaListaGeralAnterior()
+    {
+        var conscrito = ObterConscritoSelecionadoOuPesquisado();
+
+        if (conscrito is null && _conscritoInicial is not null)
+        {
+            conscrito = ServicoArmazenamentoConscritos.ObterTodos().FirstOrDefault(item =>
+                string.Equals(item.Id, _conscritoInicial.Id, StringComparison.OrdinalIgnoreCase)) ?? _conscritoInicial;
+        }
+
+        if (conscrito is not null)
+        {
+            ServicoNavegacao.Trocar(this, new TelaPrimeiraEtapa(conscrito, abrirEmContextoListaGeral: true));
+            return;
+        }
+
+        ServicoNavegacao.Trocar(this, new TelaPrimeiraEtapa(abrirListaAoIniciar: true));
     }
 
     private static void PreencherDadosMedicos(Conscrito conscrito, ItemAnaliseGrupo item)

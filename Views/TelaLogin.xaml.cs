@@ -37,7 +37,7 @@ public partial class TelaLogin : Window
 
         if (!ServicoAutenticacao.ValidarLogin(email, senha))
         {
-            TextoFeedback.Text = "E-mail ou senha invalidos.";
+            TextoFeedback.Text = "E-mail ou senha inválidos.";
             return;
         }
 
@@ -59,14 +59,14 @@ public partial class TelaLogin : Window
 
         if (configuracao == null)
         {
-            TextoFeedback.Text = "Nenhuma configuracao de processo encontrada. Contate o administrador.";
+            TextoFeedback.Text = "Nenhuma configuração de processo encontrada. Contate o administrador.";
             return;
         }
 
         if (!ServicoConfiguracaoProcesso.ProcessoFoiConfigurado())
         {
             ServicoAutenticacao.EncerrarSessao();
-            TextoFeedback.Text = "O processo ainda nao foi iniciado pelo administrador.";
+            TextoFeedback.Text = "O processo ainda não foi iniciado pelo administrador.";
             return;
         }
 

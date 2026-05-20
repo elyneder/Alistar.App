@@ -38,6 +38,7 @@
 
                 <StackPanel Grid.Row="1">
                     <Button Content=" 🏠︎ Tela Inicial"
+                            x:Name="BotaoTelaInicial"
                             Style="{StaticResource BotaoBarraLateralStyle}"
                             Click="MostrarTelaInicialBotao_Click" />
                     
@@ -62,11 +63,12 @@
                 <StackPanel Grid.Row="2">
                     
                     <Button Content=" 👤 Cadastrar Entrevistador"
+                    x:Name="BotaoCadastrarEntrevistador"
                     Style="{StaticResource BotaoBarraLateralStyle}"
                     Margin="0,0,0,12"
                     Click="AbrirCadastroUsuarioBotao_Click" />
                     
-                    <Button Content=" ➜] Sair do Sistema"
+                    <Button Content=" ➜ Sair do Sistema"
                             Style="{StaticResource BotaoPerigoTextoStyle}"
                             Click="SairSistemaBotao_Click" />
                 </StackPanel>

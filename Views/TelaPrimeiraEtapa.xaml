@@ -219,7 +219,7 @@
                             Margin="0,0,0,12"
                             Click="AbrirCadastroUsuarioBotao_Click" />
 
-                    <Button Content=" ➜] Sair do Sistema"
+                    <Button Content=" ➜ Sair do Sistema"
                             Style="{StaticResource BotaoPerigoTextoStyle}"
                             Click="SairSistemaBotao_Click" />
                 </StackPanel>
@@ -376,7 +376,7 @@
                                     MaxWidth="1080"
                                     HorizontalAlignment="Center">
                             <TextBlock x:Name="TextoTituloFormulario"
-                                       Text="Primeira Etapa de Seleção"
+                                       Text="Informações Gerais do Conscrito"
                                        Style="{StaticResource TituloBlocoPapelStyle}" 
                                        TextAlignment="Center"/>
                             <TextBlock x:Name="TextoDescricaoFormulario"

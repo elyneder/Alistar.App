@@ -1,5 +1,7 @@
 ﻿using System.Windows;
 using System.Globalization;
+using System.IO;
+using System.Text.Json;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
@@ -19,7 +21,7 @@ namespace Alistar.App;
 /// </remarks>
 public partial class TelaPrimeiraEtapa : Window
 {
-    private const int AnoLimiteAlistamento = 2008;
+    private const int AnoLimiteAlistamentoPadrao = 2008;
 
     // Indices usados para controlar qual parte do formulario aparece no wizard.
     private const int EtapaWizardInformacoesBasicas = 0;
@@ -47,25 +49,26 @@ public partial class TelaPrimeiraEtapa : Window
     // Estado da tela: edicao, etapa atual, mascara de campos e lista carregada.
     private readonly Conscrito? _conscritoInicial;
     private readonly bool _abrirListaAoIniciar;
+    private readonly bool _abrirEmContextoListaGeral;
     private readonly bool _modoEntrevistaTecnica;
     private string? _idConscritoEmEdicao;
     private int _etapaWizardAtual = EtapaWizardInformacoesBasicas;
     private bool _atualizandoMascara;
+    private bool _emFluxoListaConscritos;
     private List<Conscrito> _conscritosCarregados = [];
 
-    public TelaPrimeiraEtapa(Conscrito? conscrito = null, bool abrirListaAoIniciar = false, bool modoEntrevistaTecnica = false)
+    public TelaPrimeiraEtapa(Conscrito? conscrito = null, bool abrirListaAoIniciar = false, bool modoEntrevistaTecnica = false, bool abrirEmContextoListaGeral = false)
     {
         _conscritoInicial = conscrito;
         _abrirListaAoIniciar = abrirListaAoIniciar;
+        _abrirEmContextoListaGeral = abrirEmContextoListaGeral;
         _modoEntrevistaTecnica = modoEntrevistaTecnica;
+        _emFluxoListaConscritos = _abrirListaAoIniciar || _abrirEmContextoListaGeral;
         InitializeComponent();
-        TextoTituloCabecalho.Text = _modoEntrevistaTecnica
-    ? "Terceira Etapa"
-    : "Primeira Etapa";
-
         TextoDescricaoCabecalho.Text = _modoEntrevistaTecnica
     ? "Revisão e atualização da ficha da primeira etapa"
     : "Registro completo dos dados pessoais do conscrito";
+        AtualizarTituloCabecalho();
         Title = _modoEntrevistaTecnica ? "Alistar | Entrevista Técnica" : Title;
         RegistrarEventosCamposCondicionais();
         AtualizarCamposCondicionais();
@@ -85,6 +88,42 @@ public partial class TelaPrimeiraEtapa : Window
     private bool EmModoEdicao => !string.IsNullOrWhiteSpace(_idConscritoEmEdicao);
     private string NomeFluxoFormulario => _modoEntrevistaTecnica ? "Entrevista Técnica" : "Primeira Etapa de Seleção";
     private string RotuloAcaoSalvar => _modoEntrevistaTecnica ? "Salvar Entrevista" : "Salvar Ficha";
+
+    private void AtualizarTituloCabecalho()
+    {
+        TextoTituloCabecalho.Text = _modoEntrevistaTecnica
+            ? "Terceira Etapa"
+            : _emFluxoListaConscritos
+                ? "Lista Geral"
+                : "Primeira Etapa";
+    }
+
+    private static int ObterAnoLimiteAlistamento()
+    {
+        var anoConfigurado = ObterConfiguracaoDoProcesso().AnoLimiteNascimento;
+        return anoConfigurado > 0 ? anoConfigurado : AnoLimiteAlistamentoPadrao;
+    }
+
+    private static ConfiguracaoProcesso ObterConfiguracaoDoProcesso()
+    {
+        var configuracaoEmMemoria = ServicoConfiguracaoProcesso._configuracoes.LastOrDefault();
+        if (configuracaoEmMemoria is not null)
+        {
+            return configuracaoEmMemoria;
+        }
+
+        var caminhoArquivo = AppDomain.CurrentDomain.BaseDirectory;
+        var raizDoProjeto = Path.GetFullPath(Path.Combine(caminhoArquivo, @"..\..\..\"));
+        var caminhoCompleto = Path.Combine(raizDoProjeto, "processo-config.json");
+
+        if (!File.Exists(caminhoCompleto))
+        {
+            return ServicoConfiguracaoProcesso.Obter();
+        }
+
+        var conteudo = File.ReadAllText(caminhoCompleto);
+        return JsonSerializer.Deserialize<ConfiguracaoProcesso>(conteudo) ?? ServicoConfiguracaoProcesso.Obter();
+    }
 
     private Conscrito? ObterConscritoEmEdicao()
     {
@@ -195,6 +234,7 @@ public partial class TelaPrimeiraEtapa : Window
 
     private void PrimeiraEtapaBotao_Click(object sender, RoutedEventArgs e)
     {
+        _emFluxoListaConscritos = false;
         PrepararNovoCadastro();
         MostrarCadastroConscrito();
     }
@@ -432,7 +472,7 @@ public partial class TelaPrimeiraEtapa : Window
         }
 
         ServicoAuditoria.RegistrarAcao("Acesso", "Etapa Médica", $"Usuário abriu a etapa médica de {conscrito.Nome} pela lista de candidatos.");
-        ServicoNavegacao.Trocar(this, new TelaSegundaEtapa(conscrito, modoReavaliacaoMedica: true));
+        ServicoNavegacao.Trocar(this, new TelaSegundaEtapa(conscrito, modoReavaliacaoMedica: true, abrirEmContextoListaGeral: _emFluxoListaConscritos));
     }
 
     private void CarregarConscritos()
@@ -462,21 +502,25 @@ public partial class TelaPrimeiraEtapa : Window
         VisaoCadastroConscrito.Visibility = Visibility.Visible;
         VisaoListaConscritos.Visibility = Visibility.Collapsed;
         TextoFeedbackCadastroConscrito.Text = string.Empty;
+        AtualizarTituloCabecalho();
         AtualizarWizardFormulario();
         ScrollFormularioCadastro.ScrollToHome();
     }
 
     private void MostrarListaConscritos()
     {
+        _emFluxoListaConscritos = true;
         VisaoInicial.Visibility = Visibility.Collapsed;
         VisaoCadastroConscrito.Visibility = Visibility.Collapsed;
         VisaoListaConscritos.Visibility = Visibility.Visible;
         GradeConscritos.SelectedItem = null;
+        AtualizarTituloCabecalho();
         CarregarConscritos();
     }
 
     private void PrepararNovoCadastro()
     {
+        _emFluxoListaConscritos = false;
         _idConscritoEmEdicao = null;
         LimparCamposFormulario();
         ComboSituacaoConscrito.SelectedIndex = 0;
@@ -489,8 +533,11 @@ public partial class TelaPrimeiraEtapa : Window
     /// </summary>
     private void CarregarConscritoParaEdicao(Conscrito conscrito)
     {
+        var veioDaListaConscritos = _emFluxoListaConscritos || VisaoListaConscritos.Visibility == Visibility.Visible;
+
         // Ao clicar em alguem da lista, copiamos os dados do objeto para os campos da tela.
         // O Id fica guardado para o salvar saber que e edicao, nao novo cadastro.
+        _emFluxoListaConscritos = veioDaListaConscritos;
         _idConscritoEmEdicao = conscrito.Id;
         LimparCamposFormulario();
         TextoFeedbackCadastroConscrito.Text = string.Empty;
@@ -573,6 +620,7 @@ public partial class TelaPrimeiraEtapa : Window
 
         MostrarCadastroConscrito();
         DefinirEtapaWizard(_modoEntrevistaTecnica ? EtapaWizardInformacoesBasicas : EtapaWizardConfirmacao);
+        AtualizarTituloCabecalho();
     }
 
     private void VoltarEtapaWizardBotao_Click(object sender, RoutedEventArgs e)
@@ -652,7 +700,7 @@ public partial class TelaPrimeiraEtapa : Window
                 }
                 else
                 {
-                    TextoTituloFormulario.Text = EmModoEdicao ? "Editar Conscrito" : "Primeira Etapa";
+                    TextoTituloFormulario.Text = EmModoEdicao ? "Editar Conscrito" : "Informações Gerais do Conscrito";
                     TextoDescricaoFormulario.Text = "Registro completo de dados pessoais e perfil";
                 }
                 
@@ -1002,9 +1050,10 @@ public partial class TelaPrimeiraEtapa : Window
             return false;
         }
 
-        if (dataNascimento.Year > AnoLimiteAlistamento)
+        var anoLimite = ObterAnoLimiteAlistamento();
+        if (dataNascimento.Year > anoLimite)
         {
-            TextoFeedbackCadastroConscrito.Text = "Só é permitido cadastrar conscritos nascidos até 2008.";
+            TextoFeedbackCadastroConscrito.Text = $"Só é permitido cadastrar conscritos nascidos até {anoLimite}.";
             DefinirEtapaWizard(EtapaWizardInformacoesBasicas);
             return false;
         }
@@ -1294,7 +1343,8 @@ public partial class TelaPrimeiraEtapa : Window
 
     private static string ObterSituacaoPeloNascimento(string dataNascimento, string situacaoSelecionada)
     {
-        return DataNascimentoValida(dataNascimento, out var data) && data.Year < AnoLimiteAlistamento
+        var anoLimite = ObterAnoLimiteAlistamento();
+        return DataNascimentoValida(dataNascimento, out var data) && data.Year < anoLimite
             ? "Refratário"
             : situacaoSelecionada;
     }
@@ -1331,8 +1381,9 @@ public partial class TelaPrimeiraEtapa : Window
 
     private void AtualizarSituacaoPeloNascimento()
     {
+        var anoLimite = ObterAnoLimiteAlistamento();
         if (DataNascimentoValida(CaixaTextoDataNascimento.Text, out var data) &&
-            data.Year < AnoLimiteAlistamento)
+            data.Year < anoLimite)
         {
             SelecionarComboPorTexto(ComboSituacaoConscrito, "Refratário");
         }

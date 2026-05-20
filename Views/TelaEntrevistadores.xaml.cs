@@ -8,9 +8,20 @@ namespace Alistar.App;
 /// </summary>
 public partial class TelaEntrevistadores : Window
 {
-    public TelaEntrevistadores()
+    private readonly bool _retornarParaTelaAnterior;
+
+    public TelaEntrevistadores(bool retornarParaTelaAnterior = false)
     {
+        _retornarParaTelaAnterior = retornarParaTelaAnterior;
         InitializeComponent();
+
+        if (_retornarParaTelaAnterior)
+        {
+            BotaoTelaInicial.Content = " ⚙️ Voltar para configuração";
+            BotaoCadastrarEntrevistador.Visibility = Visibility.Collapsed;
+            BotaoCadastrarEntrevistador.IsEnabled = false;
+        }
+
         CarregarEntrevistadores();
     }
 
@@ -31,7 +42,7 @@ public partial class TelaEntrevistadores : Window
 
     private void MostrarTelaInicialBotao_Click(object sender, RoutedEventArgs e)
     {
-        ServicoNavegacao.Trocar(this, new TelaPainelControle());
+        VoltarParaOrigemOuPainel();
     }
 
     private void AbrirCadastroUsuarioBotao_Click(object sender, RoutedEventArgs e)
@@ -42,5 +53,40 @@ public partial class TelaEntrevistadores : Window
     private void SairSistemaBotao_Click(object sender, RoutedEventArgs e)
     {
         ServicoAutenticacao.ConfirmarSaidaSistema(this);
+    }
+
+    protected override void OnClosed(EventArgs e)
+    {
+        base.OnClosed(e);
+        RestaurarTelaAnteriorSeNecessario();
+    }
+
+    private void VoltarParaOrigemOuPainel()
+    {
+        if (_retornarParaTelaAnterior && Owner is Window telaAnterior)
+        {
+            telaAnterior.Show();
+            telaAnterior.Activate();
+            Close();
+            return;
+        }
+
+        ServicoNavegacao.Trocar(this, new TelaPainelControle());
+    }
+
+    private void RestaurarTelaAnteriorSeNecessario()
+    {
+        if (!_retornarParaTelaAnterior || Owner is not Window telaAnterior || telaAnterior.IsVisible)
+        {
+            return;
+        }
+
+        if (Application.Current.Windows.OfType<TelaLogin>().Any(janela => janela.IsVisible))
+        {
+            return;
+        }
+
+        telaAnterior.Show();
+        telaAnterior.Activate();
     }
 }

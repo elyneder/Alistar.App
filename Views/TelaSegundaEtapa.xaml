@@ -153,16 +153,17 @@
 
                 <StackPanel Grid.Row="1">
                     <Button x:Name="BotaoTelaInicial"
-                            Content="Tela Inicial"
+                            Content=" 🏠︎ Tela Inicial"
                             Style="{StaticResource BotaoBarraLateralStyle}"
                             Click="MostrarTelaInicialBotao_Click" />
 
                     <Button x:Name="BotaoListaConscritos"
-                            Content="Consultar Lista"
+                            Content=" 🔍︎ Consultar Lista"
                             Style="{StaticResource BotaoBarraLateralStyle}"
                             Click="MostrarListaConscritosBotao_Click" />
 
-                    <Button x:Name="VerEntrevistadores" Content="Ver Entrevistadores"
+                    <Button x:Name="VerEntrevistadores" 
+                            Content=" 👥 Ver Entrevistadores"
                             Style="{StaticResource BotaoBarraLateralStyle}"
                             Click="VerEntrevistadoresBotao_Click" />
 
@@ -185,12 +186,12 @@
                 </StackPanel>
 
                 <StackPanel Grid.Row="2">
-                    <Button x:Name="CadastrarEntrevistador" Content="Cadastrar Entrevistador"
+                    <Button x:Name="CadastrarEntrevistador" Content=" 👤 Cadastrar Entrevistador"
                             Style="{StaticResource BotaoBarraLateralStyle}"
                             Margin="0,0,0,12"
                             Click="AbrirCadastroUsuarioBotao_Click" />
 
-                    <Button Content="Sair do Sistema"
+                    <Button Content=" ➜ Sair do Sistema"
                             Style="{StaticResource BotaoPerigoTextoStyle}"
                             Click="SairSistemaBotao_Click" />
                 </StackPanel>
@@ -211,7 +212,7 @@
                     Style="{StaticResource BotaoSecundarioStyle}"
                     Click="MostrarTelaInicialBotao_Click">
                     <StackPanel Orientation="Horizontal">
-                        <TextBlock Text="Voltar"/>
+                        <TextBlock Text="  🡸  Voltar     "/>
                     </StackPanel>
                 </Button>
                 <TextBlock x:Name="TextoTituloPagina"
@@ -220,7 +221,7 @@
                            FontWeight="Bold"
                            Foreground="#123322" />
                 <TextBlock x:Name="TextoDescricaoPagina"
-                           Text="Resultado medico do conscrito"
+                                   Text="Resultado médico do conscrito"
                            FontSize="15"
                            Foreground="#688077"
                            Margin="0,4,0,0" />
@@ -238,11 +239,11 @@
                                 MaxWidth="980"
                                 HorizontalAlignment="Center">
                         <TextBlock x:Name="TextoTituloFormulario"
-                                   Text="Etapa Medica"
+                                   Text="Etapa Médica"
                                    Style="{StaticResource TituloBlocoStyle}" 
                                    TextAlignment="Center"/>
                         <TextBlock x:Name="TextoDescricaoFormulario"
-                                   Text="Preencha o resultado medico do conscrito."
+                                   Text="Preencha o resultado médico do conscrito."
                                    Style="{StaticResource DescricaoBlocoStyle}" 
                                    TextAlignment="Center"/>
 
@@ -258,7 +259,7 @@
                                     <Border x:Name="IndicadorEtapaIdentificacao" Style="{StaticResource CartaoEtapaWizardStyle}">
                                         <StackPanel>
                                             <TextBlock Text="01" Style="{StaticResource NumeroEtapaWizardStyle}" />
-                                            <TextBlock Text="Identificacao" Style="{StaticResource TituloEtapaWizardStyle}" />
+                                            <TextBlock Text="Identificação" Style="{StaticResource TituloEtapaWizardStyle}" />
                                             <TextBlock Text="Dados do conscrito" Style="{StaticResource DescricaoEtapaWizardStyle}" />
                                         </StackPanel>
                                     </Border>
@@ -267,15 +268,15 @@
                                         <StackPanel>
                                             <TextBlock Text="02" Style="{StaticResource NumeroEtapaWizardStyle}" />
                                             <TextBlock Text="Resultado" Style="{StaticResource TituloEtapaWizardStyle}" />
-                                            <TextBlock Text="Aptidao e variacoes" Style="{StaticResource DescricaoEtapaWizardStyle}" />
+                                            <TextBlock Text="Aptidão e variações" Style="{StaticResource DescricaoEtapaWizardStyle}" />
                                         </StackPanel>
                                     </Border>
 
                                     <Border x:Name="IndicadorEtapaConfirmacao" Style="{StaticResource CartaoEtapaWizardStyle}" Margin="0">
                                         <StackPanel>
                                             <TextBlock Text="03" Style="{StaticResource NumeroEtapaWizardStyle}" />
-                                            <TextBlock Text="Confirmacao" Style="{StaticResource TituloEtapaWizardStyle}" />
-                                            <TextBlock Text="Revisao final" Style="{StaticResource DescricaoEtapaWizardStyle}" />
+                                            <TextBlock Text="Confirmação" Style="{StaticResource TituloEtapaWizardStyle}" />
+                                            <TextBlock Text="Revisão final" Style="{StaticResource DescricaoEtapaWizardStyle}" />
                                         </StackPanel>
                                     </Border>
                                 </UniformGrid>
@@ -285,7 +286,7 @@
 
                         <Border x:Name="SecaoIdentificacao" Style="{StaticResource CaixaSecaoStyle}">
                             <StackPanel>
-                                <TextBlock Text="IDENTIFICACAO DO CONSCRITO"
+                                <TextBlock Text="IDENTIFICAÇÃO DO CONSCRITO"
                                            Style="{StaticResource TituloSecaoStyle}" />
 
                                 <Grid x:Name="PainelDadosAnalise" Style="{StaticResource LinhaCamposStyle}">
@@ -296,7 +297,7 @@
                                     </Grid.ColumnDefinitions>
 
                                     <StackPanel Grid.Column="0" Margin="0,0,24,0">
-                                        <TextBlock Text="Tipo de analise:" Style="{StaticResource RotuloCampoStyle}" />
+                                        <TextBlock Text="Tipo de análise:" Style="{StaticResource RotuloCampoStyle}" />
                                         <Border Style="{StaticResource LinhaCampoStyle}">
                                             <ComboBox x:Name="ComboTipoAnaliseMedica"
                                                       Style="{StaticResource CampoComboStyle}"
@@ -318,7 +319,7 @@
                                     </StackPanel>
 
                                     <StackPanel Grid.Column="2">
-                                        <TextBlock Text="CRM do medico:" Style="{StaticResource RotuloCampoStyle}" />
+                                        <TextBlock Text="CRM do médico:" Style="{StaticResource RotuloCampoStyle}" />
                                         <Border Style="{StaticResource LinhaCampoStyle}">
                                             <TextBox x:Name="CaixaTextoCRM"
                                                      MaxLength="9"
@@ -452,6 +453,10 @@
                                 </Grid>
 
                                 <Grid x:Name="PainelAptidaoInicial" Style="{StaticResource LinhaCamposStyle}">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="Auto" />
+                                    </Grid.RowDefinitions>
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="260" />
                                         <ColumnDefinition Width="180" />
@@ -467,14 +472,14 @@
                                                       SelectionChanged="CampoCondicional_SelectionChanged">
                                                 <ComboBoxItem Content="Selecione" />
                                                 <ComboBoxItem Content="Apto" />
-                                                <ComboBoxItem Content="Apto com restricao" />
+                                                <ComboBoxItem Content="Apto com restrição" />
                                                 <ComboBoxItem Content="Inapto" />
                                             </ComboBox>
                                         </Border>
                                     </StackPanel>
 
                                     <StackPanel x:Name="PainelRestricaoAptidao" Grid.Column="1" Margin="0,0,24,0">
-                                        <TextBlock Text="Restricao:" Style="{StaticResource RotuloCampoStyle}" />
+                                        <TextBlock Text="Restrição:" Style="{StaticResource RotuloCampoStyle}" />
                                         <Border Style="{StaticResource LinhaCampoStyle}">
                                             <ComboBox x:Name="ComboRestricaoAptidao" Style="{StaticResource CampoComboStyle}">
                                                 <ComboBoxItem Content="Selecione" />
@@ -484,7 +489,11 @@
                                         </Border>
                                     </StackPanel>
 
-                                    <StackPanel x:Name="PainelProblemaMedico" Grid.Column="2" Margin="0,0,24,0">
+                                    <StackPanel x:Name="PainelProblemaMedico"
+                                                Grid.Row="1"
+                                                Grid.Column="0"
+                                                Grid.ColumnSpan="4"
+                                                Margin="0,16,0,0">
                                         <TextBlock x:Name="TextoRotuloProblemaMedico" Text="Qual problema:" Style="{StaticResource RotuloCampoStyle}" />
                                         <Border Style="{StaticResource LinhaCampoStyle}">
                                             <TextBox x:Name="CaixaTextoProblemaMedico" Style="{StaticResource CampoTextoStyle}" />

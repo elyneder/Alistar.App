@@ -14,9 +14,11 @@ public partial class TelaCadastroUsuario : Window
 {
     // Indica se a senha esta sendo exibida como texto ou protegida no PasswordBox.
     private bool _senhaVisivel;
+    private readonly bool _retornarParaTelaAnterior;
 
-    public TelaCadastroUsuario()
+    public TelaCadastroUsuario(bool retornarParaTelaAnterior = false)
     {
+        _retornarParaTelaAnterior = retornarParaTelaAnterior;
         InitializeComponent();
     }
 
@@ -64,18 +66,18 @@ public partial class TelaCadastroUsuario : Window
 
         if (resultadoCadastro == ResultadoCadastroUsuario.SemPermissao)
         {
-            TextoFeedbackCadastro.Text = "Apenas o usuário admin@alistar.com pode cadastrar um novo entrevistador.";
+            TextoFeedbackCadastro.Text = "Somente usuários com permissões de administrador podem cadastrar um novo entrevistador.";
             return;
         }
 
         if (resultadoCadastro == ResultadoCadastroUsuario.EmailJaCadastrado)
         {
-            TextoFeedbackCadastro.Text = "Já existe uma conta com este e-mail.";
+            TextoFeedbackCadastro.Text = "JÃ¡ existe uma conta com este e-mail.";
             return;
         }
 
         MessageBox.Show("Entrevistador cadastrado com sucesso.", "Alistar", MessageBoxButton.OK, MessageBoxImage.Information);
-        ServicoNavegacao.Trocar(this, new TelaPainelControle());
+        VoltarParaOrigemOuPainel();
     }
 
     /// <summary>
@@ -83,6 +85,41 @@ public partial class TelaCadastroUsuario : Window
     /// </summary>
     private void CancelarBotao_Click(object sender, RoutedEventArgs e)
     {
+        VoltarParaOrigemOuPainel();
+    }
+
+    protected override void OnClosed(EventArgs e)
+    {
+        base.OnClosed(e);
+        RestaurarTelaAnteriorSeNecessario();
+    }
+
+    private void VoltarParaOrigemOuPainel()
+    {
+        if (_retornarParaTelaAnterior && Owner is Window telaAnterior)
+        {
+            telaAnterior.Show();
+            telaAnterior.Activate();
+            Close();
+            return;
+        }
+
         ServicoNavegacao.Trocar(this, new TelaPainelControle());
+    }
+
+    private void RestaurarTelaAnteriorSeNecessario()
+    {
+        if (!_retornarParaTelaAnterior || Owner is not Window telaAnterior || telaAnterior.IsVisible)
+        {
+            return;
+        }
+
+        if (Application.Current.Windows.OfType<TelaLogin>().Any(janela => janela.IsVisible))
+        {
+            return;
+        }
+
+        telaAnterior.Show();
+        telaAnterior.Activate();
     }
 }

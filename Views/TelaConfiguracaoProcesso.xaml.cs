@@ -35,6 +35,7 @@ public partial class TelaConfiguracaoProcesso : Window
     public TelaConfiguracaoProcesso()
     {
         InitializeComponent();
+        Activated += TelaConfiguracaoProcesso_Activated;
         CarregarTela();
         DefinirPasso(PassoDadosGerais);
         ServicoAuditoria.RegistrarAcao("Acesso", "Configuração do Processo", "Administrador geral abriu a configuração do processo.");
@@ -49,7 +50,7 @@ public partial class TelaConfiguracaoProcesso : Window
 
         DataAberturaPicker.SelectedDate = _configuracao.DataAbertura;
         DefinirDataFechamento(_configuracao.DataFechamento);
-        CaixaAnoLimite.Text = ObterTextoInicialAnoLimite(_configuracao.DataNascimentoLimite.Year);
+        CaixaAnoLimite.Text = ObterTextoInicialAnoLimite(_configuracao.AnoLimiteNascimento);
         CaixaTotalClassificados.Text = ObterTextoInicialTotalClassificados(_configuracao.TotalClassificados);
         _dataFechamentoFoiAjustadaManualmente = false;
 
@@ -63,6 +64,11 @@ public partial class TelaConfiguracaoProcesso : Window
 
         ListaEtapasPercentuais.ItemsSource = _etapasPercentuais;
         AtualizarListaServidores();
+    }
+
+    private void TelaConfiguracaoProcesso_Activated(object? sender, EventArgs e)
+    {
+        AtualizarListaServidores(preservarSelecao: true);
     }
 
     private void AnteriorBotao_Click(object sender, RoutedEventArgs e)
@@ -93,6 +99,16 @@ public partial class TelaConfiguracaoProcesso : Window
     private void SairSistemaBotao_Click(object sender, RoutedEventArgs e)
     {
         ServicoAutenticacao.ConfirmarSaidaSistema(this);
+    }
+
+    private void AbrirCadastroUsuarioBotao_Click(object sender, RoutedEventArgs e)
+    {
+        AbrirTelaAuxiliar(new TelaCadastroUsuario(retornarParaTelaAnterior: true));
+    }
+
+    private void VerEntrevistadoresBotao_Click(object sender, RoutedEventArgs e)
+    {
+        AbrirTelaAuxiliar(new TelaEntrevistadores(retornarParaTelaAnterior: true));
     }
 
     private bool LerFormulario()
@@ -132,7 +148,7 @@ public partial class TelaConfiguracaoProcesso : Window
 
         if (dataFechamento < dataAbertura)
         {
-            TextoFeedback.Text = "A data de fechamento nao pode ser anterior a data de abertura.";
+            TextoFeedback.Text = "A data de fechamento não pode ser anterior à data de abertura.";
             return false;
         }
 
@@ -166,14 +182,22 @@ public partial class TelaConfiguracaoProcesso : Window
         return true;
     }
 
-    private void AtualizarListaServidores()
+    private void AtualizarListaServidores(bool preservarSelecao = false)
     {
+        var emailsSelecionados = preservarSelecao
+            ? _servidoresSelecao
+                .Where(item => item.Selecionado)
+                .Select(item => item.Email)
+                .Concat(_configuracao.ServidoresAutorizados)
+                .ToHashSet(StringComparer.OrdinalIgnoreCase)
+            : new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+
         _servidoresSelecao = ServicoAutenticacao.ObterEntrevistadores()
             .Select(servidor => new ServidorSelecao
             {
                 Nome = servidor.Nome,
                 Email = servidor.Email,
-                Selecionado = false
+                Selecionado = emailsSelecionados.Contains(servidor.Email)
             })
             .ToList();
 
@@ -191,6 +215,14 @@ public partial class TelaConfiguracaoProcesso : Window
         {
             etapa.EntrevistadoresAutorizados = _configuracao.ServidoresAutorizados.ToList();
         }
+    }
+
+    private void AbrirTelaAuxiliar(Window janela)
+    {
+        SalvarSelecaoServidores();
+        janela.Owner = this;
+        Hide();
+        janela.Show();
     }
 
     private void AtualizarConfirmacao()
@@ -232,7 +264,7 @@ public partial class TelaConfiguracaoProcesso : Window
 
         if (textoLimpo.Length != 4 || !int.TryParse(textoLimpo, out valor))
         {
-            TextoFeedback.Text = "Informe o ano limite com 4 digitos numericos.";
+            TextoFeedback.Text = "Informe o ano limite com 4 dígitos numéricos.";
             return false;
         }
 
@@ -241,15 +273,14 @@ public partial class TelaConfiguracaoProcesso : Window
 
     private string ObterTextoInicialAnoLimite(int anoLimite)
     {
-        var anoPadraoAntigo = _configuracao.DataAbertura.Year - 18;
-        return anoLimite <= 0 || anoLimite == anoPadraoAntigo
-            ? anoLimite.ToString()
-            : string.Empty;
+        return anoLimite <= 0
+            ? string.Empty
+            : anoLimite.ToString();
     }
 
     private static string ObterTextoInicialTotalClassificados(int totalClassificados)
     {
-        return totalClassificados <= 0 || totalClassificados == 50
+        return totalClassificados <= 0
             ? string.Empty
             : totalClassificados.ToString();
     }

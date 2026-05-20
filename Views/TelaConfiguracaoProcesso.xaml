@@ -146,9 +146,19 @@
                                Margin="0,4,0,0" />
                 </StackPanel>
 
-                <StackPanel Grid.Row="1"/>
+                <StackPanel Grid.Row="1">
+                    <Button x:Name="VerEntrevistadores"
+                            Content=" 👥 Ver Entrevistadores"
+                            Style="{StaticResource BotaoBarraLateralStyle}"
+                            Click="VerEntrevistadoresBotao_Click" />
+                </StackPanel>
 
                 <StackPanel Grid.Row="2">
+                    <Button x:Name="CadastrarEntrevistador"
+                            Content=" 👤 Cadastrar Entrevistador"
+                            Style="{StaticResource BotaoBarraLateralStyle}"
+                            Margin="0,0,0,12"
+                            Click="AbrirCadastroUsuarioBotao_Click" />
                     <Button Content=" ➜ Sair do Sistema"
                             Style="{StaticResource BotaoPerigoTextoStyle}"
                             Click="SairSistemaBotao_Click" />

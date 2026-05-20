@@ -113,7 +113,7 @@ public partial class TelaPainelControle : Window
         }
 
         GradeConscritos.SelectedItem = null;
-        AbrirJanelaEtapa(new TelaPrimeiraEtapa(conscritoSelecionado));
+        AbrirJanelaEtapa(new TelaPrimeiraEtapa(conscritoSelecionado, abrirEmContextoListaGeral: true));
     }
 
     private void CaixaPesquisaConscrito_KeyDown(object sender, KeyEventArgs e)

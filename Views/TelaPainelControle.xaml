@@ -132,7 +132,7 @@
                             Click="VerEntrevistadoresBotao_Click" />
 
                     <Button x:Name="BotaoLogsGerais"
-                            Content=" 📋 Hist&#x00F3;rico de Atualiza&#x00E7;&#x00F5;es"
+                            Content=" 📋 Histórico de Atualizações"
                             Style="{StaticResource BotaoBarraLateralStyle}"
                             Click="MostrarLogsGeraisBotao_Click" />
 
@@ -181,7 +181,7 @@
                            FontSize="32"
                            FontWeight="Bold"
                            Foreground="#123322" />
-                <TextBlock Text="Use o painel como hub e abra cada etapa em sua pr&#x00F3;pria tela."
+                <TextBlock Text="Use o painel como hub e abra cada etapa em sua própria tela."
                            FontSize="15"
                            Foreground="#688077"
                            Margin="0,4,0,0" />
@@ -226,12 +226,12 @@
                                                FontSize="32"
                                                FontWeight="Black"
                                                Foreground="#123322" />
-                                    <TextBlock Text="Exames M&#x00E9;dicos"
+                                    <TextBlock Text="Exames Médicos"
                                                FontWeight="Bold"
                                                FontSize="24"
                                                Foreground="#123322"
                                                Margin="0,4,0,0" />
-                                    <TextBlock Text="Avalia&#x00E7;&#x00E3;o cl&#x00ED;nica e laudos de aptid&#x00E3;o f&#x00ED;sica"
+                                    <TextBlock Text="Avaliação clínica e laudos de aptidão física"
                                                FontSize="12"
                                                Foreground="#688077" />
                                 </StackPanel>
@@ -245,12 +245,12 @@
                                                FontSize="32"
                                                FontWeight="Black"
                                                Foreground="#123322" />
-                                    <TextBlock Text="Entrevista T&#x00E9;cnica"
+                                    <TextBlock Text="Entrevista Técnica"
                                                FontWeight="Bold"
                                                FontSize="24"
                                                Foreground="#123322"
                                                Margin="0,4,0,0" />
-                                    <TextBlock Text="Revis&#x00E3;o e atualiza&#x00E7;&#x00E3;o da ficha da primeira etapa"
+                                    <TextBlock Text="Revisão e atualização da ficha da primeira etapa"
                                                FontSize="12"
                                                Foreground="#688077" />
                                 </StackPanel>
@@ -264,12 +264,12 @@
                                                FontSize="32"
                                                FontWeight="Black"
                                                Foreground="#123322" />
-                                    <TextBlock Text="Reavalia&#x00E7;&#x00E3;o M&#x00E9;dica"
+                                    <TextBlock Text="Reavaliação Médica"
                                                FontWeight="Bold"
                                                FontSize="24"
                                                Foreground="#123322"
                                                Margin="0,4,0,0" />
-                                    <TextBlock Text="Reavalia&#x00E7;&#x00E3;o m&#x00E9;dica do conscrito"
+                                    <TextBlock Text="Reavaliação médica do conscrito"
                                                FontSize="12"
                                                Foreground="#688077" />
                                 </StackPanel>
@@ -283,12 +283,12 @@
                                                FontSize="32"
                                                FontWeight="Black"
                                                Foreground="#123322" />
-                                    <TextBlock Text="Designa&#x00E7;&#x00E3;o Final"
+                                    <TextBlock Text="Designação Final"
                                                FontWeight="Bold"
                                                FontSize="24"
                                                Foreground="#123322"
                                                Margin="0,4,0,0" />
-                                    <TextBlock Text="Ranking final dos conscritos eleg&#x00ED;veis para TG e substitutos"
+                                    <TextBlock Text="Ranking final dos conscritos elegíveis para TG e substitutos"
                                                FontSize="10.8"
                                                Foreground="#688077" />
                                 </StackPanel>
@@ -411,14 +411,14 @@
                                         </Grid.ColumnDefinitions>
 
                                         <StackPanel Grid.Column="0">
-                                            <TextBlock Text="Situa&#x00E7;&#x00E3;o" FontWeight="SemiBold" Foreground="#123322" Margin="0,0,0,8" />
+                                            <TextBlock Text="Situação" FontWeight="SemiBold" Foreground="#123322" Margin="0,0,0,8" />
                                             <WrapPanel>
                                                 <CheckBox x:Name="FiltroSituacaoTG" Content="TG" Style="{StaticResource CheckBoxFiltroStyle}" Checked="FiltroRapido_Changed" Unchecked="FiltroRapido_Changed" />
                                                 <CheckBox x:Name="FiltroSituacaoSubstituto" Content="Substituto" Style="{StaticResource CheckBoxFiltroStyle}" Checked="FiltroRapido_Changed" Unchecked="FiltroRapido_Changed" />
                                                 <CheckBox x:Name="FiltroSituacaoApto" Content="Apto" Style="{StaticResource CheckBoxFiltroStyle}" Checked="FiltroRapido_Changed" Unchecked="FiltroRapido_Changed" />
                                                 <CheckBox x:Name="FiltroSituacaoInapto" Content="Inapto" Style="{StaticResource CheckBoxFiltroStyle}" Checked="FiltroRapido_Changed" Unchecked="FiltroRapido_Changed" />
                                                 <CheckBox x:Name="FiltroSituacaoDispensado" Content="Dispensado" Style="{StaticResource CheckBoxFiltroStyle}" Checked="FiltroRapido_Changed" Unchecked="FiltroRapido_Changed" />
-                                                <CheckBox x:Name="FiltroSituacaoRefratario" Content="Refrat&#x00E1;rio" Style="{StaticResource CheckBoxFiltroStyle}" Checked="FiltroRapido_Changed" Unchecked="FiltroRapido_Changed" />
+                                                <CheckBox x:Name="FiltroSituacaoRefratario" Content="Refratário" Style="{StaticResource CheckBoxFiltroStyle}" Checked="FiltroRapido_Changed" Unchecked="FiltroRapido_Changed" />
                                                 <CheckBox x:Name="FiltroSituacaoIndefinido" Content="Indefinido" Style="{StaticResource CheckBoxFiltroStyle}" Checked="FiltroRapido_Changed" Unchecked="FiltroRapido_Changed" />
                                             </WrapPanel>
                                         </StackPanel>
@@ -427,12 +427,12 @@
                                             <TextBlock Text="Perguntas pessoais" FontWeight="SemiBold" Foreground="#123322" Margin="0,0,0,8" />
                                             <WrapPanel>
                                                 <CheckBox x:Name="FiltroTrabalha" Content="Trabalha" Style="{StaticResource CheckBoxFiltroStyle}" Checked="FiltroRapido_Changed" Unchecked="FiltroRapido_Changed" />
-                                                <CheckBox x:Name="FiltroRecebeAuxilio" Content="Recebe aux&#x00ED;lio governamental" Style="{StaticResource CheckBoxFiltroStyle}" Checked="FiltroRapido_Changed" Unchecked="FiltroRapido_Changed" />
+                                                <CheckBox x:Name="FiltroRecebeAuxilio" Content="Recebe auxílio governamental" Style="{StaticResource CheckBoxFiltroStyle}" Checked="FiltroRapido_Changed" Unchecked="FiltroRapido_Changed" />
                                                 <CheckBox x:Name="FiltroEstuda" Content="Estuda" Style="{StaticResource CheckBoxFiltroStyle}" Checked="FiltroRapido_Changed" Unchecked="FiltroRapido_Changed" />
-                                                <CheckBox x:Name="FiltroExperiencia" Content="Tem experi&#x00EA;ncia profissional" Style="{StaticResource CheckBoxFiltroStyle}" Checked="FiltroRapido_Changed" Unchecked="FiltroRapido_Changed" />
-                                                <CheckBox x:Name="FiltroProblemaSaude" Content="Tem problema de sa&#x00FA;de" Style="{StaticResource CheckBoxFiltroStyle}" Checked="FiltroRapido_Changed" Unchecked="FiltroRapido_Changed" />
+                                                <CheckBox x:Name="FiltroExperiencia" Content="Tem experiência profissional" Style="{StaticResource CheckBoxFiltroStyle}" Checked="FiltroRapido_Changed" Unchecked="FiltroRapido_Changed" />
+                                                <CheckBox x:Name="FiltroProblemaSaude" Content="Tem problema de saúde" Style="{StaticResource CheckBoxFiltroStyle}" Checked="FiltroRapido_Changed" Unchecked="FiltroRapido_Changed" />
                                                 <CheckBox x:Name="FiltroDesejaServirSim" Content="Deseja servir" Style="{StaticResource CheckBoxFiltroStyle}" Checked="FiltroRapido_Changed" Unchecked="FiltroRapido_Changed" />
-                                                <CheckBox x:Name="FiltroDesejaServirNao" Content="N&#x00E3;o deseja servir" Style="{StaticResource CheckBoxFiltroStyle}" Checked="FiltroRapido_Changed" Unchecked="FiltroRapido_Changed" />
+                                                <CheckBox x:Name="FiltroDesejaServirNao" Content="Não deseja servir" Style="{StaticResource CheckBoxFiltroStyle}" Checked="FiltroRapido_Changed" Unchecked="FiltroRapido_Changed" />
                                             </WrapPanel>
                                         </StackPanel>
 
@@ -527,7 +527,7 @@
                                         </DataTemplate>
                                     </DataGridTemplateColumn.CellTemplate>
                                 </DataGridTemplateColumn>
-                                <DataGridTemplateColumn Header="Situa&#x00E7;&#x00E3;o"
+                                <DataGridTemplateColumn Header="Situação"
                                                         Width="1*"
                                                         SortMemberPath="Situacao">
                                     <DataGridTemplateColumn.CellTemplate>
@@ -554,7 +554,7 @@
                                                             <DataTrigger Binding="{Binding Situacao}" Value="Dispensado">
                                                                 <Setter Property="Background" Value="#DC2626" />
                                                             </DataTrigger>
-                                                            <DataTrigger Binding="{Binding Situacao}" Value="Refrat&#x00E1;rio">
+                                                            <DataTrigger Binding="{Binding Situacao}" Value="Refratário">
                                                                 <Setter Property="Background" Value="#7C2D12" />
                                                             </DataTrigger>
                                                         </Style.Triggers>
@@ -581,7 +581,7 @@
                                                                 <DataTrigger Binding="{Binding Situacao}" Value="Dispensado">
                                                                     <Setter Property="Foreground" Value="White" />
                                                                 </DataTrigger>
-                                                                <DataTrigger Binding="{Binding Situacao}" Value="Refrat&#x00E1;rio">
+                                                                <DataTrigger Binding="{Binding Situacao}" Value="Refratário">
                                                                     <Setter Property="Foreground" Value="White" />
                                                                 </DataTrigger>
                                                             </Style.Triggers>
@@ -611,12 +611,12 @@
                         </Grid.RowDefinitions>
 
                         <StackPanel Margin="0,0,0,18">
-                            <TextBlock Text="Situa&#x00E7;&#x00F5;es dos Conscritos"
+                            <TextBlock Text="Situações dos Conscritos"
                                        FontSize="24"
                                        FontWeight="Bold"
                                        Foreground="#123322" />
                             <TextBlock x:Name="TextoResumoSituacoes"
-                                       Text="Resumo por situa&#x00E7;&#x00E3;o cadastrada."
+                                       Text="Resumo por situação cadastrada."
                                        FontSize="15"
                                        Foreground="#63756E"
                                        Margin="0,8,0,0" />
@@ -652,7 +652,7 @@
                                 </ScrollViewer>
                             </TabItem>
 
-                            <TabItem Header="Gr&#x00E1;fico">
+                            <TabItem Header="Gráfico">
                                 <ScrollViewer Margin="0,22,0,0"
                                               VerticalScrollBarVisibility="Auto"
                                               HorizontalScrollBarVisibility="Disabled">
@@ -669,7 +669,7 @@
                                                 <ColumnDefinition Width="220" />
                                             </Grid.ColumnDefinitions>
 
-                                            <TextBlock Text="Distribui&#x00E7;&#x00E3;o por situa&#x00E7;&#x00E3;o"
+                                            <TextBlock Text="Distribuição por situação"
                                                        FontSize="20"
                                                        FontWeight="SemiBold"
                                                        Foreground="#123322"
@@ -829,7 +829,7 @@
                                                 </DataTemplate>
                                             </DataGridTemplateColumn.CellTemplate>
                                         </DataGridTemplateColumn>
-                                        <DataGridTemplateColumn Header="Situa&#x00E7;&#x00E3;o" Width="1*" SortMemberPath="Situacao">
+                                        <DataGridTemplateColumn Header="Situação" Width="1*" SortMemberPath="Situacao">
                                             <DataGridTemplateColumn.CellTemplate>
                                                 <DataTemplate>
                                                     <Border Padding="10,4" CornerRadius="12" HorizontalAlignment="Left">
@@ -852,7 +852,7 @@
                                                                     <DataTrigger Binding="{Binding Situacao}" Value="Dispensado">
                                                                         <Setter Property="Background" Value="#DC2626" />
                                                                     </DataTrigger>
-                                                                    <DataTrigger Binding="{Binding Situacao}" Value="Refrat&#x00E1;rio">
+                                                                    <DataTrigger Binding="{Binding Situacao}" Value="Refratário">
                                                                         <Setter Property="Background" Value="#7C2D12" />
                                                                     </DataTrigger>
                                                                 </Style.Triggers>
@@ -878,7 +878,7 @@
                                                                         <DataTrigger Binding="{Binding Situacao}" Value="Dispensado">
                                                                             <Setter Property="Foreground" Value="White" />
                                                                         </DataTrigger>
-                                                                        <DataTrigger Binding="{Binding Situacao}" Value="Refrat&#x00E1;rio">
+                                                                        <DataTrigger Binding="{Binding Situacao}" Value="Refratário">
                                                                             <Setter Property="Foreground" Value="White" />
                                                                         </DataTrigger>
                                                                     </Style.Triggers>
@@ -914,7 +914,7 @@
                                        FontWeight="Bold"
                                        Foreground="#123322" />
                             <TextBlock x:Name="TextoResumoEntrevistadoresPainel"
-                                       Text="Usu&#x00E1;rios cadastrados pelo administrador."
+                                       Text="Usuários cadastrados pelo administrador."
                                        FontSize="15"
                                        Foreground="#63756E"
                                        Margin="0,8,0,0" />

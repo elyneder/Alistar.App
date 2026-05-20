@@ -1,5 +1,7 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
+using System.IO;
+using System.Text.Json;
 using Alistar.App.Models;
 using Alistar.App.Services;
 
@@ -14,8 +16,8 @@ namespace Alistar.App;
 /// </remarks>
 public partial class TelaQuintaEtapa : Window
 {
-    // Quantidade principal pedida na regra de negócio: os 50 melhores ficam destacados.
-    private const int QuantidadeSelecionados = 50;
+    // Quando ainda nao existe configuracao valida, a tela usa 50 como fallback visual.
+    private const int QuantidadeSelecionadosPadrao = 50;
 
     public TelaQuintaEtapa()
     {
@@ -25,6 +27,9 @@ public partial class TelaQuintaEtapa : Window
 
     private void CarregarRanking()
     {
+        var quantidadeSelecionados = ObterQuantidadeSelecionados();
+        var classificacaoPrincipal = $"Top {quantidadeSelecionados}";
+
         // Primeiro buscamos todo mundo no JSON. Depois filtramos somente TG/Refratário/Substituto.
         var conscritos = ServicoArmazenamentoConscritos.ObterTodos();
         var elegiveis = conscritos
@@ -39,15 +44,16 @@ public partial class TelaQuintaEtapa : Window
         {
             // Depois da ordenação, a posição vira a classificação visual da tabela.
             elegiveis[indice].Posicao = indice + 1;
-            elegiveis[indice].Classificacao = indice < QuantidadeSelecionados
-                ? "Top 50"
+            elegiveis[indice].Classificacao = indice < quantidadeSelecionados
+                ? classificacaoPrincipal
                 : "Substituto";
         }
 
-        var totalTop50 = elegiveis.Count(item => item.Classificacao == "Top 50");
+        var totalTop50 = elegiveis.Count(item => item.Classificacao == classificacaoPrincipal);
         var totalSubstitutos = elegiveis.Count(item => item.Classificacao == "Substituto");
         var totalExcluidos = conscritos.Count - elegiveis.Count;
 
+        TextoRotuloTopClassificados.Text = $"TOP {quantidadeSelecionados}";
         GradeRanking.ItemsSource = elegiveis;
         TextoTotalTop50.Text = totalTop50.ToString();
         TextoTotalSubstitutos.Text = totalSubstitutos.ToString();
@@ -56,7 +62,34 @@ public partial class TelaQuintaEtapa : Window
         TextoTotalExcluidos.Text = totalExcluidos.ToString();
         TextoFeedbackRanking.Text = elegiveis.Count == 0
             ? "Nenhum conscrito TG, Substituto ou Refratário encontrado para a designação final."
-            : $"Ranking atualizado com {elegiveis.Count} conscrito(s). Use o lápis para ajustar a situação final para TG, Substituto ou Dispensado.";
+            : $"Ranking atualizado com {elegiveis.Count} conscrito(s). A faixa principal considera Top {quantidadeSelecionados}. Use o lápis para ajustar a situação final para TG, Substituto ou Dispensado.";
+    }
+
+    private static int ObterQuantidadeSelecionados()
+    {
+        var totalConfigurado = ObterConfiguracaoDoProcesso().TotalClassificados;
+        return totalConfigurado > 0 ? totalConfigurado : QuantidadeSelecionadosPadrao;
+    }
+
+    private static ConfiguracaoProcesso ObterConfiguracaoDoProcesso()
+    {
+        var configuracaoEmMemoria = ServicoConfiguracaoProcesso._configuracoes.LastOrDefault();
+        if (configuracaoEmMemoria is not null)
+        {
+            return configuracaoEmMemoria;
+        }
+
+        var caminhoArquivo = AppDomain.CurrentDomain.BaseDirectory;
+        var raizDoProjeto = Path.GetFullPath(Path.Combine(caminhoArquivo, @"..\..\..\"));
+        var caminhoCompleto = Path.Combine(raizDoProjeto, "processo-config.json");
+
+        if (!File.Exists(caminhoCompleto))
+        {
+            return ServicoConfiguracaoProcesso.Obter();
+        }
+
+        var conteudo = File.ReadAllText(caminhoCompleto);
+        return JsonSerializer.Deserialize<ConfiguracaoProcesso>(conteudo) ?? ServicoConfiguracaoProcesso.Obter();
     }
 
     private static bool ConscritoEhElegivelParaRanking(Conscrito conscrito)

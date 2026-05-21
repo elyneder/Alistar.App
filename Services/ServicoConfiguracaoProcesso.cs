@@ -72,7 +72,7 @@ public static class ServicoConfiguracaoProcesso
 
     private static void RegistrarAlteracoes(ConfiguracaoProcesso anterior, ConfiguracaoProcesso atual)
     {
-        ServicoAuditoria.RegistrarAlteracao("ConfiguraÃ§Ã£o do Processo", "Data de fechamento", anterior.DataFechamento.ToShortDateString(), atual.DataFechamento.ToShortDateString());
+        ServicoAuditoria.RegistrarAlteracao("Configuração do Processo", "Data de fechamento", anterior.DataFechamento.ToShortDateString(), atual.DataFechamento.ToShortDateString());
         ServicoAuditoria.RegistrarAlteracao("Configuração do Processo", "Data de abertura", anterior.DataAbertura.ToShortDateString(), atual.DataAbertura.ToShortDateString());
         ServicoAuditoria.RegistrarAlteracao("Configuração do Processo", "Ano limite", anterior.AnoLimiteNascimento.ToString(), atual.AnoLimiteNascimento.ToString());
         ServicoAuditoria.RegistrarAlteracao("Configuração do Processo", "Total de classificados", anterior.TotalClassificados.ToString(), atual.TotalClassificados.ToString());

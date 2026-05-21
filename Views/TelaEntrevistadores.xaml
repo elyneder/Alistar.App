@@ -129,7 +129,11 @@
                         <SolidColorBrush x:Key="{x:Static SystemColors.InactiveSelectionHighlightTextBrushKey}" Color="#123322"/>
                         <Style TargetType="DataGridRow">
                             <Setter Property="Background" Value="White" />
+                            <Setter Property="Foreground" Value="#123322" />
                             <Style.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter Property="Background" Value="#F3F8F5" />
+                                </Trigger>
                                 <Trigger Property="IsSelected" Value="True">
                                     <Setter Property="Background" Value="#E3F5EA"/>
                                     <Setter Property="Foreground" Value="#123322"/>
@@ -148,16 +152,43 @@
 
                         <Style TargetType="DataGridCell">
                             <Setter Property="Padding" Value="12,0" />
+                            <Setter Property="Foreground" Value="#123322" />
+                            <Setter Property="FocusVisualStyle" Value="{x:Null}" />
                             <Setter Property="Template">
                                 <Setter.Value>
                                     <ControlTemplate TargetType="DataGridCell">
                                         <Border Padding="{TemplateBinding Padding}"
-                                Background="Transparent">
+                                                Background="{TemplateBinding Background}">
                                             <ContentPresenter VerticalAlignment="Center" />
                                         </Border>
                                     </ControlTemplate>
                                 </Setter.Value>
                             </Setter>
+                            <Style.Triggers>
+                                <Trigger Property="IsSelected" Value="True">
+                                    <Setter Property="Background" Value="#E3F5EA"/>
+                                    <Setter Property="Foreground" Value="#123322"/>
+                                </Trigger>
+                            </Style.Triggers>
+                        </Style>
+
+                        <Style x:Key="BotaoAcaoTabelaStyle" TargetType="Button" BasedOn="{StaticResource BotaoIconeStyle}">
+                            <Setter Property="Width" Value="34" />
+                            <Setter Property="Height" Value="34" />
+                            <Setter Property="Margin" Value="0,0,8,0" />
+                            <Setter Property="FontFamily" Value="Segoe MDL2 Assets" />
+                            <Setter Property="FontSize" Value="14" />
+                            <Setter Property="Background" Value="#EAF1ED" />
+                            <Setter Property="Foreground" Value="#145C3B" />
+                            <Setter Property="BorderThickness" Value="1" />
+                            <Setter Property="BorderBrush" Value="#D5DDD8" />
+                        </Style>
+
+                        <Style x:Key="BotaoAcaoPerigoTabelaStyle" TargetType="Button" BasedOn="{StaticResource BotaoAcaoTabelaStyle}">
+                            <Setter Property="Margin" Value="0" />
+                            <Setter Property="Background" Value="#C0392B" />
+                            <Setter Property="Foreground" Value="White" />
+                            <Setter Property="BorderBrush" Value="#C0392B" />
                         </Style>
 
                     </DataGrid.Resources>
@@ -165,6 +196,26 @@
                     <DataGrid.Columns>
                         <DataGridTextColumn Header="Nome" Binding="{Binding Nome}" Width="2*" />
                         <DataGridTextColumn Header="E-mail" Binding="{Binding Email}" Width="2*" />
+                        <DataGridTemplateColumn Header="Ações" Width="150">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
+                                        <Button Content="&#xE9D9;"
+                                                ToolTip="Ver detalhes"
+                                                Style="{StaticResource BotaoAcaoTabelaStyle}"
+                                                Click="DetalhesEntrevistadorBotao_Click" />
+                                        <Button Content="&#xE70F;"
+                                                ToolTip="Editar"
+                                                Style="{StaticResource BotaoAcaoTabelaStyle}"
+                                                Click="EditarEntrevistadorBotao_Click" />
+                                        <Button Content="&#xE74D;"
+                                                ToolTip="Excluir"
+                                                Style="{StaticResource BotaoAcaoPerigoTabelaStyle}"
+                                                Click="ExcluirEntrevistadorBotao_Click" />
+                                    </StackPanel>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
                     </DataGrid.Columns>
 
                 </DataGrid>

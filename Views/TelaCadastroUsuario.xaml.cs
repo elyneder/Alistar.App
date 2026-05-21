@@ -72,7 +72,7 @@ public partial class TelaCadastroUsuario : Window
 
         if (resultadoCadastro == ResultadoCadastroUsuario.EmailJaCadastrado)
         {
-            TextoFeedbackCadastro.Text = "JÃ¡ existe uma conta com este e-mail.";
+            TextoFeedbackCadastro.Text = "Já existe uma conta com este e-mail.";
             return;
         }
 

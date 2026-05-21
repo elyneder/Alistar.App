@@ -464,6 +464,23 @@
                                   AlternatingRowBackground="#FAFCFB"
                                   RowHeight="40">
                             <DataGrid.Resources>
+                                <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}" Color="#E3F5EA"/>
+                                <SolidColorBrush x:Key="{x:Static SystemColors.HighlightTextBrushKey}" Color="#123322"/>
+                                <SolidColorBrush x:Key="{x:Static SystemColors.InactiveSelectionHighlightBrushKey}" Color="#E3F5EA"/>
+                                <SolidColorBrush x:Key="{x:Static SystemColors.InactiveSelectionHighlightTextBrushKey}" Color="#123322"/>
+                                <Style TargetType="DataGridRow">
+                                    <Setter Property="Background" Value="White" />
+                                    <Setter Property="Foreground" Value="#123322" />
+                                    <Style.Triggers>
+                                        <Trigger Property="IsMouseOver" Value="True">
+                                            <Setter Property="Background" Value="#F3F8F5" />
+                                        </Trigger>
+                                        <Trigger Property="IsSelected" Value="True">
+                                            <Setter Property="Background" Value="#E3F5EA"/>
+                                            <Setter Property="Foreground" Value="#123322"/>
+                                        </Trigger>
+                                    </Style.Triggers>
+                                </Style>
                                 <Style TargetType="DataGridColumnHeader">
                                     <Setter Property="Background" Value="#F3F7F5" />
                                     <Setter Property="Foreground" Value="#123322" />
@@ -763,135 +780,6 @@
                                 </ScrollViewer>
                             </TabItem>
 
-                            <TabItem Header="Lista">
-                                <DataGrid x:Name="GradeSituacoes"
-                                          Margin="0,18,0,0"
-                                          AutoGenerateColumns="False"
-                                          CanUserAddRows="False"
-                                          IsReadOnly="True"
-                                          HeadersVisibility="Column"
-                                          BorderThickness="1"
-                                          BorderBrush="#DFE7E2"
-                                          GridLinesVisibility="Horizontal"
-                                          HorizontalGridLinesBrush="#F0F4F2"
-                                          RowBackground="White"
-                                          AlternatingRowBackground="#FAFCFB"
-                                          RowHeight="40">
-                                    <DataGrid.Resources>
-                                        <Style TargetType="DataGridColumnHeader">
-                                            <Setter Property="Background" Value="#F3F7F5" />
-                                            <Setter Property="Foreground" Value="#123322" />
-                                            <Setter Property="FontWeight" Value="SemiBold" />
-                                            <Setter Property="Padding" Value="12,10" />
-                                            <Setter Property="BorderThickness" Value="0,0,0,1" />
-                                            <Setter Property="BorderBrush" Value="#DFE7E2" />
-                                        </Style>
-                                        <Style TargetType="DataGridCell">
-                                            <Setter Property="Padding" Value="12,0" />
-                                            <Setter Property="Template">
-                                                <Setter.Value>
-                                                    <ControlTemplate TargetType="DataGridCell">
-                                                        <Border Padding="{TemplateBinding Padding}" Background="Transparent">
-                                                            <ContentPresenter VerticalAlignment="Center" />
-                                                        </Border>
-                                                    </ControlTemplate>
-                                                </Setter.Value>
-                                            </Setter>
-                                        </Style>
-                                    </DataGrid.Resources>
-                                    <DataGrid.Columns>
-                                        <DataGridTextColumn Header="Nome" Binding="{Binding Nome}" Width="1.7*" />
-                                        <DataGridTextColumn Header="CPF" Binding="{Binding CPF}" Width="1.1*" />
-                                        <DataGridTextColumn Header="RA" Binding="{Binding RA}" Width="0.9*" />
-                                        <DataGridTemplateColumn Header="Andamento" Width="1.1*" SortMemberPath="AndamentoProcesso">
-                                            <DataGridTemplateColumn.CellTemplate>
-                                                <DataTemplate>
-                                                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                                                        <Ellipse Width="10" Height="10" Margin="0,0,8,0">
-                                                            <Ellipse.Style>
-                                                                <Style TargetType="Ellipse">
-                                                                    <Setter Property="Fill" Value="#FACC15" />
-                                                                    <Style.Triggers>
-                                                                        <DataTrigger Binding="{Binding AndamentoProcesso}" Value="Finalizado">
-                                                                            <Setter Property="Fill" Value="#16A34A" />
-                                                                        </DataTrigger>
-                                                                        <DataTrigger Binding="{Binding AndamentoProcesso}" Value="Faltoso">
-                                                                            <Setter Property="Fill" Value="#2563EB" />
-                                                                        </DataTrigger>
-                                                                    </Style.Triggers>
-                                                                </Style>
-                                                            </Ellipse.Style>
-                                                        </Ellipse>
-                                                        <TextBlock Text="{Binding AndamentoProcesso}"
-                                                                   FontWeight="SemiBold"
-                                                                   Foreground="#1F2937" />
-                                                    </StackPanel>
-                                                </DataTemplate>
-                                            </DataGridTemplateColumn.CellTemplate>
-                                        </DataGridTemplateColumn>
-                                        <DataGridTemplateColumn Header="Situação" Width="1*" SortMemberPath="Situacao">
-                                            <DataGridTemplateColumn.CellTemplate>
-                                                <DataTemplate>
-                                                    <Border Padding="10,4" CornerRadius="12" HorizontalAlignment="Left">
-                                                        <Border.Style>
-                                                            <Style TargetType="Border">
-                                                                <Setter Property="Background" Value="#E5E7EB" />
-                                                                <Style.Triggers>
-                                                                    <DataTrigger Binding="{Binding Situacao}" Value="TG">
-                                                                        <Setter Property="Background" Value="#166534" />
-                                                                    </DataTrigger>
-                                                                    <DataTrigger Binding="{Binding Situacao}" Value="Substituto">
-                                                                        <Setter Property="Background" Value="#86EFAC" />
-                                                                    </DataTrigger>
-                                                                    <DataTrigger Binding="{Binding Situacao}" Value="Apto">
-                                                                        <Setter Property="Background" Value="#FACC15" />
-                                                                    </DataTrigger>
-                                                                    <DataTrigger Binding="{Binding Situacao}" Value="Inapto">
-                                                                        <Setter Property="Background" Value="#F97316" />
-                                                                    </DataTrigger>
-                                                                    <DataTrigger Binding="{Binding Situacao}" Value="Dispensado">
-                                                                        <Setter Property="Background" Value="#DC2626" />
-                                                                    </DataTrigger>
-                                                                    <DataTrigger Binding="{Binding Situacao}" Value="Refratário">
-                                                                        <Setter Property="Background" Value="#7C2D12" />
-                                                                    </DataTrigger>
-                                                                </Style.Triggers>
-                                                            </Style>
-                                                        </Border.Style>
-                                                        <TextBlock Text="{Binding Situacao}" FontWeight="SemiBold">
-                                                            <TextBlock.Style>
-                                                                <Style TargetType="TextBlock">
-                                                                    <Setter Property="Foreground" Value="#1F2937" />
-                                                                    <Style.Triggers>
-                                                                        <DataTrigger Binding="{Binding Situacao}" Value="TG">
-                                                                            <Setter Property="Foreground" Value="White" />
-                                                                        </DataTrigger>
-                                                                        <DataTrigger Binding="{Binding Situacao}" Value="Substituto">
-                                                                            <Setter Property="Foreground" Value="#14532D" />
-                                                                        </DataTrigger>
-                                                                        <DataTrigger Binding="{Binding Situacao}" Value="Apto">
-                                                                            <Setter Property="Foreground" Value="#713F12" />
-                                                                        </DataTrigger>
-                                                                        <DataTrigger Binding="{Binding Situacao}" Value="Inapto">
-                                                                            <Setter Property="Foreground" Value="White" />
-                                                                        </DataTrigger>
-                                                                        <DataTrigger Binding="{Binding Situacao}" Value="Dispensado">
-                                                                            <Setter Property="Foreground" Value="White" />
-                                                                        </DataTrigger>
-                                                                        <DataTrigger Binding="{Binding Situacao}" Value="Refratário">
-                                                                            <Setter Property="Foreground" Value="White" />
-                                                                        </DataTrigger>
-                                                                    </Style.Triggers>
-                                                                </Style>
-                                                            </TextBlock.Style>
-                                                        </TextBlock>
-                                                    </Border>
-                                                </DataTemplate>
-                                            </DataGridTemplateColumn.CellTemplate>
-                                        </DataGridTemplateColumn>
-                                    </DataGrid.Columns>
-                                </DataGrid>
-                            </TabItem>
                         </TabControl>
                     </Grid>
                 </Border>
@@ -934,6 +822,23 @@
                                   AlternatingRowBackground="#FAFCFB"
                                   RowHeight="40">
                             <DataGrid.Resources>
+                                <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}" Color="#E3F5EA"/>
+                                <SolidColorBrush x:Key="{x:Static SystemColors.HighlightTextBrushKey}" Color="#123322"/>
+                                <SolidColorBrush x:Key="{x:Static SystemColors.InactiveSelectionHighlightBrushKey}" Color="#E3F5EA"/>
+                                <SolidColorBrush x:Key="{x:Static SystemColors.InactiveSelectionHighlightTextBrushKey}" Color="#123322"/>
+                                <Style TargetType="DataGridRow">
+                                    <Setter Property="Background" Value="White" />
+                                    <Setter Property="Foreground" Value="#123322" />
+                                    <Style.Triggers>
+                                        <Trigger Property="IsMouseOver" Value="True">
+                                            <Setter Property="Background" Value="#F3F8F5" />
+                                        </Trigger>
+                                        <Trigger Property="IsSelected" Value="True">
+                                            <Setter Property="Background" Value="#E3F5EA"/>
+                                            <Setter Property="Foreground" Value="#123322"/>
+                                        </Trigger>
+                                    </Style.Triggers>
+                                </Style>
                                 <Style TargetType="DataGridColumnHeader">
                                     <Setter Property="Background" Value="#F3F7F5" />
                                     <Setter Property="Foreground" Value="#123322" />
@@ -944,20 +849,65 @@
                                 </Style>
                                 <Style TargetType="DataGridCell">
                                     <Setter Property="Padding" Value="12,0" />
+                                    <Setter Property="Foreground" Value="#123322" />
+                                    <Setter Property="FocusVisualStyle" Value="{x:Null}" />
                                     <Setter Property="Template">
                                         <Setter.Value>
                                             <ControlTemplate TargetType="DataGridCell">
-                                                <Border Padding="{TemplateBinding Padding}" Background="Transparent">
+                                                <Border Padding="{TemplateBinding Padding}" Background="{TemplateBinding Background}">
                                                     <ContentPresenter VerticalAlignment="Center" />
                                                 </Border>
                                             </ControlTemplate>
                                         </Setter.Value>
                                     </Setter>
+                                    <Style.Triggers>
+                                        <Trigger Property="IsSelected" Value="True">
+                                            <Setter Property="Background" Value="#E3F5EA"/>
+                                            <Setter Property="Foreground" Value="#123322"/>
+                                        </Trigger>
+                                    </Style.Triggers>
+                                </Style>
+                                <Style x:Key="BotaoAcaoTabelaStyle" TargetType="Button" BasedOn="{StaticResource BotaoIconeStyle}">
+                                    <Setter Property="Width" Value="34" />
+                                    <Setter Property="Height" Value="34" />
+                                    <Setter Property="Margin" Value="0,0,8,0" />
+                                    <Setter Property="FontFamily" Value="Segoe MDL2 Assets" />
+                                    <Setter Property="FontSize" Value="14" />
+                                    <Setter Property="Background" Value="#EAF1ED" />
+                                    <Setter Property="Foreground" Value="#145C3B" />
+                                    <Setter Property="BorderThickness" Value="1" />
+                                    <Setter Property="BorderBrush" Value="#D5DDD8" />
+                                </Style>
+                                <Style x:Key="BotaoAcaoPerigoTabelaStyle" TargetType="Button" BasedOn="{StaticResource BotaoAcaoTabelaStyle}">
+                                    <Setter Property="Margin" Value="0" />
+                                    <Setter Property="Background" Value="#C0392B" />
+                                    <Setter Property="Foreground" Value="White" />
+                                    <Setter Property="BorderBrush" Value="#C0392B" />
                                 </Style>
                             </DataGrid.Resources>
                             <DataGrid.Columns>
                                 <DataGridTextColumn Header="Nome" Binding="{Binding Nome}" Width="2*" />
                                 <DataGridTextColumn Header="E-mail" Binding="{Binding Email}" Width="2*" />
+                                <DataGridTemplateColumn Header="Ações" Width="150">
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
+                                                <Button Content="&#xE9D9;"
+                                                        ToolTip="Ver detalhes"
+                                                        Style="{StaticResource BotaoAcaoTabelaStyle}"
+                                                        Click="DetalhesEntrevistadorBotao_Click" />
+                                                <Button Content="&#xE70F;"
+                                                        ToolTip="Editar"
+                                                        Style="{StaticResource BotaoAcaoTabelaStyle}"
+                                                        Click="EditarEntrevistadorBotao_Click" />
+                                                <Button Content="&#xE74D;"
+                                                        ToolTip="Excluir"
+                                                        Style="{StaticResource BotaoAcaoPerigoTabelaStyle}"
+                                                        Click="ExcluirEntrevistadorBotao_Click" />
+                                            </StackPanel>
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                </DataGridTemplateColumn>
                             </DataGrid.Columns>
                         </DataGrid>
                     </Grid>

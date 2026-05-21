@@ -1,62 +1,62 @@
-{
-  "DataAbertura": "2026-05-15T00:00:00-03:00",
-  "DataFechamento": "2026-08-15T00:00:00-03:00",
-  "AnoLimiteNascimento": 2000,
-  "TotalClassificados": 40,
-  "ServidoresAutorizados": [
-    "cabo1@gmail.com",
-    "medico1@alistar.com"
-  ],
-  "Etapas": [
-    {
-      "Numero": 1,
-      "Nome": "Primeira Etapa",
-      "PercentualEliminacao": 10,
-      "QuantidadeEliminados": 5,
-      "EntrevistadoresAutorizados": [
-        "cabo1@gmail.com",
-        "medico1@alistar.com"
-      ]
-    },
-    {
-      "Numero": 2,
-      "Nome": "Exames M\u00E9dicos",
-      "PercentualEliminacao": 10,
-      "QuantidadeEliminados": 5,
-      "EntrevistadoresAutorizados": [
-        "cabo1@gmail.com",
-        "medico1@alistar.com"
-      ]
-    },
-    {
-      "Numero": 3,
-      "Nome": "Entrevista T\u00E9cnica",
-      "PercentualEliminacao": 10,
-      "QuantidadeEliminados": 5,
-      "EntrevistadoresAutorizados": [
-        "cabo1@gmail.com",
-        "medico1@alistar.com"
-      ]
-    },
-    {
-      "Numero": 4,
-      "Nome": "Reavalia\u00E7\u00E3o M\u00E9dica",
-      "PercentualEliminacao": 10,
-      "QuantidadeEliminados": 5,
-      "EntrevistadoresAutorizados": [
-        "cabo1@gmail.com",
-        "medico1@alistar.com"
-      ]
-    },
-    {
-      "Numero": 5,
-      "Nome": "Designa\u00E7\u00E3o Final",
-      "PercentualEliminacao": 0,
-      "QuantidadeEliminados": 0,
-      "EntrevistadoresAutorizados": [
-        "cabo1@gmail.com",
-        "medico1@alistar.com"
-      ]
-    }
-  ]
+﻿{
+    "DataAbertura":  "2026-05-15T00:00:00-03:00",
+    "DataFechamento":  "2026-08-15T00:00:00-03:00",
+    "AnoLimiteNascimento":  2008,
+    "TotalClassificados":  40,
+    "ServidoresAutorizados":  [
+                                  "cabo1@gmail.com",
+                                  "cabo2@gmail.com"
+                              ],
+    "Etapas":  [
+                   {
+                       "Numero":  1,
+                       "Nome":  "Primeira Etapa",
+                       "PercentualEliminacao":  10,
+                       "QuantidadeEliminados":  5,
+                       "EntrevistadoresAutorizados":  [
+                                                          "cabo1@gmail.com",
+                                                          "cabo2@gmail.com"
+                                                      ]
+                   },
+                   {
+                       "Numero":  2,
+                       "Nome":  "Exames Médicos",
+                       "PercentualEliminacao":  10,
+                       "QuantidadeEliminados":  5,
+                       "EntrevistadoresAutorizados":  [
+                                                          "cabo1@gmail.com",
+                                                          "cabo2@gmail.com"
+                                                      ]
+                   },
+                   {
+                       "Numero":  3,
+                       "Nome":  "Entrevista Técnica",
+                       "PercentualEliminacao":  10,
+                       "QuantidadeEliminados":  5,
+                       "EntrevistadoresAutorizados":  [
+                                                          "cabo1@gmail.com",
+                                                          "cabo2@gmail.com"
+                                                      ]
+                   },
+                   {
+                       "Numero":  4,
+                       "Nome":  "Reavaliação Médica",
+                       "PercentualEliminacao":  10,
+                       "QuantidadeEliminados":  5,
+                       "EntrevistadoresAutorizados":  [
+                                                          "cabo1@gmail.com",
+                                                          "cabo2@gmail.com"
+                                                      ]
+                   },
+                   {
+                       "Numero":  5,
+                       "Nome":  "Designação Final",
+                       "PercentualEliminacao":  0,
+                       "QuantidadeEliminados":  0,
+                       "EntrevistadoresAutorizados":  [
+                                                          "cabo1@gmail.com",
+                                                          "cabo2@gmail.com"
+                                                      ]
+                   }
+               ]
 }

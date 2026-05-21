@@ -2,7 +2,6 @@ using Alistar.App.Models;
 using System.IO;
 using System.Text.Json;
 using System.Windows;
-using System.Xml.Linq;
 
 namespace Alistar.App.Services;
 
@@ -15,6 +14,14 @@ namespace Alistar.App.Services;
 /// </remarks>
 public static class ServicoAutenticacao
 {
+    private static readonly string CaminhoArquivo = AppDomain.CurrentDomain.BaseDirectory;
+    private static readonly string RaizDoProjeto = Path.GetFullPath(Path.Combine(CaminhoArquivo, @"..\..\..\"));
+    private static readonly string CaminhoCompleto = Path.Combine(RaizDoProjeto, "entrevistadores.json");
+
+    private static readonly JsonSerializerOptions OpcoesJson = new()
+    {
+        WriteIndented = true
+    };
 
     public static readonly List<ContaUsuario> Contas = new List<ContaUsuario> {
         new ContaUsuario(){
@@ -30,51 +37,52 @@ public static class ServicoAutenticacao
             AdministradorGeral = true
         },
         new ContaUsuario(){
-            Nome = "Medico Exercito",
-            Email = "medico1@alistar.com",
-            Senha = "$2a$11$iyMesKR9emDlxInsjNKWSehASGm8ts0UY4qcTiTQnADZEWLteVKXa",
-            AdministradorGeral = false
-        },
-        new ContaUsuario(){
             Nome = "Cabo 1",
             Email = "cabo1@gmail.com",
             Senha = "$2a$11$K/8V8RgPIc3xN7fzcHiwteGTtnZQHFwptbjAHZAhM4EjZL7Jzncl2",
             AdministradorGeral = false
+        },
+        new ContaUsuario(){
+            Nome = "Cabo 2",
+            Email = "cabo2@gmail.com",
+            Senha = "$2a$11$wQYkWkOOZpKm0rOsI5mrdecfgHAqyBgwE4W3ahIXfIO1pJ4vRDUcm",
+            AdministradorGeral = false
         }
     };
-
-    // Caminho calculado ate o arquivo entrevistadores.json do projeto.
-    //private static string caminhoArquivo = AppDomain.CurrentDomain.BaseDirectory;
-    //private static string raizDoProjeto = Path.GetFullPath(Path.Combine(caminhoArquivo, @"..\..\..\"));
-    //private static string caminhoCompleto = Path.Combine(raizDoProjeto, "entrevistadores.json");
 
     /// <summary>
     /// Usuário logado atualmente. Fica nulo quando não há sessão ativa.
     /// </summary>
     public static ContaUsuario? UsuarioAtual { get; private set; }
 
-    //static ServicoAutenticacao()
-    //{
-    //    CarregarLista();
-    //}
+    static ServicoAutenticacao()
+    {
+        CarregarLista();
+        GarantirSegundoAdministrador();
+    }
 
     /// <summary>
     /// Carrega as contas do arquivo JSON para a lista em memoria.
     /// </summary>
-    //public static void CarregarLista()
-    //{
-    //    if (File.Exists(caminhoCompleto))
-    //    {
-    //        string json = File.ReadAllText(caminhoCompleto);
-    //        var data = JsonSerializer.Deserialize<List<ContaUsuario>>(json);
+    public static void CarregarLista()
+    {
+        if (!File.Exists(CaminhoCompleto))
+        {
+            SalvarContas();
+            return;
+        }
 
-    //        if (data != null)
-    //        {
-    //            Contas.Clear();
-    //            Contas.AddRange(data);
-    //        }
-    //    }
-    //}
+        string json = File.ReadAllText(CaminhoCompleto);
+        var data = JsonSerializer.Deserialize<List<ContaUsuario>>(json, OpcoesJson);
+
+        if (data == null)
+        {
+            return;
+        }
+
+        Contas.Clear();
+        Contas.AddRange(data);
+    }
 
     /// <summary>
     /// Valida email e senha digitados na tela de login.
@@ -204,9 +212,8 @@ public static class ServicoAutenticacao
                 AdministradorGeral = false
             });
 
-            //string jsonString = JsonSerializer.Serialize(Contas, new JsonSerializerOptions { WriteIndented = true });
-
-            //File.WriteAllText(caminhoCompleto, jsonString);
+            SalvarContas();
+            ServicoAuditoria.RegistrarAcao("Cadastro", "Entrevistador", $"Administrador cadastrou o entrevistador {email}.");
         }
         catch (Exception ex)
         {
@@ -214,6 +221,73 @@ public static class ServicoAutenticacao
         }
 
         return ResultadoCadastroUsuario.Sucesso;
+    }
+
+    public static ContaUsuario? ObterEntrevistadorPorEmail(string email)
+    {
+        if (!UsuarioAtualEhAdministrador())
+        {
+            return null;
+        }
+
+        return Contas.FirstOrDefault(conta =>
+            !UsuarioEhAdministrador(conta) &&
+            string.Equals(conta.Email, email, StringComparison.OrdinalIgnoreCase));
+    }
+
+    public static ResultadoCadastroUsuario AtualizarEntrevistador(string emailOriginal, string nome, string email, string? novaSenha)
+    {
+        if (!UsuarioAtualEhAdministrador())
+        {
+            return ResultadoCadastroUsuario.SemPermissao;
+        }
+
+        var conta = ObterEntrevistadorPorEmail(emailOriginal);
+        if (conta is null)
+        {
+            return ResultadoCadastroUsuario.NaoEncontrado;
+        }
+
+        var emailEmUso = Contas.Any(usuario =>
+            !string.Equals(usuario.Email, emailOriginal, StringComparison.OrdinalIgnoreCase) &&
+            string.Equals(usuario.Email, email, StringComparison.OrdinalIgnoreCase));
+
+        if (emailEmUso)
+        {
+            return ResultadoCadastroUsuario.EmailJaCadastrado;
+        }
+
+        var emailAnterior = conta.Email;
+        conta.Nome = nome.Trim();
+        conta.Email = email.Trim();
+
+        if (!string.IsNullOrWhiteSpace(novaSenha))
+        {
+            conta.Senha = Seguranca.CriptografarSenha(novaSenha.Trim());
+        }
+
+        SalvarContas();
+        ServicoAuditoria.RegistrarAcao("Alteracao", "Entrevistador", $"Administrador atualizou o entrevistador {emailAnterior}.");
+        return ResultadoCadastroUsuario.Sucesso;
+    }
+
+    public static bool ExcluirEntrevistador(string email)
+    {
+        if (!UsuarioAtualEhAdministrador())
+        {
+            return false;
+        }
+
+        var conta = ObterEntrevistadorPorEmail(email);
+        if (conta is null)
+        {
+            return false;
+        }
+
+        Contas.Remove(conta);
+        SalvarContas();
+        ServicoAuditoria.RegistrarAcao("Exclusao", "Entrevistador", $"Administrador excluiu o entrevistador {email}.");
+        return true;
     }
 
     private static void GarantirSegundoAdministrador()
@@ -248,14 +322,14 @@ public static class ServicoAutenticacao
             AdministradorGeral = true
         });
 
-        //SalvarContas();
+        SalvarContas();
     }
 
-    //private static void SalvarContas()
-    //{
-    //    string jsonString = JsonSerializer.Serialize(Contas, new JsonSerializerOptions { WriteIndented = true });
-    //    File.WriteAllText(caminhoCompleto, jsonString);
-    //}
+    private static void SalvarContas()
+    {
+        string jsonString = JsonSerializer.Serialize(Contas, OpcoesJson);
+        File.WriteAllText(CaminhoCompleto, jsonString);
+    }
 }
 
 /// <summary>
@@ -265,7 +339,8 @@ public enum ResultadoCadastroUsuario
 {
     Sucesso,
     SemPermissao,
-    EmailJaCadastrado
+    EmailJaCadastrado,
+    NaoEncontrado
 }
 
 public class EntrevistadorResumo

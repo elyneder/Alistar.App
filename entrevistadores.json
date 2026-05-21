@@ -12,15 +12,15 @@
     "AdministradorGeral": true
   },
   {
-    "Nome": "Medico Exercito",
-    "Email": "medico1@alistar.com",
-    "Senha": "$2a$11$iyMesKR9emDlxInsjNKWSehASGm8ts0UY4qcTiTQnADZEWLteVKXa",
-    "AdministradorGeral": false
-  },
-  {
     "Nome": "Cabo 1",
     "Email": "cabo1@gmail.com",
     "Senha": "$2a$11$K/8V8RgPIc3xN7fzcHiwteGTtnZQHFwptbjAHZAhM4EjZL7Jzncl2",
+    "AdministradorGeral": false
+  },
+  {
+    "Nome": "Cabo 2",
+    "Email": "cabo2@gmail.com",
+    "Senha": "$2a$11$wQYkWkOOZpKm0rOsI5mrdecfgHAqyBgwE4W3ahIXfIO1pJ4vRDUcm",
     "AdministradorGeral": false
   }
 ]

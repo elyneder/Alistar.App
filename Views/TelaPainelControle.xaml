@@ -132,7 +132,7 @@
                             Click="VerEntrevistadoresBotao_Click" />
 
                     <Button x:Name="BotaoLogsGerais"
-                            Content=" 📋 Histórico de Atualizações"
+                            Content=" 📋 Histórico de Alterações"
                             Style="{StaticResource BotaoBarraLateralStyle}"
                             Click="MostrarLogsGeraisBotao_Click" />
 

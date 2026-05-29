@@ -1,5 +1,7 @@
 using System.IO;
 using System.Text;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
 using Alistar.App.Models;
 using Microsoft.Win32;
 
@@ -18,7 +20,7 @@ public static class ServicoRelatorioPdf
             return false;
         }
 
-        var documento = new DocumentoPdfSimples($"Ficha de Entrevista - {Valor(conscrito.Nome)}");
+        var documento = new DocumentoPdfSimples($"Ficha de Entrevista - {Valor(conscrito.Nome)}", centralizarConteudo: true);
         documento.AdicionarSecao("Identificação");
         documento.AdicionarCampo("Nome", conscrito.Nome);
         documento.AdicionarCampo("CPF", conscrito.CPF);
@@ -111,6 +113,7 @@ public static class ServicoRelatorioPdf
         documento.AdicionarCampo("Outros atos infracionais", conscrito.Entrevista_Infracao?.OutrosAtosInfracionais);
 
         documento.Salvar(caminho);
+        ServicoAuditoria.RegistrarAcao("Geração de PDF", "Relatório de Cadastro", $"Gerou relatório de cadastro de {Valor(conscrito.Nome)}.");
         return true;
     }
 
@@ -128,12 +131,29 @@ public static class ServicoRelatorioPdf
         }
 
         var entrevista = conscrito.Entrevista_Medica!;
-        var documento = new DocumentoPdfSimples($"Relatório Médico - {Valor(conscrito.Nome)}");
+        var camposResultadoMedico = new (string Rotulo, string? Valor)[]
+        {
+            ("Tipo de análise", entrevista.TipoAnalise),
+            ("Quantidade analisada", entrevista.QuantidadePessoasAnalisadas),
+            ("CRM", entrevista.CRM),
+            ("Resultado de aptidão", entrevista.ResultadoAptidao),
+            ("Restrição", entrevista.Restricao),
+            ("Qual problema", entrevista.QualProblema),
+            ("CID", entrevista.CID),
+            ("Motivo de inaptidão", entrevista.MotivoInaptidao)
+        };
+        var documento = new DocumentoPdfSimples($"Relatório Médico - {Valor(conscrito.Nome)}", centralizarConteudo: true);
         documento.AdicionarSecao("Identificação");
         documento.AdicionarCampo("Nome", conscrito.Nome);
         documento.AdicionarCampo("CPF", conscrito.CPF);
         documento.AdicionarCampo("RA", conscrito.RA);
         documento.AdicionarCampo("Situação", conscrito.Situacao);
+
+        documento.AdicionarSecao("Resultado médico");
+        foreach (var campo in camposResultadoMedico)
+        {
+            documento.AdicionarCampo(campo.Rotulo, campo.Valor);
+        }
 
         documento.AdicionarSecao("Avaliação física");
         documento.AdicionarCampo("Altura", entrevista.Altura);
@@ -160,6 +180,7 @@ public static class ServicoRelatorioPdf
         documento.AdicionarCampo("Dificuldade para dormir", entrevista.TemDificuldadeParaDormir);
 
         documento.Salvar(caminho);
+        ServicoAuditoria.RegistrarAcao("Geração de PDF", "Relatório Médico", $"Gerou relatório médico de {Valor(conscrito.Nome)}.");
         return true;
     }
 
@@ -167,7 +188,13 @@ public static class ServicoRelatorioPdf
     {
         var entrevista = conscrito.Entrevista_Medica;
         return entrevista is not null &&
-               (!string.IsNullOrWhiteSpace(entrevista.Altura) ||
+               (!string.IsNullOrWhiteSpace(entrevista.ResultadoAptidao) ||
+                !string.IsNullOrWhiteSpace(entrevista.CRM) ||
+                !string.IsNullOrWhiteSpace(entrevista.CID) ||
+                !string.IsNullOrWhiteSpace(entrevista.Restricao) ||
+                !string.IsNullOrWhiteSpace(entrevista.QualProblema) ||
+                !string.IsNullOrWhiteSpace(entrevista.MotivoInaptidao) ||
+                !string.IsNullOrWhiteSpace(entrevista.Altura) ||
                 !string.IsNullOrWhiteSpace(entrevista.Peso) ||
                 !string.IsNullOrWhiteSpace(entrevista.PressaoArterial) ||
                 !string.IsNullOrWhiteSpace(entrevista.FrequenciaCardiaca) ||
@@ -216,15 +243,32 @@ public static class ServicoRelatorioPdf
         private const double Margem = 36;
         private const double TopoConteudo = 738;
         private const double Rodape = 34;
-        private const double LarguraColuna = 252;
+        private const double LarguraColunaPadrao = 252;
+        private const double LarguraColunaCentralizada = 430;
         private const double EspacoColunas = 19;
         private readonly List<SecaoPdf> _secoes = [];
         private readonly string _titulo;
+        private readonly bool _centralizarConteudo;
+        private readonly ImagemPdf? _logo;
+        private readonly DateTime _geradoEm;
+        private readonly string _geradoPor;
         private SecaoPdf? _secaoAtual;
 
-        public DocumentoPdfSimples(string titulo)
+        private double LarguraColuna => _centralizarConteudo ? LarguraColunaCentralizada : LarguraColunaPadrao;
+
+        public DocumentoPdfSimples(string titulo, bool centralizarConteudo = false)
         {
             _titulo = titulo;
+            _centralizarConteudo = centralizarConteudo;
+            _logo = CarregarLogoPadrao();
+            _geradoEm = DateTime.Now;
+
+            var usuario = ServicoAutenticacao.UsuarioAtual;
+            var nomeUsuario = string.IsNullOrWhiteSpace(usuario?.Nome) ? "Sistema" : usuario.Nome.Trim();
+            var tipoUsuario = usuario is null
+                ? "Sistema"
+                : ServicoAutenticacao.UsuarioEhAdministrador(usuario) ? "Administrador" : "Entrevistador";
+            _geradoPor = $"{nomeUsuario} ({tipoUsuario})";
         }
 
         public void AdicionarSecao(string titulo)
@@ -306,7 +350,7 @@ public static class ServicoRelatorioPdf
                     return;
                 }
 
-                if (coluna == 0)
+                if (!_centralizarConteudo && coluna == 0)
                 {
                     coluna = 1;
                     posicaoY = TopoConteudo;
@@ -321,7 +365,7 @@ public static class ServicoRelatorioPdf
             }
         }
 
-        private static void SalvarPaginas(string caminho, List<string> paginas)
+        private void SalvarPaginas(string caminho, List<string> paginas)
         {
             var objetos = new List<byte[]>();
             var paginasIds = new List<int>();
@@ -331,14 +375,29 @@ public static class ServicoRelatorioPdf
             objetos.Add(Bytes("<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica /Encoding /WinAnsiEncoding >>"));
             objetos.Add(Bytes("<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica-Bold /Encoding /WinAnsiEncoding >>"));
 
+            int? mascaraLogoId = null;
+            int? logoId = null;
+            if (_logo is not null)
+            {
+                if (_logo.Alpha.Length > 0)
+                {
+                    mascaraLogoId = objetos.Count + 1;
+                    objetos.Add(CriarObjetoMascaraImagem(_logo));
+                }
+
+                logoId = objetos.Count + 1;
+                objetos.Add(CriarObjetoImagem(_logo, mascaraLogoId));
+            }
+
             foreach (var pagina in paginas)
             {
                 var conteudoBytes = Encoding.Latin1.GetBytes(pagina);
                 var paginaId = objetos.Count + 1;
                 var conteudoId = objetos.Count + 2;
+                var xObject = logoId.HasValue ? $" /XObject << /Logo {logoId.Value} 0 R >>" : string.Empty;
 
                 paginasIds.Add(paginaId);
-                objetos.Add(Bytes($"<< /Type /Page /Parent 2 0 R /MediaBox [0 0 {LarguraPagina} {AlturaPagina}] /Resources << /Font << /F1 3 0 R /F2 4 0 R >> >> /Contents {conteudoId} 0 R >>"));
+                objetos.Add(Bytes($"<< /Type /Page /Parent 2 0 R /MediaBox [0 0 {LarguraPagina} {AlturaPagina}] /Resources << /Font << /F1 3 0 R /F2 4 0 R >>{xObject} >> /Contents {conteudoId} 0 R >>"));
                 objetos.Add(Bytes($"<< /Length {conteudoBytes.Length} >>\nstream\n{pagina}\nendstream"));
             }
 
@@ -372,10 +431,16 @@ public static class ServicoRelatorioPdf
         {
             AdicionarRetangulo(builder, 0, 776, LarguraPagina, 66, "0.04 0.12 0.08");
             AdicionarRetangulo(builder, Margem, 758, LarguraPagina - (Margem * 2), 1.4, "0.10 0.40 0.26");
-            AdicionarTexto(builder, Margem, 815, "ALISTAR", 9, "F2", "1 1 1");
-            AdicionarTexto(builder, Margem, 795, SanitizarTexto(_titulo).ToUpperInvariant(), 13, "F2", "1 1 1");
-            AdicionarTexto(builder, 420, 815, $"Página {pagina}", 7.5, "F1", "0.82 0.91 0.86");
-            AdicionarTexto(builder, 420, 797, $"Gerado em {DateTime.Now:dd/MM/yyyy HH:mm}", 7.5, "F1", "0.82 0.91 0.86");
+            if (_logo is not null)
+            {
+                AdicionarImagem(builder, 36, 795, 52, 25);
+            }
+
+            AdicionarTexto(builder, 96, 815, "ALISTAR", 9, "F2", "1 1 1");
+            AdicionarTexto(builder, 96, 795, SanitizarTexto(_titulo).ToUpperInvariant(), 12.5, "F2", "1 1 1");
+            AdicionarTexto(builder, 420, 821, $"Página {pagina}", 7.5, "F1", "0.82 0.91 0.86");
+            AdicionarTexto(builder, 420, 803, $"Gerado em {_geradoEm:dd/MM/yyyy HH:mm}", 7.5, "F1", "0.82 0.91 0.86");
+            AdicionarTexto(builder, 420, 785, $"Gerado por: {_geradoPor}", 7.1, "F1", "0.82 0.91 0.86");
         }
 
         private static void AdicionarRodape(StringBuilder builder, int pagina, int totalPaginas)
@@ -385,10 +450,16 @@ public static class ServicoRelatorioPdf
             AdicionarTexto(builder, 395, 18, "Documento gerado pelo Sistema Alistar", 7, "F1", "0.35 0.39 0.37");
         }
 
-        private static void AdicionarFaixaSecao(StringBuilder builder, double x, double y, string titulo, double tamanhoFonte)
+        private void AdicionarFaixaSecao(StringBuilder builder, double x, double y, string titulo, double tamanhoFonte)
         {
             AdicionarRetangulo(builder, x, y - 4, LarguraColuna, 13, "0.07 0.07 0.07");
             AdicionarTexto(builder, x + 5, y, titulo.ToUpperInvariant(), Math.Max(6.8, tamanhoFonte), "F2", "1 1 1");
+        }
+
+        private static void AdicionarImagem(StringBuilder builder, double x, double y, double largura, double altura)
+        {
+            builder.AppendLine("q");
+            builder.Append(FormattableString.Invariant($"{largura:0.##} 0 0 {altura:0.##} {x:0.##} {y:0.##} cm /Logo Do Q\n"));
         }
 
         private static void AdicionarTexto(StringBuilder builder, double x, double y, string texto, double tamanho, string fonte, string cor)
@@ -414,9 +485,161 @@ public static class ServicoRelatorioPdf
             builder.Append(FormattableString.Invariant($" RG {x:0.##} {y:0.##} m {x + largura:0.##} {y:0.##} l S\n"));
         }
 
-        private static double ObterXColuna(int coluna)
+        private double ObterXColuna(int coluna)
         {
+            if (_centralizarConteudo)
+            {
+                return (LarguraPagina - LarguraColuna) / 2;
+            }
+
             return Margem + (coluna * (LarguraColuna + EspacoColunas));
+        }
+
+        private static ImagemPdf? CarregarLogoPadrao()
+        {
+            var caminhosLogo = new[]
+            {
+                Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Views", "Assets", "2-semfundo.png"),
+                Path.GetFullPath(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"..\..\..\Views\Assets\2-semfundo.png")),
+                Path.GetFullPath(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"..\..\..\Views\Assets\1-semfundo.png"))
+            };
+
+            foreach (var caminho in caminhosLogo)
+            {
+                if (!File.Exists(caminho))
+                {
+                    continue;
+                }
+
+                using var stream = File.OpenRead(caminho);
+                var imagem = CarregarImagem(stream, cortarTextoDaLogo: true);
+                if (imagem is not null)
+                {
+                    return imagem;
+                }
+            }
+
+            var recurso = System.Windows.Application.GetResourceStream(new Uri("pack://application:,,,/Views/Assets/2-semfundo.png"));
+            if (recurso is null)
+            {
+                return null;
+            }
+
+            using (recurso.Stream)
+            {
+                return CarregarImagem(recurso.Stream, cortarTextoDaLogo: true);
+            }
+        }
+
+        private static ImagemPdf? CarregarImagem(Stream stream, bool cortarTextoDaLogo)
+        {
+            try
+            {
+                var decoder = BitmapDecoder.Create(stream, BitmapCreateOptions.PreservePixelFormat, BitmapCacheOption.OnLoad);
+                var origem = decoder.Frames[0];
+                var bitmap = new FormatConvertedBitmap(origem, PixelFormats.Bgra32, null, 0);
+                var larguraOriginal = bitmap.PixelWidth;
+                var alturaOriginal = bitmap.PixelHeight;
+                var stride = larguraOriginal * 4;
+                var pixels = new byte[stride * alturaOriginal];
+                bitmap.CopyPixels(pixels, stride, 0);
+
+                if (!TentarObterLimitesVisiveis(pixels, larguraOriginal, alturaOriginal, stride, out var minX, out var minY, out var maxX, out var maxY))
+                {
+                    return null;
+                }
+
+                if (cortarTextoDaLogo)
+                {
+                    var alturaVisivel = maxY - minY + 1;
+                    maxY = Math.Min(maxY, minY + (int)Math.Round(alturaVisivel * 0.68));
+                }
+
+                var largura = maxX - minX + 1;
+                var altura = maxY - minY + 1;
+                var rgb = new byte[largura * altura * 3];
+                var alpha = new byte[largura * altura];
+                var posicaoRgb = 0;
+                var posicaoAlpha = 0;
+
+                for (var y = minY; y <= maxY; y++)
+                {
+                    for (var x = minX; x <= maxX; x++)
+                    {
+                        var indice = (y * stride) + (x * 4);
+                        rgb[posicaoRgb++] = pixels[indice + 2];
+                        rgb[posicaoRgb++] = pixels[indice + 1];
+                        rgb[posicaoRgb++] = pixels[indice];
+                        alpha[posicaoAlpha++] = pixels[indice + 3];
+                    }
+                }
+
+                return new ImagemPdf(largura, altura, rgb, alpha);
+            }
+            catch
+            {
+                return null;
+            }
+        }
+
+        private static bool TentarObterLimitesVisiveis(byte[] pixels, int largura, int altura, int stride, out int minX, out int minY, out int maxX, out int maxY)
+        {
+            minX = largura;
+            minY = altura;
+            maxX = -1;
+            maxY = -1;
+
+            for (var y = 0; y < altura; y++)
+            {
+                for (var x = 0; x < largura; x++)
+                {
+                    var alpha = pixels[(y * stride) + (x * 4) + 3];
+                    if (alpha <= 8)
+                    {
+                        continue;
+                    }
+
+                    minX = Math.Min(minX, x);
+                    minY = Math.Min(minY, y);
+                    maxX = Math.Max(maxX, x);
+                    maxY = Math.Max(maxY, y);
+                }
+            }
+
+            return maxX >= minX && maxY >= minY;
+        }
+
+        private static byte[] CriarObjetoImagem(ImagemPdf imagem, int? mascaraId)
+        {
+            var cabecalho = $"<< /Type /XObject /Subtype /Image /Width {imagem.Largura} /Height {imagem.Altura} /ColorSpace /DeviceRGB /BitsPerComponent 8";
+            if (mascaraId.HasValue)
+            {
+                cabecalho += $" /SMask {mascaraId.Value} 0 R";
+            }
+
+            cabecalho += $" /Length {imagem.Rgb.Length} >>\nstream\n";
+            return Concatenar(Bytes(cabecalho), imagem.Rgb, Bytes("\nendstream"));
+        }
+
+        private static byte[] CriarObjetoMascaraImagem(ImagemPdf imagem)
+        {
+            var cabecalho = $"<< /Type /XObject /Subtype /Image /Width {imagem.Largura} /Height {imagem.Altura} /ColorSpace /DeviceGray /BitsPerComponent 8 /Length {imagem.Alpha.Length} >>\nstream\n";
+            return Concatenar(Bytes(cabecalho), imagem.Alpha, Bytes("\nendstream"));
+        }
+
+        private static byte[] Concatenar(params byte[][] partes)
+        {
+            var tamanho = partes.Sum(parte => parte.Length);
+            var resultado = new byte[tamanho];
+            var offset = 0;
+
+            foreach (var parte in partes)
+            {
+                Buffer.BlockCopy(parte, 0, resultado, offset, parte.Length);
+                offset += parte.Length;
+            }
+
+            return resultado;
         }
 
         private static IEnumerable<string> QuebrarLinhas(string texto, int limite, bool truncar)
@@ -500,5 +723,7 @@ public static class ServicoRelatorioPdf
         }
 
         private sealed record CampoPdf(string Rotulo, string Valor);
+
+        private sealed record ImagemPdf(int Largura, int Altura, byte[] Rgb, byte[] Alpha);
     }
 }

@@ -619,7 +619,9 @@ public partial class TelaPrimeiraEtapa : Window
         AtualizarCamposCondicionais();
 
         MostrarCadastroConscrito();
-        DefinirEtapaWizard(_modoEntrevistaTecnica ? EtapaWizardInformacoesBasicas : EtapaWizardConfirmacao);
+        DefinirEtapaWizard(_modoEntrevistaTecnica || _emFluxoListaConscritos
+            ? EtapaWizardInformacoesBasicas
+            : EtapaWizardConfirmacao);
         AtualizarTituloCabecalho();
     }
 
@@ -672,6 +674,10 @@ public partial class TelaPrimeiraEtapa : Window
         SecaoManifestacaoDesejoServir.Visibility = (_etapaWizardAtual == EtapaWizardManifestacao || mostrarFormularioCompleto)
             ? Visibility.Visible
             : Visibility.Collapsed;
+
+        PainelIndicadorWizard.Visibility = _emFluxoListaConscritos && EmModoEdicao
+            ? Visibility.Collapsed
+            : Visibility.Visible;
 
         AtualizarIndicadorEtapa(IndicadorEtapaBasica, EtapaWizardInformacoesBasicas);
         AtualizarIndicadorEtapaPorIntervalo(IndicadorEtapaQuestionario, EtapaWizardBlocoA, EtapaWizardBlocoJ);

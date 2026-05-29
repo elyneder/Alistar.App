@@ -15,7 +15,6 @@
 
         <Style TargetType="Window">
             <Setter Property="FontFamily" Value="Segoe UI" />
-            <Setter Property="WindowStartupLocation" Value="CenterScreen" />
             <Setter Property="Background" Value="White" />
         </Style>
 

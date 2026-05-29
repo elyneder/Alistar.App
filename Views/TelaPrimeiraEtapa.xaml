@@ -384,7 +384,8 @@
                                        Style="{StaticResource DescricaoBlocoPapelStyle}" 
                                        TextAlignment="Center"/>
 
-                            <Border Background="#F8FBF9"
+                            <Border x:Name="PainelIndicadorWizard"
+                                    Background="#F8FBF9"
                                     BorderBrush="#DDE7E1"
                                     BorderThickness="1"
                                     CornerRadius="18"

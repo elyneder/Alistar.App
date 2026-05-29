@@ -279,6 +279,69 @@ public partial class TelaPainelControle : Window
         GradeLogsGerais.ItemsSource = ServicoAuditoria.ObterTodos();
     }
 
+    private void DetalhesEntrevistadorBotao_Click(object sender, RoutedEventArgs e)
+    {
+        if (!TentarObterEntrevistadorDoBotao(sender, out var entrevistador))
+        {
+            return;
+        }
+
+        MostrarDetalhesEntrevistador(entrevistador);
+    }
+
+    private void EditarEntrevistadorBotao_Click(object sender, RoutedEventArgs e)
+    {
+        if (!TentarObterEntrevistadorDoBotao(sender, out var entrevistador))
+        {
+            return;
+        }
+
+        AbrirEdicaoEntrevistador(entrevistador);
+    }
+
+    private void ExcluirEntrevistadorBotao_Click(object sender, RoutedEventArgs e)
+    {
+        if (!TentarObterEntrevistadorDoBotao(sender, out var entrevistador))
+        {
+            return;
+        }
+
+        var resultado = MessageBox.Show(
+            $"Você realmente quer excluir o entrevistador {entrevistador.Nome}?",
+            "Confirmar exclusão",
+            MessageBoxButton.YesNo,
+            MessageBoxImage.Question);
+
+        if (resultado != MessageBoxResult.Yes)
+        {
+            return;
+        }
+
+        if (!ServicoAutenticacao.ExcluirEntrevistador(entrevistador.Email))
+        {
+            MessageBox.Show("Não foi possível excluir este entrevistador.", "Alistar", MessageBoxButton.OK, MessageBoxImage.Warning);
+            return;
+        }
+
+        MostrarEntrevistadores();
+    }
+
+    private static bool TentarObterEntrevistadorDoBotao(object sender, out EntrevistadorResumo entrevistador)
+    {
+        entrevistador = (sender as FrameworkElement)?.DataContext as EntrevistadorResumo ?? new();
+        return !string.IsNullOrWhiteSpace(entrevistador.Email);
+    }
+
+    private void AbrirEdicaoEntrevistador(EntrevistadorResumo entrevistador)
+    {
+        DialogoEntrevistador.MostrarEdicao(this, entrevistador, MostrarEntrevistadores);
+    }
+
+    private void MostrarDetalhesEntrevistador(EntrevistadorResumo entrevistador)
+    {
+        DialogoEntrevistador.MostrarDetalhes(this, entrevistador);
+    }
+
     private void AtualizarResumoSituacoes()
     {
         var total = Math.Max(_conscritosCarregados.Count, 1);
@@ -314,19 +377,11 @@ public partial class TelaPainelControle : Window
 
     private void AplicarFiltroSituacoes()
     {
-        if (GradeSituacoes is null)
-        {
-            return;
-        }
-
         var filtro = ComboFiltroSituacaoResumo.SelectedItem?.ToString() ?? FiltroTodasSituacoes;
-        IEnumerable<Conscrito> consulta = _conscritosCarregados;
         IEnumerable<SituacaoResumo> resumosGrafico = _resumosSituacao;
 
         if (!string.Equals(filtro, FiltroTodasSituacoes, StringComparison.OrdinalIgnoreCase))
         {
-            consulta = consulta.Where(conscrito =>
-                string.Equals(NormalizarSituacao(conscrito.Situacao), filtro, StringComparison.OrdinalIgnoreCase));
             resumosGrafico = resumosGrafico.Where(resumo =>
                 string.Equals(resumo.Situacao, filtro, StringComparison.OrdinalIgnoreCase));
         }
@@ -341,9 +396,6 @@ public partial class TelaPainelControle : Window
         }
 
         GraficoSituacoes.ItemsSource = resumosGraficoLista;
-        GradeSituacoes.ItemsSource = consulta
-            .OrderBy(conscrito => conscrito.Nome)
-            .ToList();
     }
 
     private static Brush ObterCorSituacao(string situacao)

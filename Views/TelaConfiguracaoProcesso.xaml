@@ -273,7 +273,7 @@
                                     </StackPanel>
 
                                     <StackPanel Grid.Column="2" Style="{StaticResource PainelCampoDocumentoStyle}">
-                                        <TextBlock Text="Data de nascimento limite" Style="{StaticResource RotuloCampoDocumentoStyle}" />
+                                        <TextBlock Text="Ano limite do ano de nascimento" Style="{StaticResource RotuloCampoDocumentoStyle}" />
                                         <Border Style="{StaticResource LinhaCampoDocumentoStyle}">
                                             <TextBox x:Name="CaixaAnoLimite"
                                                      MaxLength="4"
@@ -329,7 +329,7 @@
                                                                Foreground="#111111"
                                                                VerticalAlignment="Center" />
                                                     <StackPanel Grid.Column="2">
-                                                        <TextBlock Text="% que sai"
+                                                        <TextBlock Text="% de dispensados"
                                                                    Style="{StaticResource RotuloCampoDocumentoStyle}"
                                                                    Height="Auto" />
                                                         <Border Style="{StaticResource LinhaCampoDocumentoStyle}">

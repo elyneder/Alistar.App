@@ -1,7 +1,7 @@
 <Window x:Class="Alistar.App.TelaCadastroUsuario"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="Alistar | Cadastro de Entrevistador"
+        Title="Alistar | Cadastro de Usuário"
         Height="720"
         Width="1220"
         WindowState="Maximized"
@@ -68,9 +68,9 @@
                                        FontWeight="SemiBold"
                                        Foreground="#1F2D26"
                                        TextAlignment="Center"
-                                       Margin="0,0,0,6" ><Run Text="Registrar "/><Run Language="pt-br" Text="E"/><Run Text="ntrevistador"/></TextBlock>
+                                       Margin="0,0,0,6" ><Run Text="Registrar "/><Run Language="pt-br" Text="U"/><Run Text="suário"/></TextBlock>
 
-                            <TextBlock Text="Somente o administrador principal pode criar um novo acesso de entrevistador."
+                            <TextBlock Text="Somente o administrador principal pode criar um novo acesso de usuário."
                                        FontSize="12"
                                        Foreground="#5F7D6E"
                                        TextAlignment="Center"

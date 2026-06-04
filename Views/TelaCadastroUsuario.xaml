@@ -9,7 +9,7 @@
         ResizeMode="CanResize"
         FontFamily="Segoe UI"
         Icon="/Views/Assets/alistar_icone.ico">
-    
+
     <!-- Tela modal de cadastro: identidade visual a esquerda e campos do entrevistador a direita. -->
     <Grid Background="#0F291D">
         <Grid.ColumnDefinitions>
@@ -60,8 +60,8 @@
                 <Viewbox Stretch="Uniform"
                          MaxWidth="460">
                     <Border Background="#F8FAF9"
-                            Padding="24"
-                            CornerRadius="10">
+                            Padding="20"
+                            CornerRadius="10" Height="513">
                         <StackPanel Width="320">
                             <TextBlock
                                        FontSize="24"
@@ -75,7 +75,7 @@
                                        Foreground="#5F7D6E"
                                        TextAlignment="Center"
                                        TextWrapping="Wrap"
-                                       Margin="0,0,0,24" />
+                                       Margin="0,0,0,10" />
 
                             <TextBlock Text="Nome"
                                        FontSize="11"
@@ -86,13 +86,13 @@
                                     BorderBrush="#D5E3DC"
                                     BorderThickness="1"
                                     CornerRadius="6"
-                                    Margin="0,0,0,14">
+                                    Margin="0,0,0,10">
                                 <TextBox x:Name="CaixaTextoNomeUsuario"
                                          Padding="10"
                                          FontSize="13"
                                          BorderThickness="0"
                                          Background="Transparent"
-                                         Foreground="#1F2D26" MaxLength="40" />
+                                         Foreground="#1F2D26" MaxLength="40" Height="25" />
                             </Border>
 
                             <TextBlock Text="E-mail"
@@ -104,13 +104,13 @@
                                     BorderBrush="#D5E3DC"
                                     BorderThickness="1"
                                     CornerRadius="6"
-                                    Margin="0,0,0,14">
+                                    Margin="0,0,0,10">
                                 <TextBox x:Name="CaixaTextoEmailUsuario"
                                          Padding="10"
                                          FontSize="13"
                                          BorderThickness="0"
                                          Background="Transparent"
-                                         Foreground="#1F2D26" MaxLength="30" />
+                                         Foreground="#1F2D26" MaxLength="30" Height="25"/>
                             </Border>
 
                             <TextBlock Text="Senha"
@@ -119,15 +119,19 @@
                                        Margin="0,0,0,4" />
 
                             <Grid Margin="0,0,0,8">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="133*"/>
+                                    <ColumnDefinition Width="27*"/>
+                                </Grid.ColumnDefinitions>
                                 <Border Background="White"
                                         BorderBrush="#D5E3DC"
                                         BorderThickness="1"
-                                        CornerRadius="6">
+                                        CornerRadius="6" Grid.ColumnSpan="2">
                                     <PasswordBox x:Name="CaixaSenhaUsuario"
                                                  Padding="10"
                                                  FontSize="13"
                                                  BorderThickness="0"
-                                                 Background="Transparent" MaxLength="30" />
+                                                 Background="Transparent" MaxLength="30" Height="25"/>
                                 </Border>
 
                                 <Border x:Name="BordaSenhaVisivelUsuario"
@@ -135,19 +139,19 @@
                                         BorderBrush="#D5E3DC"
                                         BorderThickness="1"
                                         CornerRadius="6"
-                                        Visibility="Collapsed">
+                                        Visibility="Collapsed" Grid.ColumnSpan="2">
                                     <TextBox x:Name="CaixaTextoSenhaVisivelUsuario"
                                              Padding="10"
                                              FontSize="13"
                                              BorderThickness="0"
-                                             Background="Transparent" />
+                                             Background="Transparent" MaxLength="30" Height="25"/>
                                 </Border>
 
-                                <Button HorizontalAlignment="Right"
+                                <Button HorizontalAlignment="Left"
                                     VerticalAlignment="Center"
-                                    Margin="0,0,6,0"
+                                    Margin="15,0,0,0"
                                     Style="{StaticResource BotaoIconeStyle}"
-                                    Click="AlternarSenhaBotao_Click">
+                                    Click="AlternarSenhaBotao_Click" Grid.Column="1" Height="26" Width="33">
                                     <Button.Content>
                                         <Grid Width="20" Height="20">
                                             <Path x:Name="IconeOlhoAberto"
@@ -165,20 +169,52 @@
                                 </Button>
                             </Grid>
 
-                            <TextBlock x:Name="TextoFeedbackCadastro"
-                                       Foreground="#D9534F"
-                                       FontSize="12"
-                                       TextWrapping="Wrap"
-                                       TextAlignment="Center"
-                                       Margin="0,4,0,4" />
+                            <TextBlock Text="CRM do Médico"
+                                    FontSize="11"
+                                    Foreground="#4A6658"
+                                    Margin="0,0,0,4" />
 
-                            <Button Content="Salvar entrevistador"
+                            <Border Background="White"
+                                    BorderBrush="#D5E3DC"
+                                    BorderThickness="1"
+                                    CornerRadius="6">
+                                <TextBox x:Name="CaixaCRMMedico"
+                                    Padding="10"
+                                    FontSize="13"
+                                    BorderThickness="0"
+                                    Background="Transparent"
+                                    Foreground="#1F2D26" MaxLength="30" Height="25"/>
+                            </Border>
+
+                            <TextBlock x:Name="TextoFeedbackCadastro"
+                                    Foreground="#D9534F"
+                                    FontSize="12"
+                                    TextWrapping="Wrap"
+                                    TextAlignment="Center"
+                                    Margin="0,10,0,0" />
+
+                            <Button Content="Administrador"
+                            Style="{StaticResource BotaoPrimarioStyle}"
+                            Height="40" Width="100" HorizontalAlignment="Left"
+                            Margin="0,10,0,5"/>
+
+                            <Button Content="Entrevistador"
+                            Style="{StaticResource BotaoPrimarioStyle}"
+                            Height="40" Width="100" HorizontalAlignment="Center"
+                            Margin="0,-140,0,-90"/>
+
+                            <Button Content="Médico"
+                            Style="{StaticResource BotaoPrimarioStyle}"
+                            Height="40" Width="100" HorizontalAlignment="Right"
+                            Margin="0,-140,0,-90"/>
+
+                            <Button Content="Salvar Usuário"
                                     Style="{StaticResource BotaoPrimarioStyle}"
-                                    Click="SalvarCadastroBotao_Click" />
+                                    Click="SalvarCadastroBotao_Click" Height="40" Width="320"/>
 
                             <Button Content="Cancelar"
                                     Style="{StaticResource BotaoSecundarioStyle}"
-                                    Click="CancelarBotao_Click" />
+                                    Click="CancelarBotao_Click" Height="40" Width="320"/>
                         </StackPanel>
                     </Border>
                 </Viewbox>

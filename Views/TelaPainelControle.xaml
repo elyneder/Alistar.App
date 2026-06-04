@@ -127,7 +127,7 @@
                             Click="MostrarSituacoesBotao_Click" />
 
                     <Button x:Name="VerEntrevistadores"
-                            Content=" 👥 Ver Entrevistadores"
+                            Content=" 👥 Ver Usuários"
                             Style="{StaticResource BotaoBarraLateralStyle}"
                             Click="VerEntrevistadoresBotao_Click" />
 
@@ -156,7 +156,7 @@
 
                 <StackPanel Grid.Row="2">
                     <Button x:Name="CadastrarEntrevistador"
-                            Content=" 👤 Cadastrar Entrevistador"
+                            Content=" 👤 Cadastrar Usuário"
                             Style="{StaticResource BotaoBarraLateralStyle}"
                             Margin="0,0,0,12"
                             Click="AbrirCadastroUsuarioBotao_Click" />
@@ -797,7 +797,7 @@
                         </Grid.RowDefinitions>
 
                         <StackPanel Margin="0,0,0,20">
-                            <TextBlock Text="Entrevistadores"
+                            <TextBlock Text="Usuários"
                                        FontSize="24"
                                        FontWeight="Bold"
                                        Foreground="#123322" />

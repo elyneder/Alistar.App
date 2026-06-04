@@ -17,7 +17,7 @@ internal static class DialogoEntrevistador
 
     public static void MostrarEdicao(Window owner, EntrevistadorResumo entrevistador, Action aoSalvar)
     {
-        var janela = CriarJanela(owner, "Editar entrevistador", 560, 460);
+        var janela = CriarJanela(owner, "Editar usuário", 560, 460);
         var nome = CriarCaixaTexto(entrevistador.Nome);
         var email = CriarCaixaTexto(entrevistador.Email);
         var senha = new PasswordBox
@@ -35,7 +35,7 @@ internal static class DialogoEntrevistador
         };
 
         var corpo = new StackPanel();
-        corpo.Children.Add(CriarCabecalho(janela, "Editar entrevistador", "Atualize nome, e-mail ou defina uma nova senha."));
+        corpo.Children.Add(CriarCabecalho(janela, "Editar usuário", "Atualize nome, e-mail ou defina uma nova senha."));
         corpo.Children.Add(CriarRotulo("Nome"));
         corpo.Children.Add(CriarCampo(nome));
         corpo.Children.Add(CriarRotulo("E-mail"));

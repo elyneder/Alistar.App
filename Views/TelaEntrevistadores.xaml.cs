@@ -31,14 +31,14 @@ public partial class TelaEntrevistadores : Window
     {
         if (!ServicoAutenticacao.UsuarioAtualEhAdministrador())
         {
-            MessageBox.Show("Apenas administradores podem ver os entrevistadores cadastrados.", "Alistar", MessageBoxButton.OK, MessageBoxImage.Warning);
+            MessageBox.Show("Apenas administradores podem ver os usuários cadastrados.", "Alistar", MessageBoxButton.OK, MessageBoxImage.Warning);
             Close();
             return;
         }
 
         var entrevistadores = ServicoAutenticacao.ObterEntrevistadores();
         GradeEntrevistadores.ItemsSource = entrevistadores;
-        TextoResumoEntrevistadores.Text = $"{entrevistadores.Count} entrevistador(es) cadastrado(s).";
+        TextoResumoEntrevistadores.Text = $"{entrevistadores.Count} usuário(s) cadastrado(s).";
         TextoTotalEntrevistadores.Text = entrevistadores.Count.ToString();
     }
 
@@ -85,7 +85,7 @@ public partial class TelaEntrevistadores : Window
         }
 
         var resultado = MessageBox.Show(
-            $"Você realmente quer excluir o entrevistador {entrevistador.Nome}?",
+            $"Você realmente quer excluir o usuário {entrevistador.Nome}?",
             "Confirmar exclusão",
             MessageBoxButton.YesNo,
             MessageBoxImage.Question);

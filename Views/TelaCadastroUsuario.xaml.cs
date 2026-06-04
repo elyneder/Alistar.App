@@ -58,17 +58,11 @@ public partial class TelaCadastroUsuario : Window
 
         if (string.IsNullOrWhiteSpace(nome) || string.IsNullOrWhiteSpace(email) || string.IsNullOrWhiteSpace(senha))
         {
-            TextoFeedbackCadastro.Text = "Preencha nome, e-mail e senha.";
+            TextoFeedbackCadastro.Text = "Não foi possível concluir o registro";
             return;
         }
 
         var resultadoCadastro = ServicoAutenticacao.Cadastrar(nome, email, senha);
-
-        if (resultadoCadastro == ResultadoCadastroUsuario.SemPermissao)
-        {
-            TextoFeedbackCadastro.Text = "Somente usuários com permissões de administrador podem cadastrar um novo entrevistador.";
-            return;
-        }
 
         if (resultadoCadastro == ResultadoCadastroUsuario.EmailJaCadastrado)
         {

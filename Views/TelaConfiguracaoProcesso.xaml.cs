@@ -1,6 +1,7 @@
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using Alistar.App.Models;
@@ -63,6 +64,7 @@ public partial class TelaConfiguracaoProcesso : Window
             .ToList();
 
         ListaEtapasPercentuais.ItemsSource = _etapasPercentuais;
+        AtualizarSaldosConscritos();
         AtualizarListaServidores();
     }
 
@@ -227,10 +229,14 @@ public partial class TelaConfiguracaoProcesso : Window
 
     private void AtualizarConfirmacao()
     {
+        var totaisConscritos = CalcularSaldosConscritos();
+
         TextoResumoConfirmacao.Text =
             $"Data de abertura: {_configuracao.DataAbertura:dd/MM/yyyy}\n" +
             $"Data de fechamento: {_configuracao.DataFechamento:dd/MM/yyyy}\n" +
             $"Ano limite: {_configuracao.AnoLimiteNascimento}\n" +
+            $"Total esperado: {totaisConscritos.TotalEsperado}\n" +
+            $"Total final: {totaisConscritos.TotalFinal}\n" +
             $"Total de classificados: {_configuracao.TotalClassificados}";
 
         TextoEtapasConfirmacao.Text = "Percentuais por etapa:\n" +
@@ -242,8 +248,8 @@ public partial class TelaConfiguracaoProcesso : Window
             .ToList();
 
         TextoServidoresConfirmacao.Text = entrevistadores.Count == 0
-            ? "Entrevistadores autorizados: nenhum servidor selecionado."
-            : "Entrevistadores autorizados:\n" + string.Join("\n", entrevistadores);
+            ? "Usuários autorizados: nenhum servidor selecionado."
+            : "Usuários autorizados:\n" + string.Join("\n", entrevistadores);
     }
 
     private bool ValidarInteiro(string texto, string campo, out int valor)
@@ -303,6 +309,67 @@ public partial class TelaConfiguracaoProcesso : Window
         {
             e.CancelCommand();
         }
+    }
+
+    private void TotalConscritosEsperados_TextChanged(object sender, TextChangedEventArgs e)
+    {
+        AtualizarSaldosConscritos();
+    }
+
+    private void PercentualEtapa_TextChanged(object sender, TextChangedEventArgs e)
+    {
+        if (sender is TextBox caixaPercentual &&
+            caixaPercentual.DataContext is EtapaPercentualFormulario etapaFormulario)
+        {
+            etapaFormulario.TextoPercentual = caixaPercentual.Text;
+        }
+
+        AtualizarSaldosConscritos();
+    }
+
+    private void AtualizarSaldosConscritos()
+    {
+        var totaisConscritos = CalcularSaldosConscritos();
+
+        ListaSaldosConscritos.ItemsSource = totaisConscritos.Saldos;
+        TextoSaldoConscritosFinal.Text = $"Total Final: {totaisConscritos.TotalFinal}";
+    }
+
+    private (int TotalEsperado, int TotalFinal, List<SaldoConscritoEtapa> Saldos) CalcularSaldosConscritos()
+    {
+        var totalEsperado = ObterInteiroNaoNegativo(CaixaTotalConscritosEsperados.Text);
+        var saldo = totalEsperado;
+        var saldos = new List<SaldoConscritoEtapa>();
+
+        foreach (var etapaFormulario in _etapasPercentuais)
+        {
+            var percentual = ObterPercentualCalculo(etapaFormulario.TextoPercentual);
+            var quantidadeDispensada = (int)Math.Round(saldo * percentual / 100d, MidpointRounding.AwayFromZero);
+            quantidadeDispensada = Math.Min(quantidadeDispensada, saldo);
+            saldo -= quantidadeDispensada;
+
+            saldos.Add(new SaldoConscritoEtapa
+            {
+                Numero = etapaFormulario.Numero,
+                QuantidadeDispensada = quantidadeDispensada
+            });
+        }
+
+        return (totalEsperado, saldo, saldos);
+    }
+
+    private static int ObterInteiroNaoNegativo(string texto)
+    {
+        return int.TryParse(texto.Trim(), out var valor) && valor > 0
+            ? valor
+            : 0;
+    }
+
+    private static int ObterPercentualCalculo(string texto)
+    {
+        return int.TryParse(texto.Trim(), out var percentual)
+            ? Math.Clamp(percentual, 0, 99)
+            : 0;
     }
 
     private void DataAberturaPicker_SelectedDateChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
@@ -371,7 +438,7 @@ public partial class TelaConfiguracaoProcesso : Window
         {
             PassoDadosGerais => "Dados Gerais",
             PassoEtapas => "Etapas do Processo",
-            PassoServidores => "Entrevistadores Autorizados",
+            PassoServidores => "Usuários Autorizados",
             _ => "Confirmação Final"
         };
     }
@@ -382,7 +449,7 @@ public partial class TelaConfiguracaoProcesso : Window
         {
             PassoDadosGerais => "Informe datas e numeros principais do processo seletivo.",
             PassoEtapas => "Defina apenas a porcentagem de saída de cada etapa.",
-            PassoServidores => "Selecione os entrevistadores que poderão atuar no processo.",
+            PassoServidores => "Selecione os usuários que poderão atuar no processo.",
             _ => "Revise os dados antes de concluir a configuração."
         };
     }
@@ -417,6 +484,23 @@ public class EtapaPercentualFormulario
     public string TextoPercentual { get; set; } = string.Empty;
 
     public int PercentualEliminacao { get; set; }
+}
+
+public class SaldoConscritoEtapa
+{
+    public int Numero { get; set; }
+
+    public int QuantidadeDispensada { get; set; }
+
+    public string RotuloEtapa => $"{Numero} Etapa:";
+
+    public string TextoReducao => QuantidadeDispensada == 0
+        ? "0"
+        : $"-{QuantidadeDispensada}";
+
+    public Brush CorReducao => QuantidadeDispensada == 0
+        ? Brushes.DarkOrange
+        : Brushes.Firebrick;
 }
 
 public class ServidorSelecao : INotifyPropertyChanged

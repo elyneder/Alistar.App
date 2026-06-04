@@ -266,7 +266,7 @@ public partial class TelaPainelControle : Window
 
         var entrevistadores = ServicoAutenticacao.ObterEntrevistadores();
         GradeEntrevistadoresPainel.ItemsSource = entrevistadores;
-        TextoResumoEntrevistadoresPainel.Text = $"{entrevistadores.Count} entrevistador(es) cadastrado(s).";
+        TextoResumoEntrevistadoresPainel.Text = $"{entrevistadores.Count} usuário(s) cadastrado(s).";
     }
 
     private void MostrarLogsGerais()
@@ -307,7 +307,7 @@ public partial class TelaPainelControle : Window
         }
 
         var resultado = MessageBox.Show(
-            $"Você realmente quer excluir o entrevistador {entrevistador.Nome}?",
+            $"Você realmente quer excluir o usuário {entrevistador.Nome}?",
             "Confirmar exclusão",
             MessageBoxButton.YesNo,
             MessageBoxImage.Question);

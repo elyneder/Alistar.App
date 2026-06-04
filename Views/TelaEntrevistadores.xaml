@@ -1,7 +1,7 @@
 <Window x:Class="Alistar.App.TelaEntrevistadores"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="Alistar | Entrevistadores"
+        Title="Alistar | Usuários"
         Height="760"
         Width="1280"
         WindowState="Maximized"
@@ -92,7 +92,7 @@
                         <TextBlock Text="  🡸  Voltar     "/>
                     </StackPanel>
                 </Button>
-                <TextBlock Text="Entrevistadores"
+                <TextBlock Text="Usuários"
                            FontSize="32"
                            FontWeight="Bold"
                            Foreground="#123322" />

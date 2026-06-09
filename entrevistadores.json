@@ -3,24 +3,96 @@
     "Nome": "Administrador",
     "Email": "admin@alistar.com",
     "Senha": "$2a$11$9c/gtvWSNiZ6pTQqjQfdJeg4JrJDY8nsrnqGeKnsp9wD1VrNppIhi",
-    "AdministradorGeral": true
+    "AdministradorGeral": true,
+    "Medico": false,
+    "Entrevistador": false,
+    "EntrevistadorOuMedico": null,
+    "CRM": null,
+    "Token": null,
+    "DataExpiracaoToken": "0001-01-01T00:00:00"
   },
   {
     "Nome": "Administrador Geral 2",
     "Email": "admin2@alistar.com",
     "Senha": "$2a$11$9c/gtvWSNiZ6pTQqjQfdJeg4JrJDY8nsrnqGeKnsp9wD1VrNppIhi",
-    "AdministradorGeral": true
+    "AdministradorGeral": true,
+    "Medico": false,
+    "Entrevistador": false,
+    "EntrevistadorOuMedico": null,
+    "CRM": null,
+    "Token": null,
+    "DataExpiracaoToken": "0001-01-01T00:00:00"
   },
   {
     "Nome": "Cabo 1",
     "Email": "cabo1@gmail.com",
     "Senha": "$2a$11$K/8V8RgPIc3xN7fzcHiwteGTtnZQHFwptbjAHZAhM4EjZL7Jzncl2",
-    "AdministradorGeral": false
+    "AdministradorGeral": false,
+    "Medico": false,
+    "Entrevistador": false,
+    "EntrevistadorOuMedico": null,
+    "CRM": null,
+    "Token": null,
+    "DataExpiracaoToken": "0001-01-01T00:00:00"
   },
   {
     "Nome": "Cabo 2",
     "Email": "cabo2@gmail.com",
     "Senha": "$2a$11$wQYkWkOOZpKm0rOsI5mrdecfgHAqyBgwE4W3ahIXfIO1pJ4vRDUcm",
-    "AdministradorGeral": false
+    "AdministradorGeral": false,
+    "Medico": false,
+    "Entrevistador": false,
+    "EntrevistadorOuMedico": null,
+    "CRM": null,
+    "Token": null,
+    "DataExpiracaoToken": "0001-01-01T00:00:00"
+  },
+  {
+    "Nome": "Lucas",
+    "Email": "lucas@gmail.com",
+    "Senha": "$2a$11$vGtD6Lk0qMmv.euZsjh86eA7BGN8QpPIWJd/GAY/RXZFJdXw6Wt2W",
+    "AdministradorGeral": false,
+    "Medico": false,
+    "Entrevistador": false,
+    "EntrevistadorOuMedico": null,
+    "CRM": null,
+    "Token": null,
+    "DataExpiracaoToken": "0001-01-01T00:00:00"
+  },
+  {
+    "Nome": "Lucas",
+    "Email": "lucas2@gmail.com",
+    "Senha": "$2a$11$pJAHs928bp.XCJuvji/Sc.x9uehEdxPdVN4yQNJGZsYF1OlafxaH2",
+    "AdministradorGeral": false,
+    "Medico": true,
+    "Entrevistador": false,
+    "EntrevistadorOuMedico": null,
+    "CRM": "CRM-SP 123456",
+    "Token": null,
+    "DataExpiracaoToken": "0001-01-01T00:00:00"
+  },
+  {
+    "Nome": "teste",
+    "Email": "teste@gmail.com",
+    "Senha": "$2a$11$rItFLDqIygOYQO5BJjajhOC1Y0EnhUcY.5MtUsKsam7xrdpr.3Cum",
+    "AdministradorGeral": false,
+    "Medico": true,
+    "Entrevistador": false,
+    "EntrevistadorOuMedico": null,
+    "CRM": "AA123123",
+    "Token": null,
+    "DataExpiracaoToken": "0001-01-01T00:00:00"
+  },
+  {
+    "Nome": "teste2",
+    "Email": "teste2@alistar.com",
+    "Senha": "$2a$11$gt4.aCf/bQO1TzTaK1u9y.UcBGNsWHBkaQpEaRriEUw4T5.oYIjm2",
+    "AdministradorGeral": false,
+    "Medico": false,
+    "Entrevistador": true,
+    "EntrevistadorOuMedico": null,
+    "CRM": null,
+    "Token": null,
+    "DataExpiracaoToken": "0001-01-01T00:00:00"
   }
 ]

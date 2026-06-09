@@ -322,8 +322,8 @@
                                         <TextBlock Text="CRM do médico:" Style="{StaticResource RotuloCampoStyle}" />
                                         <Border Style="{StaticResource LinhaCampoStyle}">
                                             <TextBox x:Name="CaixaTextoCRM"
-                                                     MaxLength="9"
-                                                     TextChanged="CaixaTextoCRM_TextChanged"
+                                                     Text=""
+                                                     MaxLength="16"
                                                      Style="{StaticResource CampoTextoStyle}" />
                                         </Border>
                                     </StackPanel>

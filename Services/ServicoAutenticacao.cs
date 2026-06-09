@@ -130,6 +130,45 @@ public static class ServicoAutenticacao
         return conta is not null &&
                (conta.AdministradorGeral);
     }
+    public static bool UsuarioEhEntrevistador(ContaUsuario? conta)
+    {
+        if (conta.Entrevistador == true)
+        {
+            return conta is not null &&
+                   (conta.Entrevistador);
+        }
+        else
+        {
+            return false;
+        }
+    }
+    public static bool UsuarioEhMedico(ContaUsuario? conta)
+    {
+        if(conta.Medico == true)
+        {
+            return conta is not null &&
+                   (conta.Medico);
+        }
+        else
+        {
+            return false;
+        }
+    }
+    
+    public static bool VerificarSeEhMedico()
+    {
+        return UsuarioEhMedico(UsuarioAtual);
+    }
+
+    public static string? obterCRM()
+    {
+        return UsuarioAtual.CRM;
+    }
+
+    public static bool VerificarSeEhEntrevistador()
+    {
+        return UsuarioEhEntrevistador(UsuarioAtual);
+    }
 
     public static bool VerificacaoDeProcessoAberto (ConfiguracaoProcesso configuracao)
     {
@@ -190,7 +229,7 @@ public static class ServicoAutenticacao
     /// <summary>
     /// Cadastra novo entrevistador, desde que o usuario atual seja administrador.
     /// </summary>
-    public static ResultadoCadastroUsuario Cadastrar(string nome, string email, string senha)
+    public static ResultadoCadastroUsuario Cadastrar(string nome, string email, string senha, bool medico, bool entrevistador, bool adm, string crm)
     {
         if (!UsuarioAtualEhAdministrador())
         {
@@ -204,13 +243,41 @@ public static class ServicoAutenticacao
 
         try
         {
-            Contas.Add(new ContaUsuario
+            if (medico)
             {
-                Nome = nome,
-                Email = email,
-                Senha = Seguranca.CriptografarSenha(senha),
-                AdministradorGeral = false
-            });
+                Contas.Add(new ContaUsuario
+                {
+                    Nome = nome,
+                    Email = email,
+                    CRM = crm,
+                    Senha = Seguranca.CriptografarSenha(senha),
+                    AdministradorGeral = adm,
+                    Medico = medico,
+                    Entrevistador = entrevistador,
+                });
+            }else if (entrevistador)
+            {
+                Contas.Add(new ContaUsuario
+                {
+                    Nome = nome,
+                    Email = email,
+                    Senha = Seguranca.CriptografarSenha(senha),
+                    AdministradorGeral = adm,
+                    Medico = medico,
+                    Entrevistador = entrevistador,
+                });
+            }else if (adm)
+            {
+                Contas.Add(new ContaUsuario
+                {
+                    Nome = nome,
+                    Email = email,
+                    Senha = Seguranca.CriptografarSenha(senha),
+                    AdministradorGeral = adm,
+                    Medico = medico,
+                    Entrevistador = entrevistador,
+                });
+            }
 
             SalvarContas();
             ServicoAuditoria.RegistrarAcao("Cadastro", "Entrevistador", $"Administrador cadastrou o entrevistador {email}.");

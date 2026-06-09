@@ -61,7 +61,7 @@
                          MaxWidth="460">
                     <Border Background="#F8FAF9"
                             Padding="20"
-                            CornerRadius="10" Height="513">
+                            CornerRadius="10" RenderTransformOrigin="0.5,0.5" VerticalAlignment="Center">
                         <StackPanel Width="320">
                             <TextBlock
                                        FontSize="24"
@@ -111,6 +111,7 @@
                                     Margin="0,0,0,10">
                                 <TextBox x:Name="CaixaTextoEmailUsuario"
                                          Padding="10,0"
+                                         ToolTip="exemplo@email.com"
                                          FontSize="13"
                                          BorderThickness="0"
                                          Background="Transparent"
@@ -187,17 +188,20 @@
                                 </Button>
                             </Grid>
 
-                            <TextBlock Text="CRM do Médico"
+                            <TextBlock x:Name="CRMTexto" 
+                                    Text="CRM do Médico"
                                     FontSize="11"
                                     Foreground="#4A6658"
-                                    Margin="0,0,0,4" />
+                                    Margin="0,0,0,4" Visibility="Collapsed" />
 
-                            <Border Background="White"
+                            <Border x:Name="BordaCRMMedico"
+                                    Background="White"
                                     BorderBrush="#D5E3DC"
                                     BorderThickness="1"
-                                    CornerRadius="6">
+                                    CornerRadius="6" Visibility="Collapsed">
                                 <TextBox x:Name="CaixaCRMMedico"
                                     Padding="10,0"
+                                    ToolTip="CRM/UF XXXXXX"
                                     FontSize="13"
                                     BorderThickness="0"
                                     Background="Transparent"
@@ -205,7 +209,7 @@
                                     CaretBrush="#1F2D26"
                                     VerticalContentAlignment="Center"
                                     MaxLength="30"
-                                    Height="25"/>
+                                    Height="25" Visibility="Collapsed"/>
                             </Border>
 
                             <TextBlock x:Name="TextoFeedbackCadastro"
@@ -215,20 +219,23 @@
                                     TextAlignment="Center"
                                     Margin="0,10,0,0" />
 
-                            <Button Content="Administrador"
+                            <Button x:Name="ADM" 
+                            Content="Administrador"
                             Style="{StaticResource BotaoPrimarioStyle}"
                             Height="40" Width="100" HorizontalAlignment="Left"
-                            Margin="0,10,0,5"/>
+                            Margin="0,10,0,5" Click="ClickAdministrador"/>
 
-                            <Button Content="Entrevistador"
+                            <Button x:Name="ENTREVISTADOR"
+                            Content="Entrevistador"
                             Style="{StaticResource BotaoPrimarioStyle}"
                             Height="40" Width="100" HorizontalAlignment="Center"
-                            Margin="0,-140,0,-90"/>
+                            Margin="0,-140,0,-90" Click="ClickEntrevistador"/>
 
-                            <Button Content="Médico"
+                            <Button x:Name="MEDICO"
+                            Content="Médico"
                             Style="{StaticResource BotaoPrimarioStyle}"
                             Height="40" Width="100" HorizontalAlignment="Right"
-                            Margin="0,-140,0,-90"/>
+                            Margin="0,-140,0,-90" Click="ClickMedico"/>
 
                             <Button Content="Salvar Usuário"
                                     Style="{StaticResource BotaoPrimarioStyle}"

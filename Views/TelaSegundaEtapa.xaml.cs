@@ -50,6 +50,7 @@ public partial class TelaSegundaEtapa : Window
         InitializeComponent();
         ComboTipoAnaliseMedica.SelectedIndex = 0;
         CaixaTextoQuantidadePessoas.Text = "1";
+        CaixaTextoCRM.Text = ServicoAutenticacao.obterCRM();
         AplicarModoTela();
         RegistrarEventosCamposCondicionais();
         AtualizarCamposCondicionais();
@@ -360,20 +361,6 @@ public partial class TelaSegundaEtapa : Window
         {
             TextoFeedback.Text = "Selecione o tipo de análise antes de avançar.";
             ComboTipoAnaliseMedica.Focus();
-            return false;
-        }
-
-        if (string.IsNullOrWhiteSpace(CaixaTextoCRM.Text))
-        {
-            TextoFeedback.Text = "Informe o CRM do médico antes de avançar.";
-            CaixaTextoCRM.Focus();
-            return false;
-        }
-
-        if (!CrmEstaValido(CaixaTextoCRM.Text))
-        {
-            TextoFeedback.Text = "Informe o CRM no formato 000000-AA.";
-            CaixaTextoCRM.Focus();
             return false;
         }
 
@@ -1159,11 +1146,6 @@ public partial class TelaSegundaEtapa : Window
         caixaTexto.Text = textoFormatado;
         caixaTexto.CaretIndex = caixaTexto.Text.Length;
         _atualizandoMascara = false;
-    }
-
-    private void CaixaTextoCRM_TextChanged(object sender, TextChangedEventArgs e)
-    {
-        AplicarMascaraTexto(sender, FormatarCrm);
     }
 
     private void CaixaTextoCID_TextChanged(object sender, TextChangedEventArgs e)

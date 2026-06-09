@@ -1,5 +1,7 @@
-using System.Windows;
+using Alistar.App.Models;
 using Alistar.App.Services;
+using System.Windows;
+using System.Windows.Controls;
 
 namespace Alistar.App;
 
@@ -15,6 +17,7 @@ public partial class TelaCadastroUsuario : Window
     // Indica se a senha esta sendo exibida como texto ou protegida no PasswordBox.
     private bool _senhaVisivel;
     private readonly bool _retornarParaTelaAnterior;
+    private ContaUsuario _entrevistador;
 
     public TelaCadastroUsuario(bool retornarParaTelaAnterior = false)
     {
@@ -54,6 +57,7 @@ public partial class TelaCadastroUsuario : Window
     {
         var nome = CaixaTextoNomeUsuario.Text.Trim();
         var email = CaixaTextoEmailUsuario.Text.Trim();
+        var CRM = CaixaCRMMedico.Text.Trim();
         var senha = _senhaVisivel ? CaixaTextoSenhaVisivelUsuario.Text.Trim() : CaixaSenhaUsuario.Password.Trim();
 
         if (string.IsNullOrWhiteSpace(nome) || string.IsNullOrWhiteSpace(email) || string.IsNullOrWhiteSpace(senha))
@@ -62,7 +66,18 @@ public partial class TelaCadastroUsuario : Window
             return;
         }
 
-        var resultadoCadastro = ServicoAutenticacao.Cadastrar(nome, email, senha);
+        if (_entrevistador.Medico == true && string.IsNullOrWhiteSpace(CRM))
+        {
+            TextoFeedbackCadastro.Text = "Adicione o CRM para avançar";
+            return;
+        }
+
+        if(_entrevistador.Medico == false)
+        {
+            CRM = string.Empty;
+        }
+
+        var resultadoCadastro = ServicoAutenticacao.Cadastrar(nome, email, senha, _entrevistador.Medico, _entrevistador.Entrevistador, _entrevistador.AdministradorGeral, CRM);
 
         if (resultadoCadastro == ResultadoCadastroUsuario.EmailJaCadastrado)
         {
@@ -115,5 +130,58 @@ public partial class TelaCadastroUsuario : Window
 
         telaAnterior.Show();
         telaAnterior.Activate();
+    }
+
+    private void ClickAdministrador(object sender, RoutedEventArgs e)
+    {
+        _entrevistador = new ContaUsuario { 
+            AdministradorGeral = true,
+            Medico = false, 
+            Entrevistador = false, 
+        };
+
+        ENTREVISTADOR.Style = (Style)FindResource("BotaoPrimarioStyle");
+        MEDICO.Style = (Style)FindResource("BotaoPrimarioStyle");
+        ADM.Style = (Style)FindResource("BotaoSecundarioStyle");
+
+        BordaCRMMedico.Visibility = Visibility.Collapsed;
+        CRMTexto.Visibility = Visibility.Collapsed;
+        CaixaCRMMedico.Visibility = Visibility.Collapsed;
+    }
+
+    private void ClickEntrevistador(object sender, RoutedEventArgs e)
+    {
+        _entrevistador = new ContaUsuario
+        {
+            AdministradorGeral = false,
+            Medico = false,
+            Entrevistador = true
+        };
+
+        ADM.Style = (Style)FindResource("BotaoPrimarioStyle");
+        MEDICO.Style = (Style)FindResource("BotaoPrimarioStyle");
+        ENTREVISTADOR.Style = (Style)FindResource("BotaoSecundarioStyle");
+
+        BordaCRMMedico.Visibility = Visibility.Collapsed;
+        CRMTexto.Visibility = Visibility.Collapsed;
+        CaixaCRMMedico.Visibility = Visibility.Collapsed;
+    }
+
+    private void ClickMedico(object sender, RoutedEventArgs e)
+    {
+        _entrevistador = new ContaUsuario
+        {
+            AdministradorGeral = false,
+            Medico = true,
+            Entrevistador = false
+        };
+
+        ENTREVISTADOR.Style = (Style)FindResource("BotaoPrimarioStyle");
+        ADM.Style = (Style)FindResource("BotaoPrimarioStyle");
+        MEDICO.Style = (Style)FindResource("BotaoSecundarioStyle");
+
+        BordaCRMMedico.Visibility = Visibility.Visible;
+        CRMTexto.Visibility = Visibility.Visible;
+        CaixaCRMMedico.Visibility = Visibility.Visible;
     }
 }

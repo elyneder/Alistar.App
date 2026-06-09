@@ -43,31 +43,66 @@ public partial class TelaPainelControle : Window
     private void PrimeiraEtapaBotao_Click(object sender, RoutedEventArgs e)
     {
         ServicoAuditoria.RegistrarAcao("Acesso", "Primeira Etapa", "Usuário abriu a primeira etapa.");
-        AbrirJanelaEtapa(new TelaPrimeiraEtapa());
+        if (!ServicoAutenticacao.VerificarSeEhMedico())
+        {
+            AbrirJanelaEtapa(new TelaPrimeiraEtapa());
+        }
+        else
+        {
+            MessageBox.Show("Você não tem permissão para acessar essa tela");
+        }
     }
 
     private void SegundaEtapaBotao_Click(object sender, RoutedEventArgs e)
     {
         ServicoAuditoria.RegistrarAcao("Acesso", "Segunda Etapa", "Usuário abriu a segunda etapa.");
-        AbrirJanelaEtapa(new TelaSegundaEtapa());
+        if (!ServicoAutenticacao.VerificarSeEhEntrevistador())
+        {
+            AbrirJanelaEtapa(new TelaSegundaEtapa());
+        }
+        else
+        {
+            MessageBox.Show("Você não tem permissão para acessar essa tela");
+        }
     }
 
     private void TerceiraEtapaBotao_Click(object sender, RoutedEventArgs e)
     {
         ServicoAuditoria.RegistrarAcao("Acesso", "Terceira Etapa", "Usuário abriu a terceira etapa.");
-        ServicoNavegacao.Trocar(this, new TelaPrimeiraEtapa(null, true, true));
+        if (!ServicoAutenticacao.VerificarSeEhMedico())
+        {
+            ServicoNavegacao.Trocar(this, new TelaPrimeiraEtapa(null, true, true));
+        }
+        else
+        {
+            MessageBox.Show("Você não tem permissão para acessar essa Etapa");
+        }
     }
 
     private void QuartaEtapaBotao_Click(object sender, RoutedEventArgs e)
     {
         ServicoAuditoria.RegistrarAcao("Acesso", "Quarta Etapa", "Usuário abriu a quarta etapa.");
-        AbrirJanelaEtapa(new TelaSegundaEtapa(modoReavaliacaoMedica: true));
+        if (!ServicoAutenticacao.VerificarSeEhEntrevistador())
+        {
+            AbrirJanelaEtapa(new TelaSegundaEtapa(modoReavaliacaoMedica: true));
+        }
+        else
+        {
+            MessageBox.Show("Você não tem permissão para acessar essa tela");
+        }
     }
 
     private void QuintaEtapaBotao_Click(object sender, RoutedEventArgs e)
     {
         ServicoAuditoria.RegistrarAcao("Acesso", "Quinta Etapa", "Usuário abriu a quinta etapa.");
-        AbrirJanelaEtapa(new TelaQuintaEtapa());
+        if (!ServicoAutenticacao.VerificarSeEhMedico() && !ServicoAutenticacao.VerificarSeEhEntrevistador())
+        {
+            AbrirJanelaEtapa(new TelaQuintaEtapa());
+        }
+        else
+        {
+            MessageBox.Show("Você não tem permissão para acessar essa etapa");
+        }
     }
 
     private void MostrarTelaInicialBotao_Click(object sender, RoutedEventArgs e)

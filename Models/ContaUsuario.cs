@@ -18,6 +18,10 @@ public class ContaUsuario
     /// <summary>Hash da senha gerado pelo BCrypt.</summary>
     public string Senha { get; set; } = string.Empty;
     public bool AdministradorGeral { get; set; }
+    public bool Medico { get; set; }
+    public bool Entrevistador { get; set; }
+    public string EntrevistadorOuMedico { get; set; }
+    public string CRM { get; set; }
     public string Token { get; set; }
     public DateTime DataExpiracaoToken { get; set; }
 }

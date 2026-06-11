@@ -1,5 +1,6 @@
 using System.IO;
 using System.Text.Json;
+using System.Windows;
 using Alistar.App.Models;
 
 namespace Alistar.App.Services;
@@ -45,6 +46,37 @@ public static class ServicoConfiguracaoProcesso
 
         //var json = JsonSerializer.Serialize(configuracao, OpcoesJson);
         //File.WriteAllText(CaminhoCompleto, json);
+    }
+
+    public static void AdicionarEntrevistadorAoProcesso(string email)
+    {
+        var configuracao = Obter();
+        var servidoresAutorizados = configuracao.ServidoresAutorizados;
+
+        bool existeEsseEmailNoProcesso = servidoresAutorizados.Contains(email);
+
+        if (existeEsseEmailNoProcesso) MessageBox.Show("Esse usuário já está no processo");
+
+        if (!existeEsseEmailNoProcesso)
+        {
+            configuracao.ServidoresAutorizados.Add(email);
+            Salvar(configuracao);
+            MessageBox.Show("Usuário adicionado no processo");
+        }
+    }
+
+    public static bool VerSeEntervistadorPartipaDoProcesso(string email)
+    {
+        var configuracao = Obter();
+        var servidoresAutorizados = configuracao.ServidoresAutorizados;
+
+        bool existeEsseEmailNoProcesso = servidoresAutorizados.Contains(email);
+
+        if (existeEsseEmailNoProcesso) return true;
+
+        if (!existeEsseEmailNoProcesso) return false;
+
+        return false;
     }
 
     public static bool UsuarioPodeAcessarEtapa(int numeroEtapa, string? emailUsuario)

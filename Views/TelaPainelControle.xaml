@@ -888,10 +888,16 @@
                             <DataGrid.Columns>
                                 <DataGridTextColumn Header="Nome" Binding="{Binding Nome}" Width="2*" />
                                 <DataGridTextColumn Header="E-mail" Binding="{Binding Email}" Width="2*" />
-                                <DataGridTemplateColumn Header="Ações" Width="150">
+                                <DataGridTemplateColumn Header="Ações" Width="250">
                                     <DataGridTemplateColumn.CellTemplate>
                                         <DataTemplate>
                                             <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
+                                                <Button 
+                                                    Content="&#xE77B;"
+                                                    ToolTip="Adicionar Ao Processo"
+                                                    Style="{StaticResource BotaoAcaoTabelaStyle}"
+                                                    Click="AdionarEntrevistadorAoProcesso_Click"
+                                                    Loaded="CarregarBotao_Loaded"/>
                                                 <Button Content="&#xE9D9;"
                                                         ToolTip="Ver detalhes"
                                                         Style="{StaticResource BotaoAcaoTabelaStyle}"

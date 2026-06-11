@@ -130,6 +130,30 @@ public partial class TelaPainelControle : Window
         MostrarEntrevistadores();
     }
 
+    private void AdionarEntrevistadorAoProcesso_Click(Object sender, RoutedEventArgs e)
+    {
+        if (!TentarObterEntrevistadorDoBotao(sender, out var entrevistador))
+        {
+            return;
+        }
+        ServicoConfiguracaoProcesso.AdicionarEntrevistadorAoProcesso(entrevistador.Email);
+    }
+
+    private void CarregarBotao_Loaded(object sender, RoutedEventArgs e)
+    {
+        // O 'sender' aqui é o botão da linha que acabou de ser renderizado!
+        Button botaoRenderizado = (Button)sender;
+
+        // Você consegue acessar os dados da linha correspondente a esse botão:
+        var entrevistador = (EntrevistadorResumo)botaoRenderizado.DataContext;
+
+        // Agora você modifica o botão como quiser na renderização da página
+        if (ServicoConfiguracaoProcesso.VerSeEntervistadorPartipaDoProcesso(entrevistador.Email))
+        {
+            botaoRenderizado.Visibility = Visibility.Hidden;
+        }
+    }
+
     private void MostrarLogsGeraisBotao_Click(object sender, RoutedEventArgs e)
     {
         MostrarLogsGerais();
